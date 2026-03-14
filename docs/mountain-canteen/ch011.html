@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>燒傷少年阿亮 - 深山食堂開飯了</title>
+<style>
+:root {
+  --bg: #faf8f5;
+  --text: #2c2c2c;
+  --accent: #8b6914;
+  --card-bg: #fff;
+  --border: #e8e0d4;
+  --shadow: rgba(0,0,0,0.06);
+  --code-bg: #f5f0e8;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #1a1a1a;
+    --text: #e0dcd6;
+    --accent: #d4a530;
+    --card-bg: #252525;
+    --border: #3a3a3a;
+    --shadow: rgba(0,0,0,0.3);
+    --code-bg: #2a2520;
+  }
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: "Noto Serif TC", "Source Han Serif TC", "PMingLiU", serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.9;
+  min-height: 100vh;
+}
+
+.container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 2rem 1.5rem;
+}
+
+header {
+  text-align: center;
+  padding: 3rem 0 2rem;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 2rem;
+}
+
+header h1 {
+  font-size: 2.2rem;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  color: var(--accent);
+}
+
+header p {
+  margin-top: 0.5rem;
+  font-size: 0.95rem;
+  opacity: 0.7;
+}
+
+.book-card {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 1.8rem;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 2px 8px var(--shadow);
+  transition: transform 0.2s;
+}
+
+.book-card:hover {
+  transform: translateY(-2px);
+}
+
+.book-card h2 {
+  font-size: 1.5rem;
+  margin-bottom: 0.3rem;
+}
+
+.book-card h2 a {
+  color: var(--text);
+  text-decoration: none;
+}
+
+.book-card h2 a:hover {
+  color: var(--accent);
+}
+
+.book-card .meta {
+  font-size: 0.85rem;
+  opacity: 0.6;
+  margin-bottom: 1rem;
+}
+
+.book-card .abstract-preview {
+  font-size: 0.95rem;
+  line-height: 1.8;
+}
+
+/* Book page */
+.book-header {
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.book-header h1 {
+  font-size: 2rem;
+  color: var(--accent);
+}
+
+.book-header .author-name {
+  font-size: 1rem;
+  opacity: 0.7;
+  margin-top: 0.3rem;
+}
+
+.section {
+  margin-bottom: 2.5rem;
+}
+
+.section h2 {
+  font-size: 1.3rem;
+  color: var(--accent);
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.toc-list {
+  list-style: none;
+  counter-reset: chapter;
+}
+
+.toc-list li {
+  counter-increment: chapter;
+  margin-bottom: 0.5rem;
+}
+
+.toc-list li a {
+  color: var(--text);
+  text-decoration: none;
+  display: flex;
+  align-items: baseline;
+  gap: 0.8rem;
+  padding: 0.5rem 0.8rem;
+  border-radius: 4px;
+  transition: background 0.15s;
+}
+
+.toc-list li a:hover {
+  background: var(--code-bg);
+  color: var(--accent);
+}
+
+.toc-list li a::before {
+  content: "第" counter(chapter, cjk-ideographic) "章";
+  font-size: 0.85rem;
+  opacity: 0.5;
+  flex-shrink: 0;
+}
+
+/* Chapter page */
+.chapter-header {
+  text-align: center;
+  padding: 2rem 0;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 2rem;
+}
+
+.chapter-header .book-title {
+  font-size: 0.9rem;
+  opacity: 0.5;
+}
+
+.chapter-header h1 {
+  font-size: 1.8rem;
+  margin-top: 0.5rem;
+}
+
+.chapter-header .chapter-num {
+  font-size: 0.85rem;
+  color: var(--accent);
+  margin-top: 0.3rem;
+}
+
+.chapter-body {
+  font-size: 1.05rem;
+  text-align: justify;
+}
+
+.chapter-body p {
+  margin-bottom: 1.2rem;
+  text-indent: 2em;
+}
+
+.chapter-body p:first-child {
+  text-indent: 0;
+}
+
+.chapter-nav {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 3rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--border);
+}
+
+.chapter-nav a {
+  color: var(--accent);
+  text-decoration: none;
+  font-size: 0.95rem;
+}
+
+.chapter-nav a:hover {
+  text-decoration: underline;
+}
+
+.back-link {
+  display: inline-block;
+  margin-bottom: 1.5rem;
+  color: var(--accent);
+  text-decoration: none;
+  font-size: 0.9rem;
+}
+
+.back-link:hover {
+  text-decoration: underline;
+}
+
+.author-section {
+  background: var(--code-bg);
+  border-radius: 8px;
+  padding: 1.5rem;
+}
+
+.author-section h1, .author-section h2, .author-section h3 {
+  font-size: 1.1rem;
+  margin-bottom: 0.8rem;
+}
+
+.author-section ul {
+  list-style: none;
+  padding-left: 0;
+}
+
+.author-section li {
+  margin-bottom: 0.4rem;
+  padding-left: 0;
+}
+
+footer {
+  text-align: center;
+  padding: 2rem 0;
+  font-size: 0.8rem;
+  opacity: 0.4;
+  border-top: 1px solid var(--border);
+  margin-top: 3rem;
+}
+</style>
+
+</head>
+<body>
+<div class="container">
+
+    <a href="./" class="back-link">&larr; 返回目錄</a>
+    <div class="chapter-header">
+      <div class="book-title">深山食堂開飯了</div>
+      <h1>燒傷少年阿亮</h1>
+      <div class="chapter-num">第11章</div>
+    </div>
+    <div class="chapter-body">
+      <p>蘇念荷是在第三天才注意到那個少年的。</p>
+<p>準確地說，她其實第一天就注意到了——食堂後門的水槽邊，每天傍晚收攤後都會出現一個瘦高的身影，默默地把堆在水槽裡的碗盤洗得乾乾淨淨，整整齊齊地摞在瀝水架上，然後像一隻受驚的貓一樣無聲地消失。</p>
+<p>第一天，她以為是劉婆婆叫來幫忙的。<br>第二天，她以為是哪個遊客在還人情。<br>第三天，她特意提前收了攤，靠在後廚門框上看。</p>
+<p>少年來了。</p>
+<p>他大概十七歲，個子不矮，但瘦得像一根立在風裡的竹竿。最引人注目的是他的穿著——七月的雲嶺村，午後氣溫三十二度，蟬鳴吵得人腦仁疼，而這個少年穿著一件洗得發白的黑色高領長袖T恤，袖口用橡皮筋紮得緊緊的，連手腕都看不見一截。</p>
+<p>他彎腰把袖子往上推了推，露出的手背上有一塊深淺不一的疤痕，皮膚紋理扭曲著，像被揉皺了又攤開的紙。</p>
+<p>蘇念荷的心微微一縮。</p>
+<p>她見過燒傷。在修仙界，有煉丹師走火入魔被爐火反噬的，有劍修渡雷劫時被天火灼傷的。那些傷在靈氣的滋養下大多能復原如初，可凡間的燒傷疤痕，沒有靈氣修復，只能跟著主人一輩子。</p>
+<p>少年打開水龍頭，涼水嘩嘩地沖在碗上。他洗碗的動作很仔細，每一個碗都正反面沖過，邊沿也用手指抹一遍，完全不像一個十七歲少年該有的耐心。</p>
+<p>「你是阿亮吧？」蘇念荷開了口。</p>
+<p>少年的背猛地一僵，水龍頭下的碗差點脫手。他回過頭，一張被高領遮住大半的臉上寫滿了驚慌。</p>
+<p>「我……我不是偷東西！」他的聲音又啞又急，「我就是……洗碗……婆婆說你這邊忙，我想幫忙洗一下，不用給錢的——」</p>
+<p>「我知道。」蘇念荷笑了笑，「劉婆婆跟我說過你。住山上第三家，跟爺爺一起住，是吧？」</p>
+<p>阿亮的肩膀微微放鬆了一點，但依然繃著。他點了點頭，眼神像是隨時準備逃跑的兔子。</p>
+<p>蘇念荷沒有再多問。她轉身走進廚房，不一會兒端了兩碗飯菜出來，放在水槽旁邊的小桌上。一碗番茄炒蛋蓋飯，番茄是劉婆婆園子裡摘的，蛋是花斑母雞下的，油用的是她自己壓的菜籽油。另一碗是紫菜蛋花湯，湯面上飄著幾粒蔥花，碧綠碧綠的。</p>
+<p>「洗碗也是幫忙，幫忙了就得吃飯。」她把筷子往阿亮手邊一推，「這是規矩。」</p>
+<p>阿亮愣了一下，嘴唇動了動，沒說出話來。</p>
+<p>他在小桌邊坐下，低著頭扒了一口飯。番茄炒蛋用的是靈泉水，番茄的酸甜被靈氣催到了極致，入口是爆開的汁水，帶著一股陽光曬過的暖香。蛋花嫩得幾乎入口即化，裹著番茄的汁水，每一口都鮮得讓人想把舌頭吞下去。</p>
+<p>阿亮吃著吃著，速度越來越快，腮幫子鼓得像隻松鼠。</p>
+<p>蘇念荷沒說話，靠在門框上安靜地看著。</p>
+<p>那之後，阿亮每天傍晚都來。洗碗，吃飯，走人。三個步驟，簡潔明瞭，像個上了發條的小機器人。</p>
+<p>蘇念荷漸漸摸清了他的脾氣——這孩子極度怕被人看到脖子和手臂，吃飯時一定背對著食堂大廳，洗碗時如果有客人從後門經過，他會立刻把袖子拽下來，動作快得像在變魔術。</p>
+<p>她沒有點破。</p>
+<p>前世在修仙界，她的師父曾說過一句話：「食修之道，不在於你往菜裡放了多少靈氣，而在於你是否看見了吃飯那個人真正需要什麼。」</p>
+<p>阿亮需要什麼，她看得很清楚。</p>
+<p>第五天，蘇念荷在阿亮的飯後加了一道甜點——冰糖銀耳蓮子羹。</p>
+<p>燉盅是她從鎮上舊貨市場淘來的老式紫砂盅，大小剛好捧在掌心裡。銀耳是她早上四點起來泡發的，用靈泉水浸了四個小時，膠質完全釋出，稠得像凝脂。蓮子是去了芯的湘蓮，粉粉糯糯，一咬就化。冰糖用的是老冰糖，不是綿白糖，甜味醇厚綿長，不膩不俗。</p>
+<p>但這碗銀耳羹的關鍵，不在食材。</p>
+<p>蘇念荷在熬煮時，刻意引導了殘存的那一絲靈識，循著記憶中「潤膚生肌方」的路數，將靈泉水中的靈氣凝成極細的絲線，一縷一縷地滲入銀耳的膠質裡。靈氣被膠質包裹著，入口後不會直衝經脈，而是隨著消化緩緩釋放，沿著氣血巡行全身，重點滋養皮膚的真皮層——那是燒傷疤痕最深的地方。</p>
+<p>這不是什麼神通。靈泉的靈氣太稀薄了，凡人的身體也承受不了太猛烈的修復。充其量，就像是給乾涸龜裂的土地緩緩注入一股清流，潤物無聲。</p>
+<p>「今天加了個湯品試菜。」蘇念荷把燉盅放在阿亮面前，語氣隨意得像在說今天天氣不錯，「你幫我嘗嘗味道，看看甜度行不行。」</p>
+<p>阿亮接過來，低頭喝了一口。</p>
+<p>銀耳羹的溫度剛好，不燙嘴，但能暖到胃裡。入口是綿密的膠質口感，像在嘴裡含了一朵雲，輕柔地化開。冰糖的甜味從舌根慢慢泛上來，和蓮子的粉糯交織在一起，讓人覺得整個口腔都被溫柔地包裹住了。</p>
+<p>「好喝。」阿亮小聲說。</p>
+<p>「那就每天都有。」蘇念荷說完就轉身回了廚房，沒再多看他一眼。</p>
+<p>之後的每一天，那碗冰糖銀耳蓮子羹都會準時出現在阿亮的飯後。</p>
+<p>阿亮沒有問為什麼。蘇念荷也沒有解釋。兩個人之間維持著一種奇妙的默契——你不問，我不說，碗端過來就喝，喝完了就洗碗。</p>
+<p>阿橘倒是對阿亮表現出了罕見的友善。這隻平時誰都看不上的肥橘貓，居然允許阿亮摸牠的肚子——當然，僅限三秒。超過三秒就會被一巴掌拍開，爪子縮著的，不帶指甲，算是給面子了。</p>
+<p>第十天的傍晚，天氣格外悶熱，阿亮洗碗洗到一半，額頭上全是汗，豆大的汗珠順著下巴往下滴。他忍了又忍，最終還是伸手把右邊的袖子往上擼了一截。</p>
+<p>然後他僵住了。</p>
+<p>蘇念荷端著剛泡好的涼茶從廚房出來，一眼就看到了阿亮呆立在水槽邊的背影。他的右手懸在半空中，另一隻手攥著被推上去的袖子，指節發白。</p>
+<p>她走近了幾步，看清了——</p>
+<p>阿亮前臂內側那一大片扭曲的疤痕，邊緣變得模糊了。不是消失，而是像一幅被水暈染的畫，最外圈的疤痕顏色淡了許多，和正常皮膚之間的界限不再那麼猙獰。新生的皮膚還很嫩，帶著一點薄薄的粉色，像春天剛冒頭的嫩芽。</p>
+<p>阿亮的手在發抖。</p>
+<p>他翻來覆去地看著自己的手臂，像是在看一件不可能存在的東西。嘴唇哆嗦著，喉嚨裡發出一個壓抑的、含糊的聲音——不是說話，是介於哽咽和驚呼之間的某種動靜。</p>
+<p>蘇念荷停下腳步，安靜地把涼茶放在門口的桌上。</p>
+<p>然後她轉過身，走回了廚房。</p>
+<p>她打開灶上的火，開始準備明天的銀耳。水龍頭嘩嘩的流水聲和灶火的噼啪聲混在一起，恰好蓋住了外面水槽邊那個少年壓抑的抽泣。</p>
+<p>鍋裡的靈泉水漸漸冒出細密的泡泡，蘇念荷往裡面加了一把泡好的銀耳，又多放了幾顆蓮子。</p>
+<p>過了好一會兒，外面的水聲停了。</p>
+<p>阿亮出現在廚房門口，眼眶紅紅的，袖子又拽回了手腕。他張了張嘴，欲言又止。</p>
+<p>蘇念荷頭也沒抬，只是用勺子舀了一碗剛燉好的銀耳羹，推到案板邊上。</p>
+<p>「今天多熬了一些，帶一碗回去給你爺爺。」</p>
+<p>阿亮站了幾秒，伸手接過碗。</p>
+<p>「……謝謝，蘇姐。」</p>
+<p>這是他第一次這樣叫她。</p>
+<p>蘇念荷「嗯」了一聲，繼續攪她的鍋。灶火映在她的側臉上，跳動的光影裡，嘴角微微彎了一下。</p>
+<p>阿橘不知道什麼時候溜進了廚房，跳上灶臺邊的架子，俯瞰著這一切。牠的尾巴緩緩地左右搖擺著——在蘇念荷的「阿橘語言翻譯手冊」裡，這個動作的意思是：</p>
+<p>「勉強……還行吧。」</p>
+<p>門外，夏夜的蟬鳴潮水般湧來，山風帶著草木的清香穿過食堂，吹得菜單紙嘩嘩作響。</p>
+<p>涼茶還擱在門口的桌上，沒有人去動它。</p>
+<p>杯壁上凝著一層薄薄的水霧，在最後一縷夕光裡，亮晶晶的。</p>
+    </div>
+    <div class="chapter-nav">
+      <a href="ch010.html">&larr; 上一章</a>
+      <a href="ch012.html">下一章 &rarr;</a>
+    </div>
+</div>
+<footer><p>小說閱讀站</p></footer>
+</body>
+</html>

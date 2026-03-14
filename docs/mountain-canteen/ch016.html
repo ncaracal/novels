@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>不說話的女孩 - 深山食堂開飯了</title>
+<style>
+:root {
+  --bg: #faf8f5;
+  --text: #2c2c2c;
+  --accent: #8b6914;
+  --card-bg: #fff;
+  --border: #e8e0d4;
+  --shadow: rgba(0,0,0,0.06);
+  --code-bg: #f5f0e8;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #1a1a1a;
+    --text: #e0dcd6;
+    --accent: #d4a530;
+    --card-bg: #252525;
+    --border: #3a3a3a;
+    --shadow: rgba(0,0,0,0.3);
+    --code-bg: #2a2520;
+  }
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: "Noto Serif TC", "Source Han Serif TC", "PMingLiU", serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.9;
+  min-height: 100vh;
+}
+
+.container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 2rem 1.5rem;
+}
+
+header {
+  text-align: center;
+  padding: 3rem 0 2rem;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 2rem;
+}
+
+header h1 {
+  font-size: 2.2rem;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  color: var(--accent);
+}
+
+header p {
+  margin-top: 0.5rem;
+  font-size: 0.95rem;
+  opacity: 0.7;
+}
+
+.book-card {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 1.8rem;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 2px 8px var(--shadow);
+  transition: transform 0.2s;
+}
+
+.book-card:hover {
+  transform: translateY(-2px);
+}
+
+.book-card h2 {
+  font-size: 1.5rem;
+  margin-bottom: 0.3rem;
+}
+
+.book-card h2 a {
+  color: var(--text);
+  text-decoration: none;
+}
+
+.book-card h2 a:hover {
+  color: var(--accent);
+}
+
+.book-card .meta {
+  font-size: 0.85rem;
+  opacity: 0.6;
+  margin-bottom: 1rem;
+}
+
+.book-card .abstract-preview {
+  font-size: 0.95rem;
+  line-height: 1.8;
+}
+
+/* Book page */
+.book-header {
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.book-header h1 {
+  font-size: 2rem;
+  color: var(--accent);
+}
+
+.book-header .author-name {
+  font-size: 1rem;
+  opacity: 0.7;
+  margin-top: 0.3rem;
+}
+
+.section {
+  margin-bottom: 2.5rem;
+}
+
+.section h2 {
+  font-size: 1.3rem;
+  color: var(--accent);
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.toc-list {
+  list-style: none;
+  counter-reset: chapter;
+}
+
+.toc-list li {
+  counter-increment: chapter;
+  margin-bottom: 0.5rem;
+}
+
+.toc-list li a {
+  color: var(--text);
+  text-decoration: none;
+  display: flex;
+  align-items: baseline;
+  gap: 0.8rem;
+  padding: 0.5rem 0.8rem;
+  border-radius: 4px;
+  transition: background 0.15s;
+}
+
+.toc-list li a:hover {
+  background: var(--code-bg);
+  color: var(--accent);
+}
+
+.toc-list li a::before {
+  content: "第" counter(chapter, cjk-ideographic) "章";
+  font-size: 0.85rem;
+  opacity: 0.5;
+  flex-shrink: 0;
+}
+
+/* Chapter page */
+.chapter-header {
+  text-align: center;
+  padding: 2rem 0;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 2rem;
+}
+
+.chapter-header .book-title {
+  font-size: 0.9rem;
+  opacity: 0.5;
+}
+
+.chapter-header h1 {
+  font-size: 1.8rem;
+  margin-top: 0.5rem;
+}
+
+.chapter-header .chapter-num {
+  font-size: 0.85rem;
+  color: var(--accent);
+  margin-top: 0.3rem;
+}
+
+.chapter-body {
+  font-size: 1.05rem;
+  text-align: justify;
+}
+
+.chapter-body p {
+  margin-bottom: 1.2rem;
+  text-indent: 2em;
+}
+
+.chapter-body p:first-child {
+  text-indent: 0;
+}
+
+.chapter-nav {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 3rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--border);
+}
+
+.chapter-nav a {
+  color: var(--accent);
+  text-decoration: none;
+  font-size: 0.95rem;
+}
+
+.chapter-nav a:hover {
+  text-decoration: underline;
+}
+
+.back-link {
+  display: inline-block;
+  margin-bottom: 1.5rem;
+  color: var(--accent);
+  text-decoration: none;
+  font-size: 0.9rem;
+}
+
+.back-link:hover {
+  text-decoration: underline;
+}
+
+.author-section {
+  background: var(--code-bg);
+  border-radius: 8px;
+  padding: 1.5rem;
+}
+
+.author-section h1, .author-section h2, .author-section h3 {
+  font-size: 1.1rem;
+  margin-bottom: 0.8rem;
+}
+
+.author-section ul {
+  list-style: none;
+  padding-left: 0;
+}
+
+.author-section li {
+  margin-bottom: 0.4rem;
+  padding-left: 0;
+}
+
+footer {
+  text-align: center;
+  padding: 2rem 0;
+  font-size: 0.8rem;
+  opacity: 0.4;
+  border-top: 1px solid var(--border);
+  margin-top: 3rem;
+}
+</style>
+
+</head>
+<body>
+<div class="container">
+
+    <a href="./" class="back-link">&larr; 返回目錄</a>
+    <div class="chapter-header">
+      <div class="book-title">深山食堂開飯了</div>
+      <h1>不說話的女孩</h1>
+      <div class="chapter-num">第16章</div>
+    </div>
+    <div class="chapter-body">
+      <p>林小竹是被一輛銀灰色的計程車送到雲嶺村的。</p>
+<p>那天下著毛毛雨，山裡的霧氣濃得像牛奶，對面走來一個人都看不清臉。計程車停在村口的老槐樹下，司機幫忙把一個粉紅色的行李箱搬下來，嘟囔了一句「這地方也太偏了」，收了錢便掉頭走了。</p>
+<p>車尾燈在霧裡變成兩個模糊的紅點，然後消失。</p>
+<p>林小竹站在原地，抱著一個洗得發白的帆布書包，安靜得像一棵被移栽的小樹苗。她穿著一件灰色的連帽外套，帽子拉得很低，幾乎遮住了半張臉。露出來的下巴尖尖的，嘴唇抿成一條線。</p>
+<p>十四歲，瘦得像根竹竿。</p>
+<p>「小竹！小竹來了！」</p>
+<p>巷子深處傳來急促的腳步聲，一個駝了背的老人家拄著柺杖快步走來，身後跟著一個圍著圍裙的老太太。是林小竹的爺爺奶奶，頭髮全白了，臉上的皺紋深得能夾住一粒米。</p>
+<p>奶奶一把抱住她，眼淚就下來了：「瘦了，瘦了好多。你媽也是的，也不給你吃飽——」</p>
+<p>爺爺在旁邊咳了一聲，制止了老伴繼續說下去。</p>
+<p>林小竹沒有回應擁抱，也沒有推開。她就那樣被抱著，眼神空空的，像一個被關掉了聲音的電視機。</p>
+<p>劉婆婆是第二天跟蘇念荷說起這件事的。</p>
+<p>「老林家的孫女來了，聽說在鎮上的學校被欺負，不肯再去上學了。她媽離了婚跑去外地打工，她爸——唉，別提了，那個沒用的東西。」劉婆婆壓低了聲音，一邊擇著豆角一邊說，「最嚇人的是，那孩子不說話了。一個字都不說。她奶奶急得不行，帶她去鎮上看了醫生，說是什麼……什麼緘默症？」</p>
+<p>「選擇性緘默。」蘇念荷正在揉麵，手上的動作沒停。</p>
+<p>「對對對，就是那個。能聽懂，就是不開口。」劉婆婆嘆了口氣，「才十四歲的孩子，造孽喔。」</p>
+<p>蘇念荷沒有多問。</p>
+<p>她見過的苦比這多得多。修仙界裡，有人被奪舍後喪失了全部記憶，連自己是誰都不知道；有人渡劫失敗，肉身盡毀，只剩一縷殘魂飄蕩在天地間。那些痛苦太過宏大，反而讓人麻木。</p>
+<p>但眼前這種——一個十四歲的女孩被欺負到不敢說話——卻是另一種殘忍。細細密密的，像鈍刀子割肉，不見血，但疼。</p>
+<p>林小竹第一次出現在雲嶺食堂，是三天之後。</p>
+<p>那天是週六，食堂裡坐了不少人。陳時予佔了靠窗的老位置，正對著一碗香菇燉雞湯發呆——他最近的表情越來越像一個正常人了，不再是那種急診醫生特有的、隨時準備接收壞消息的緊繃。阿亮在後廚洗碗，偶爾探出頭來跟客人打個招呼，動作比剛來的時候自然多了，長袖的袖口也沒有再刻意往下拽。</p>
+<p>林小竹是自己走進來的。</p>
+<p>沒有爺爺奶奶陪著，就她一個人。灰色的連帽外套，帽子照舊拉得很低。她站在門口猶豫了很久，長到阿橘都從收銀臺上抬起了頭，用一種「你到底進不進來」的眼神瞪了她一眼。</p>
+<p>然後她走了進來，選了最角落的那張桌子，靠牆的位置，背對著所有人。</p>
+<p>蘇念荷看見了，但什麼都沒說。</p>
+<p>她端了一碗陽春麵過去，放在桌上。麵是現擀的，細如髮絲，在清澈的湯底裡盤成漂亮的鳥巢狀。湯面上飄著幾粒蔥花，碧綠碧綠的，是今早剛從院子裡摘的靈蔥，帶著一股清甜的香氣。</p>
+<p>「慢慢吃。」蘇念荷只說了這三個字，就轉身走了。</p>
+<p>沒有問她要不要菜單，沒有問她是誰家的孩子，沒有用那種令人窒息的關心去包圍她。</p>
+<p>林小竹低下頭，看著那碗麵。</p>
+<p>湯很清，清得能看見碗底的青花瓷紋路。但香氣卻濃得不像話，像有人把整個春天揉碎了溶在裡面——有青草的味道、有陽光曬過泥土的味道、有雨後山林裡濕漉漉的清新。</p>
+<p>她拿起筷子，挑起一小撮麵條。</p>
+<p>麵入口的瞬間，她的肩膀肉眼可見地放鬆了一點。那根一直繃著的弦，似乎被某種溫柔的力量輕輕撥了一下，發出一個微弱的、柔軟的音符。</p>
+<p>她把整碗麵吃完了。連湯都喝了個乾淨。</p>
+<p>然後她從口袋裡掏出皺巴巴的紙鈔，數了又數，在桌上放了十五塊錢，起身走了。</p>
+<p>蘇念荷去收桌子的時候，看了一眼空碗。</p>
+<p>碗底乾乾淨淨，連一滴湯都沒有剩。</p>
+<p>她笑了一下，把那十五塊錢收起來，在抽屜裡的小本子上記了一筆。</p>
+<p>第二天，林小竹又來了。</p>
+<p>還是那個角落，還是那個位置，還是灰色連帽外套。蘇念荷端了一碗酸菜肉絲麵過去，依然只說了三個字：「慢慢吃。」</p>
+<p>第三天，第四天，第五天。</p>
+<p>林小竹每天都來，雷打不動。她不跟任何人說話，不跟任何人對視。吃完就放下錢，安安靜靜地離開。她像一隻受了傷的小動物，找到了一個安全的洞穴，每天都要來確認一下這個洞穴還在。</p>
+<p>蘇念荷從不打擾她。</p>
+<p>但每次做甜品的時候，她會多留一份。</p>
+<p>紅豆雙皮奶、桂花芋泥、冰糖雪梨羹——不管當天做的是什麼，總有一小碗會出現在林小竹的桌角。不解釋，不邀功，就那麼靜靜地放在那裡。</p>
+<p>林小竹每次都會愣一下，然後低頭，把甜品一口一口地吃掉。</p>
+<p>劉婆婆私下裡問蘇念荷：「你怎麼不跟那孩子聊聊？多關心關心她嘛。」</p>
+<p>蘇念荷搖頭：「她不需要更多的關心。她需要的是一個不要求她回應的地方。」</p>
+<p>劉婆婆似懂非懂地「哦」了一聲。</p>
+<p>轉折發生在第十天。</p>
+<p>那天蘇念荷在做桂花糕。</p>
+<p>後廚裡彌漫著桂花和糯米的香氣，甜而不膩，像深秋的第一場桂花雨。蘇念荷用的是後山靈桂樹上摘下來的金桂，花瓣比普通桂花大一倍，顏色是深沉的琥珀金，每一片都飽滿得像要溢出蜜來。</p>
+<p>她把桂花細細地拌入蒸好的糯米粉中，加了一點點靈泉水，用手掌反覆揉壓。糯米團在她掌下漸漸變得光滑透亮，散發出溫潤的珠光，像一塊上好的暖玉。</p>
+<p>然後她把糯米團搓成均勻的小丸子，一顆一顆排進青瓷蒸盤裡，撒上最後一層桂花碎。金色的花瓣落在白玉般的丸子上，像星星落在了雪地裡。</p>
+<p>蘇念荷正要把蒸盤放進蒸屜，餘光瞥見廚房門口多了一個小小的身影。</p>
+<p>林小竹站在那裡，帽子難得沒有拉上來。她的頭髮有點亂，眼睛卻亮亮的，正盯著蘇念荷手裡的蒸盤看。</p>
+<p>那雙眼睛裡有一種很純粹的東西——不是渴望食物的饞，而是一種近乎入迷的專注。像是在看一件很美很美的事情發生。</p>
+<p>蘇念荷沒有表現出驚訝。</p>
+<p>她從蒸盤裡拿起一顆桂花糕，在掌心裡輕輕握了握，讓它帶上一點溫度，然後向林小竹伸出手。</p>
+<p>「嚐嚐看。還沒蒸，但也能吃。」</p>
+<p>林小竹猶豫了一下，慢慢走了過來。她伸出手，接過那顆桂花糕，動作輕得像怕驚飛一隻蝴蝶。</p>
+<p>桂花糕放進嘴裡，糯米的軟和桂花的香在舌尖化開，甜味不是那種尖銳的甜，而是帶著花香的、綿長的、像被人輕輕抱了一下的甜。</p>
+<p>林小竹的嘴唇動了動。</p>
+<p>蘇念荷看見了——她的嘴唇確實在動，像是想要說什麼。嘴型像是一個「好」字，又像是一個「謝」字。</p>
+<p>但最終，她沒有發出聲音。</p>
+<p>她低下頭，耳朵紅了。</p>
+<p>蘇念荷笑了笑，沒有追問，轉身把蒸盤放進了蒸屜。</p>
+<p>「等一下蒸好了，我給你留一盒帶回去。」</p>
+<p>林小竹站在廚房門口，沒有走。她看著蒸氣從蒸屜的縫隙裡裊裊升起，帶著桂花的香氣瀰漫整個廚房。日光從窗戶照進來，照在蒸氣上，像金色的紗。</p>
+<p>就在這時，一團橘色的毛球不知從哪裡冒了出來。</p>
+<p>阿橘邁著它那肥短的四條腿，不慌不忙地走到林小竹腳邊。然後，它用腦袋蹭了蹭她的小腿。</p>
+<p>就那麼蹭了一下。</p>
+<p>毛茸茸的、溫熱的、帶著一點點貓薄荷味道的一蹭。</p>
+<p>林小竹整個人僵住了，低頭看著腳邊的肥橘貓。</p>
+<p>阿橘仰起頭，瞇著眼睛看了她一會兒，打了個呵欠，然後一屁股坐在她腳邊，尾巴慢悠悠地掃著地面。</p>
+<p>那個姿態分明在說：本座賞你一蹭，不用感激。</p>
+<p>林小竹蹲了下來，小心翼翼地伸出一根手指，碰了碰阿橘的耳朵。</p>
+<p>阿橘沒有躲，耳朵抖了一下，繼續瞇著眼。</p>
+<p>蘇念荷靠在灶臺邊，看著這一人一貓，覺得蒸屜裡桂花糕的香氣好像更甜了一點。</p>
+<p>修仙一百五十年，她煉過能讓人脫胎換骨的靈膳，煮過能延年益壽的仙粥。但此刻，她覺得最厲害的，也許只是一顆桂花糕和一隻肥貓的腦袋。</p>
+<p>有些傷，不需要靈丹妙藥。</p>
+<p>只需要有人在旁邊安安靜靜地待著，不問為什麼，不催你好起來，只是遞過來一顆糕，說：嚐嚐看。</p>
+<p>林小竹抱著那盒桂花糕回去的時候，天已經快黑了。</p>
+<p>晚霞把整個雲嶺村染成了橘紅色，和阿橘的毛色一模一樣。她走在回家的小路上，路邊的野花在暮色裡輕輕搖晃。</p>
+<p>她低頭看了一眼懷裡的盒子，嘴角動了動。</p>
+<p>不是想說話。</p>
+<p>是在笑。</p>
+<p>很小很小的，幾乎看不出來的，一個笑。</p>
+    </div>
+    <div class="chapter-nav">
+      <a href="ch015.html">&larr; 上一章</a>
+      <a href="ch017.html">下一章 &rarr;</a>
+    </div>
+</div>
+<footer><p>小說閱讀站</p></footer>
+</body>
+</html>

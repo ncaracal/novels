@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>開發商的陰謀 - 深山食堂開飯了</title>
+<style>
+:root {
+  --bg: #faf8f5;
+  --text: #2c2c2c;
+  --accent: #8b6914;
+  --card-bg: #fff;
+  --border: #e8e0d4;
+  --shadow: rgba(0,0,0,0.06);
+  --code-bg: #f5f0e8;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #1a1a1a;
+    --text: #e0dcd6;
+    --accent: #d4a530;
+    --card-bg: #252525;
+    --border: #3a3a3a;
+    --shadow: rgba(0,0,0,0.3);
+    --code-bg: #2a2520;
+  }
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: "Noto Serif TC", "Source Han Serif TC", "PMingLiU", serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.9;
+  min-height: 100vh;
+}
+
+.container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 2rem 1.5rem;
+}
+
+header {
+  text-align: center;
+  padding: 3rem 0 2rem;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 2rem;
+}
+
+header h1 {
+  font-size: 2.2rem;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  color: var(--accent);
+}
+
+header p {
+  margin-top: 0.5rem;
+  font-size: 0.95rem;
+  opacity: 0.7;
+}
+
+.book-card {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 1.8rem;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 2px 8px var(--shadow);
+  transition: transform 0.2s;
+}
+
+.book-card:hover {
+  transform: translateY(-2px);
+}
+
+.book-card h2 {
+  font-size: 1.5rem;
+  margin-bottom: 0.3rem;
+}
+
+.book-card h2 a {
+  color: var(--text);
+  text-decoration: none;
+}
+
+.book-card h2 a:hover {
+  color: var(--accent);
+}
+
+.book-card .meta {
+  font-size: 0.85rem;
+  opacity: 0.6;
+  margin-bottom: 1rem;
+}
+
+.book-card .abstract-preview {
+  font-size: 0.95rem;
+  line-height: 1.8;
+}
+
+/* Book page */
+.book-header {
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.book-header h1 {
+  font-size: 2rem;
+  color: var(--accent);
+}
+
+.book-header .author-name {
+  font-size: 1rem;
+  opacity: 0.7;
+  margin-top: 0.3rem;
+}
+
+.section {
+  margin-bottom: 2.5rem;
+}
+
+.section h2 {
+  font-size: 1.3rem;
+  color: var(--accent);
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.toc-list {
+  list-style: none;
+  counter-reset: chapter;
+}
+
+.toc-list li {
+  counter-increment: chapter;
+  margin-bottom: 0.5rem;
+}
+
+.toc-list li a {
+  color: var(--text);
+  text-decoration: none;
+  display: flex;
+  align-items: baseline;
+  gap: 0.8rem;
+  padding: 0.5rem 0.8rem;
+  border-radius: 4px;
+  transition: background 0.15s;
+}
+
+.toc-list li a:hover {
+  background: var(--code-bg);
+  color: var(--accent);
+}
+
+.toc-list li a::before {
+  content: "第" counter(chapter, cjk-ideographic) "章";
+  font-size: 0.85rem;
+  opacity: 0.5;
+  flex-shrink: 0;
+}
+
+/* Chapter page */
+.chapter-header {
+  text-align: center;
+  padding: 2rem 0;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 2rem;
+}
+
+.chapter-header .book-title {
+  font-size: 0.9rem;
+  opacity: 0.5;
+}
+
+.chapter-header h1 {
+  font-size: 1.8rem;
+  margin-top: 0.5rem;
+}
+
+.chapter-header .chapter-num {
+  font-size: 0.85rem;
+  color: var(--accent);
+  margin-top: 0.3rem;
+}
+
+.chapter-body {
+  font-size: 1.05rem;
+  text-align: justify;
+}
+
+.chapter-body p {
+  margin-bottom: 1.2rem;
+  text-indent: 2em;
+}
+
+.chapter-body p:first-child {
+  text-indent: 0;
+}
+
+.chapter-nav {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 3rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--border);
+}
+
+.chapter-nav a {
+  color: var(--accent);
+  text-decoration: none;
+  font-size: 0.95rem;
+}
+
+.chapter-nav a:hover {
+  text-decoration: underline;
+}
+
+.back-link {
+  display: inline-block;
+  margin-bottom: 1.5rem;
+  color: var(--accent);
+  text-decoration: none;
+  font-size: 0.9rem;
+}
+
+.back-link:hover {
+  text-decoration: underline;
+}
+
+.author-section {
+  background: var(--code-bg);
+  border-radius: 8px;
+  padding: 1.5rem;
+}
+
+.author-section h1, .author-section h2, .author-section h3 {
+  font-size: 1.1rem;
+  margin-bottom: 0.8rem;
+}
+
+.author-section ul {
+  list-style: none;
+  padding-left: 0;
+}
+
+.author-section li {
+  margin-bottom: 0.4rem;
+  padding-left: 0;
+}
+
+footer {
+  text-align: center;
+  padding: 2rem 0;
+  font-size: 0.8rem;
+  opacity: 0.4;
+  border-top: 1px solid var(--border);
+  margin-top: 3rem;
+}
+</style>
+
+</head>
+<body>
+<div class="container">
+
+    <a href="./" class="back-link">&larr; 返回目錄</a>
+    <div class="chapter-header">
+      <div class="book-title">深山食堂開飯了</div>
+      <h1>開發商的陰謀</h1>
+      <div class="chapter-num">第21章</div>
+    </div>
+    <div class="chapter-body">
+      <p>蘇念荷是在早市上買豆腐的時候，第一次聽到那些傳言的。</p>
+<p>賣豆腐的老張頭沒有像往常那樣笑呵呵地給她多塞一塊豆腐乾，而是欲言又止地看了她好幾眼，最後壓低嗓門說：「念魚啊，網上有人說你食堂用了什麼……違禁添加劑，你知道嗎？」</p>
+<p>蘇念荷正把嫩豆腐小心翼翼地放進竹籃裡，聞言手頓了頓：「什麼添加劑？」</p>
+<p>「就是說你的菜特別好吃，不正常，肯定加了什麼東西。還有人拍了影片分析，說正常的番茄湯不可能香成那樣，一定是放了提鮮的化學粉——叫什麼來著——」老張頭撓了撓頭，「反正就是很難聽的話。」</p>
+<p>蘇念荷笑了笑，把豆腐錢放在攤位上：「張叔，我那鍋番茄湯你也喝過，你覺得像加了化學粉的嗎？」</p>
+<p>老張頭一拍大腿：「那當然不像！我活了六十多年，吃過的番茄沒有一萬也有八千，你那個湯就是實打實的好。但是那些網上的人不管啊，他們嘴巴一張什麼都敢說。」</p>
+<p>蘇念荷提著竹籃回去的路上，用手機翻了翻。果然，在幾個美食論壇和短影音平臺上，突然冒出了一大批針對雲嶺食堂的質疑帖。</p>
+<p>有的說食材裡加了成癮性調味劑，有的說靈泉水其實是某種化工廢水經過處理後有致幻效果，更離譜的一個帳號言之鑿鑿地宣稱「內部知情人透露」，蘇念荷在廚房裡偷偷使用了一種尚未通過審批的食品增味劑，長期食用可能致癌。</p>
+<p>留言區炸了鍋。</p>
+<p>【我就說嘛，一個深山裡的小食堂，做的菜能好吃到上熱搜？不科學啊】<br>【化學博主來了，理論上某些谷氨酸鈉的衍生物確實可以產生類似的增鮮效果……】<br>【我上次去吃完確實覺得特別想再去，該不會真上癮了吧？？】<br>【別造謠了好嗎！我去吃過三次，回來體檢各項指標全優，比之前還好】<br>【樓上是不是水軍？話術好統一哦】</p>
+<p>蘇念荷把手機收起來。</p>
+<p>這些帖子的發佈時間非常集中，帳號註冊時間都很短，用詞風格如出一轍。不需要靈識就能看出來——這是有組織、有目的的行動。</p>
+<p>她想起一個人。</p>
+<p>周開元。</p>
+<p>那個西裝革履的開發商離開雲嶺村的時候，臉上的表情可不像一個真正放棄的人。蘇念荷在修仙界見過太多這種人——心思深沉、手段圓滑，被拒絕一次只會換個方式再來。</p>
+<p>「髒。」</p>
+<p>聲音從腳邊傳來。阿橘不知何時跟了出來，蹲在路邊的石頭上，對著手機螢幕的方向嫌棄地吐出一個字。</p>
+<p>蘇念荷低頭看牠：「是挺髒的。」</p>
+<p>阿橘的尾巴甩了甩，跳下石頭，大搖大擺地走在前面帶路，渾身的肥肉隨著步伐一顫一顫。</p>
+<p>回到食堂，一切照舊。早餐時段，劉婆婆照例第一個到，坐在老位子上喝小米粥配鹹鴨蛋。阿亮已經把桌椅都擦過一遍了，正在灶臺邊幫忙燒水。林小竹蹲在角落裡擇菜，把豆角兩頭的筋一根根仔細地撕掉。</p>
+<p>蘇念荷繫上圍裙，開始備菜。不管外面怎麼鬧，灶上的火不能停。</p>
+<p>三天後，事情升級了。</p>
+<p>鎮上食品安全監督所來了兩個人，其中一個年輕的倒還客氣，另一個中年男人姓馬，臉上寫著「公事公辦」四個字，但眼神裡的東西分明不是「公事」。</p>
+<p>馬科員拿著文件夾，在廚房裡轉了一圈，面色不善。</p>
+<p>「你們的冷藏設備是這個？」他指著那臺雖舊但運轉良好的冰櫃，「溫度記錄表呢？每天的記錄呢？」</p>
+<p>「在這裡。」蘇念荷從抽屜裡拿出一本手寫的記錄本，每天兩次的冰櫃溫度，每一筆都記得清清楚楚。這是陳時予提醒她做的——他說在現代社會開餐飲店，這些都是基本功。</p>
+<p>馬科員翻了翻記錄本，哼了一聲，又指著灶臺上方：「抽油煙機呢？排煙管道的清潔記錄呢？消毒櫃的紫外線燈管更換記錄呢？」</p>
+<p>蘇念荷一一回答，每一項都有據可查。</p>
+<p>馬科員的臉色越來越難看。他走到調料架前，拿起一個瓷罐打開蓋子聞了聞，又放下，再拿起另一個。</p>
+<p>「這是什麼？」他舉起一個裝著深褐色醬料的小罐子。</p>
+<p>「自己熬的醬油。」</p>
+<p>「自製醬油？有沒有相關的生產許可和檢測報告？」</p>
+<p>蘇念荷平靜地說：「這是家庭自用的量，按照規定，餐飲經營場所使用少量自製調料是允許的。不過如果您需要，我可以送樣去做檢測。」</p>
+<p>馬科員放下罐子，筆在文件夾上寫了幾行字：「廚房佈局不夠規範，操作間和儲物間沒有完全隔離，建議停業整改。」</p>
+<p>「等一下。」</p>
+<p>門口傳來一個沉穩的聲音。陳時予推門進來，白襯衫的袖子捲到小臂，手裡拿著一疊列印出來的文件。他的黑眼圈早就消了，目光清亮而銳利，站在那裡的姿態不怒自威——那是在三甲醫院急診科磨出來的氣場。</p>
+<p>「我是陳時予，執業醫師，目前在本村開設診所。關於網上傳言食堂使用違禁添加劑一事，我做了一些整理。」</p>
+<p>他把文件遞過去。</p>
+<p>「第一，網傳的所謂『成癮性調味劑』，在現有的食品添加劑目錄中根本不存在這個品類。造謠帖中引用的論文出處是虛構的，我查過了，那個期刊根本沒有發表過那篇文章。」</p>
+<p>「第二，食堂開業至今的所有食材進貨單和來源我都存了檔。蔬菜來自本村農戶自種，調味料來自正規廠商，靈泉——山泉水的水質報告三個月前剛做過，所有指標不僅合格，部分礦物質含量還優於市售礦泉水。」</p>
+<p>「第三。」陳時予抬起頭，直直地看著馬科員，「根據《食品安全法》第一百二十條的規定，食品安全監督檢查應當遵循客觀、公正的原則。如果檢查結果一切合規，卻以『佈局不夠規範』這種模糊表述要求停業整改，是需要出具明確法律依據的。」</p>
+<p>馬科員的臉漲得通紅。他張了張嘴，看了看那疊文件，又看了看陳時予，最後憋出一句：「我只是例行檢查。」</p>
+<p>「例行檢查我們非常歡迎。」蘇念荷接過話，語氣溫和得像在招待客人，「馬科員辛苦了，要不要喝碗綠豆湯再走？今天熬的，放了薄荷葉，清熱解暑。」</p>
+<p>馬科員的臉在「公事公辦」和「真的好想喝一碗」之間掙扎了三秒，最終還是板著臉搖了搖頭，帶著年輕同事匆匆離開了。</p>
+<p>那個年輕的監督員走到門口時，回頭小聲說了句：「姐，你們沒問題的，別擔心。」</p>
+<p>消息傳到了網上，蘇念荷的老顧客們坐不住了。</p>
+<p>最先發難的是那位美食博主，她連夜剪了一支影片，標題就叫《我用我的專業名譽擔保：雲嶺食堂沒有任何問題》。影片裡她逐條駁斥了謠言，還曬出了自己每次去食堂拍攝時隨手做的食材檢測記錄——她有個職業習慣，每到一家餐廳都會用隨身攜帶的快檢試紙測一下。</p>
+<p>【我就知道是造謠！這種小食堂要是能搞到違禁添加劑，那些米其林三星早就上天了】<br>【查了一下那些造謠帳號，全是同一天註冊的，笑死，連號都沒養就出來幹活了？】<br>【坐標雲嶺村隔壁鎮，我們全鎮都去吃過，要真有問題我們早出事了好嗎】<br>【有沒有懂哥分析一下是誰在搞事？上次那個開發商被拒的事情大家還記得嗎……】</p>
+<p>風向迅速逆轉。那些造謠帖的帳號在幾個小時內被舉報到消失。馬科員的「例行檢查」據說被他的上級狠狠訓了一頓——因為確實沒有上級指派這次檢查，是他「私人接受了委託」。</p>
+<p>周開元的第一波攻勢，就這麼灰溜溜地收場了。</p>
+<p>晚上收攤後，蘇念荷站在院子裡洗碗。秋天的月亮又圓又亮，灑了一地清輝。竹林在風裡沙沙作響，遠處的蟲鳴此起彼伏，像一場永不散場的音樂會。</p>
+<p>她把最後一隻碗扣在瀝水架上，擦了擦手。</p>
+<p>阿橘蹲在屋頂上，毛皮被月光鍍上一層銀邊。牠沒有像平時那樣懶洋洋地打盹，而是微微弓著背，兩隻圓眼睛直直地盯著山下的方向，尾巴不安地左右擺動。</p>
+<p>蘇念荷順著牠的目光望過去。山下是蜿蜒的公路，公路盡頭連著鎮子，鎮子連著城市。夜色裡什麼都看不見，但她的靈識隱隱約約感應到了什麼——像一股暗流，正在遠處的某個角落醞釀。</p>
+<p>周開元不會這麼輕易放棄的。</p>
+<p>她太了解這種人了。在修仙界，爭奪靈脈資源的宗門鬥爭比這險惡百倍。第一波試探失敗，只是讓對方看清了正面進攻的路走不通——接下來，他會換一條路。</p>
+<p>「阿橘。」她輕聲喊。</p>
+<p>屋頂上的肥橘貓耳朵轉了轉，沒有回頭。</p>
+<p>「警覺。」牠低低地吐出兩個字，尾巴仍然不安地擺動著。</p>
+<p>蘇念荷的目光沉了沉。</p>
+<p>她摘下圍裙掛在門口的鉤子上，又回頭看了一眼燈火通明的食堂。灶臺上的搪瓷盆裡泡著明天要用的紅豆，案板上碼著洗好的薑蔥，冰櫃裡有早上阿亮從村口張大叔那裡買回來的新鮮排骨。</p>
+<p>一切都安安靜靜地等在那裡，等著明天早上被她的手變成一道道熱騰騰的菜。</p>
+<p>不管誰來，這口灶不會涼。</p>
+<p>蘇念荷關了燈，院子裡只剩下月光和蟲鳴。阿橘從屋頂跳下來，無聲地落在她腳邊，跟著她走進了屋子。</p>
+<p>門關上的時候，夜風把最後一縷桂花香吹進了門縫裡。</p>
+    </div>
+    <div class="chapter-nav">
+      <a href="ch020.html">&larr; 上一章</a>
+      <a href="ch022.html">下一章 &rarr;</a>
+    </div>
+</div>
+<footer><p>小說閱讀站</p></footer>
+</body>
+</html>

@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>車禍後的陌生天花板 - 深山食堂開飯了</title>
+<style>
+:root {
+  --bg: #faf8f5;
+  --text: #2c2c2c;
+  --accent: #8b6914;
+  --card-bg: #fff;
+  --border: #e8e0d4;
+  --shadow: rgba(0,0,0,0.06);
+  --code-bg: #f5f0e8;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #1a1a1a;
+    --text: #e0dcd6;
+    --accent: #d4a530;
+    --card-bg: #252525;
+    --border: #3a3a3a;
+    --shadow: rgba(0,0,0,0.3);
+    --code-bg: #2a2520;
+  }
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: "Noto Serif TC", "Source Han Serif TC", "PMingLiU", serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.9;
+  min-height: 100vh;
+}
+
+.container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 2rem 1.5rem;
+}
+
+header {
+  text-align: center;
+  padding: 3rem 0 2rem;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 2rem;
+}
+
+header h1 {
+  font-size: 2.2rem;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  color: var(--accent);
+}
+
+header p {
+  margin-top: 0.5rem;
+  font-size: 0.95rem;
+  opacity: 0.7;
+}
+
+.book-card {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 1.8rem;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 2px 8px var(--shadow);
+  transition: transform 0.2s;
+}
+
+.book-card:hover {
+  transform: translateY(-2px);
+}
+
+.book-card h2 {
+  font-size: 1.5rem;
+  margin-bottom: 0.3rem;
+}
+
+.book-card h2 a {
+  color: var(--text);
+  text-decoration: none;
+}
+
+.book-card h2 a:hover {
+  color: var(--accent);
+}
+
+.book-card .meta {
+  font-size: 0.85rem;
+  opacity: 0.6;
+  margin-bottom: 1rem;
+}
+
+.book-card .abstract-preview {
+  font-size: 0.95rem;
+  line-height: 1.8;
+}
+
+/* Book page */
+.book-header {
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.book-header h1 {
+  font-size: 2rem;
+  color: var(--accent);
+}
+
+.book-header .author-name {
+  font-size: 1rem;
+  opacity: 0.7;
+  margin-top: 0.3rem;
+}
+
+.section {
+  margin-bottom: 2.5rem;
+}
+
+.section h2 {
+  font-size: 1.3rem;
+  color: var(--accent);
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.toc-list {
+  list-style: none;
+  counter-reset: chapter;
+}
+
+.toc-list li {
+  counter-increment: chapter;
+  margin-bottom: 0.5rem;
+}
+
+.toc-list li a {
+  color: var(--text);
+  text-decoration: none;
+  display: flex;
+  align-items: baseline;
+  gap: 0.8rem;
+  padding: 0.5rem 0.8rem;
+  border-radius: 4px;
+  transition: background 0.15s;
+}
+
+.toc-list li a:hover {
+  background: var(--code-bg);
+  color: var(--accent);
+}
+
+.toc-list li a::before {
+  content: "第" counter(chapter, cjk-ideographic) "章";
+  font-size: 0.85rem;
+  opacity: 0.5;
+  flex-shrink: 0;
+}
+
+/* Chapter page */
+.chapter-header {
+  text-align: center;
+  padding: 2rem 0;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 2rem;
+}
+
+.chapter-header .book-title {
+  font-size: 0.9rem;
+  opacity: 0.5;
+}
+
+.chapter-header h1 {
+  font-size: 1.8rem;
+  margin-top: 0.5rem;
+}
+
+.chapter-header .chapter-num {
+  font-size: 0.85rem;
+  color: var(--accent);
+  margin-top: 0.3rem;
+}
+
+.chapter-body {
+  font-size: 1.05rem;
+  text-align: justify;
+}
+
+.chapter-body p {
+  margin-bottom: 1.2rem;
+  text-indent: 2em;
+}
+
+.chapter-body p:first-child {
+  text-indent: 0;
+}
+
+.chapter-nav {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 3rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--border);
+}
+
+.chapter-nav a {
+  color: var(--accent);
+  text-decoration: none;
+  font-size: 0.95rem;
+}
+
+.chapter-nav a:hover {
+  text-decoration: underline;
+}
+
+.back-link {
+  display: inline-block;
+  margin-bottom: 1.5rem;
+  color: var(--accent);
+  text-decoration: none;
+  font-size: 0.9rem;
+}
+
+.back-link:hover {
+  text-decoration: underline;
+}
+
+.author-section {
+  background: var(--code-bg);
+  border-radius: 8px;
+  padding: 1.5rem;
+}
+
+.author-section h1, .author-section h2, .author-section h3 {
+  font-size: 1.1rem;
+  margin-bottom: 0.8rem;
+}
+
+.author-section ul {
+  list-style: none;
+  padding-left: 0;
+}
+
+.author-section li {
+  margin-bottom: 0.4rem;
+  padding-left: 0;
+}
+
+footer {
+  text-align: center;
+  padding: 2rem 0;
+  font-size: 0.8rem;
+  opacity: 0.4;
+  border-top: 1px solid var(--border);
+  margin-top: 3rem;
+}
+</style>
+
+</head>
+<body>
+<div class="container">
+
+    <a href="./" class="back-link">&larr; 返回目錄</a>
+    <div class="chapter-header">
+      <div class="book-title">深山食堂開飯了</div>
+      <h1>車禍後的陌生天花板</h1>
+      <div class="chapter-num">第1章</div>
+    </div>
+    <div class="chapter-body">
+      <p>蘇念荷睜開眼睛的第一個念頭是——渡劫失敗了。</p>
+<p>天劫的最後一道雷光劈落時，她分明感受到丹田中食道金丹碎裂的劇痛，一百五十年的修為如潮水般散去，意識墜入無盡的黑暗。</p>
+<p>可她現在活著。</p>
+<p>眼前是一片斑駁的白色天花板，牆角有蛛網，日光燈管泛著暗黃的光。空氣裡有一股潮濕的木頭味，混著老舊棉被上淡淡的樟腦香。</p>
+<p>這不是她的洞府。</p>
+<p>蘇念荷試著運轉靈力，丹田裡空空蕩蕩，只剩下一絲比游絲還細的靈識，像風中殘燭般搖搖欲滅。她勉強抬起手——一雙白皙纖細的手，指甲修剪得很短，手背上貼著一塊發黃的創可貼。</p>
+<p>不是她的手。</p>
+<p>又好像是她的手。</p>
+<p>腦海中猛然湧入一大片陌生的記憶，像被人硬塞了一整座藏書閣進去。蘇念荷痛得悶哼一聲，雙手捂住太陽穴，牙齒咬得咯咯作響。</p>
+<p>記憶碎片紛紛揚揚地落下——</p>
+<p>一個也叫蘇念荷的女孩，二十四歲，在城裡一家小公司做行政。三個月前接到消息，住在雲嶺村的奶奶在睡夢中去世了。她請了假，獨自坐了五個小時的大巴，又轉了兩趟農村客運，來到這個藏在深山裡的小村子，處理奶奶留下的老房子。</p>
+<p>然後在回程的山路上，客運車翻下了山坡。</p>
+<p>她昏迷了整整七天。</p>
+<p>蘇念荷花了很長時間才把兩份記憶理順。修仙界的一百五十年，現代的二十四年，像兩條截然不同的河流在她腦中匯合，激盪出無數漩渦。</p>
+<p>她是食修宗師蘇念荷。</p>
+<p>她也是那個剛失去奶奶的普通女孩蘇念荷。</p>
+<p>「念魚？念魚！醒了？真的醒了？」</p>
+<p>門被推開，一個滿頭銀髮的老太太端著一碗粥衝進來，臉上的皺紋全擠在一起，又驚又喜。粥碗裡的湯汁濺出來燙到了手，她也渾然不覺。</p>
+<p>原身的記憶告訴她，這是住在隔壁的劉婆婆，奶奶生前最好的朋友。車禍之後，是劉婆婆堅持把她從鎮上的衛生院接回村裡照顧的，說「念魚她奶奶要是在天上看到孫女一個人躺在衛生院，會心疼死的」。</p>
+<p>「劉……劉婆婆。」蘇念荷的聲音沙啞得像砂紙磨過玻璃。</p>
+<p>「哎！哎！在呢！」劉婆婆幾步走到床邊，把粥碗往床頭櫃上一放，伸手就來摸她的額頭，「不燒了，退了！我就說嘛，你奶奶在天上保佑你呢。來來來，先喝口粥，白米粥，我熬了一早上，軟得很。」</p>
+<p>蘇念荷被扶著靠坐起來，接過那碗粥。</p>
+<p>白粥熬得稀爛，米花已經完全綻開，稠而不糊。她低頭喝了一口，溫溫的米湯滑過乾涸的喉嚨，帶著一點點米的甜香。</p>
+<p>很普通的一碗粥。沒有靈米，沒有靈泉水，沒有任何珍稀食材。放在修仙界，她隨手就能做出好上一百倍的靈粥。</p>
+<p>但她的眼眶忽然就紅了。</p>
+<p>原身的記憶裡，小時候生病發燒，奶奶也是這樣端著一碗白粥過來，一勺一勺餵她喝，嘴裡唸叨著「喝了粥就好了，喝了粥就不難受了」。</p>
+<p>那些溫柔的記憶像潮水般湧來，屬於原身的情感和她自己的感觸纏繞在一起，讓她分不清此刻的心酸究竟是誰的。</p>
+<p>劉婆婆見她紅了眼睛，以為她想起了奶奶，拍著她的背說：「哭吧哭吧，想哭就哭。你奶奶走得安詳，沒受罪。就是一直念叨你，說城裡壓力大，想讓你回來住段時間，沒想到……」</p>
+<p>老太太自己也紅了眼眶，用袖子抹了一把。</p>
+<p>蘇念荷沒有哭。一百五十年的修行讓她習慣了克制情緒，但她把那碗粥一口不剩地喝完了。</p>
+<p>碗底乾乾淨淨。</p>
+<p>「婆婆，我想起來走走。」她放下碗。</p>
+<p>「你才剛醒！醫生說你至少要躺——」</p>
+<p>「我沒事。」蘇念荷掀開被子，赤腳踩在冰涼的水泥地上。身體很虛弱，但作為一個曾經的食修宗師，她比誰都清楚這副身體的狀況——外傷已經基本痊癒，只是營養不良加上長期昏迷導致的肌肉萎縮。動一動反而好得快。</p>
+<p>她穿上床邊的布鞋，扶著牆慢慢走到了門口。</p>
+<p>推開那扇掉了漆的木門，午後的陽光兜頭澆下來，晃得她瞇起了眼。</p>
+<p>眼前是一個小小的院子。</p>
+<p>院子裡有一棵歪脖子棗樹，樹下擺著兩把竹椅，椅面已經坐得發亮。角落裡有一口大水缸，缸壁上爬滿了青苔。院牆是用石頭壘的，高低不平，牆頭上趴著一隻懶洋洋的花斑母雞。</p>
+<p>院子的左邊，連著另一間更大的房子。門楣上掛著一塊褪了色的木牌，隱約還能看出幾個字——</p>
+<p>「蘇記麵館」。</p>
+<p>蘇念荷走過去，推開那扇門。</p>
+<p>灰塵在陽光裡飛舞，像無數細小的金色星子。</p>
+<p>這是一間不大的店面，擺著四張方桌，桌上鋪的塑膠桌布已經捲了邊。牆上貼著一張泛黃的菜單紙，用毛筆寫著歪歪扭扭的字：手擀麵、酸菜肉絲麵、陽春麵、蔥油拌麵。靠牆有一個玻璃櫃檯，裡面空空蕩蕩，玻璃上還殘留著幾張小朋友貼的卡通貼紙。</p>
+<p>吧檯後面就是廚房，一張大灶臺佔了半面牆，灶口被灰堵住了。旁邊掛著幾把鏟子和漏勺，鐵鏽斑斑。案板上放著一個搪瓷盆，盆裡還有半袋發了霉的麵粉。</p>
+<p>奶奶的麵館。</p>
+<p>原身的記憶裡，小時候每年暑假都會來這裡，蹲在灶臺邊看奶奶揉麵。奶奶的手又粗又大，佈滿了老繭和燙傷的疤痕，但揉出來的麵光滑得像絲綢。</p>
+<p>蘇念荷伸出手，指尖輕輕觸碰那張冰冷的灶臺。</p>
+<p>灶臺上有一層薄灰，但灰下面的鑄鐵面板依然平整光滑，那是被幾十年的油煙和火焰養出來的包漿，帶著歲月沉澱的溫潤。</p>
+<p>她的手指微微發顫。</p>
+<p>不是因為虛弱，而是因為一種奇異的熟悉感——她在修仙界的洞府裡也有一座灶臺，用的是千年玄鐵，配的是三味真火。她在那座灶臺前站了一百五十年，煉製過數不清的靈膳。</p>
+<p>而眼前這座灶臺，不過是最普通的磚砌柴火灶，連個像樣的煙囪都沒有。</p>
+<p>可她忽然覺得，這座灶臺和那座灶臺，好像也沒有什麼不同。</p>
+<p>都是有人在上面認認真真做過飯的灶臺。</p>
+<p>都承載過「想讓人好好吃一頓飯」的心意。</p>
+<p>蘇念荷站在落灰的廚房裡，站了很久很久。</p>
+<p>院子外面傳來劉婆婆焦急的聲音：「念魚？你跑哪去了？別亂走啊！」</p>
+<p>她回過神來，輕聲應了一句：「在這裡。」</p>
+<p>日光從廚房破了洞的窗戶照進來，照在她瘦削的側臉上。灰塵在光柱裡緩緩旋轉，像一場無聲的雪。</p>
+<p>蘇念荷忽然想，一百五十年的修行，渡劫失敗，靈力盡散，醒來卻發現自己站在一座凡間的老灶臺前。</p>
+<p>大概這就是天道的幽默感吧。</p>
+<p>那就……先把這裡收拾乾淨吧。</p>
+<p>她這樣想著，隨手拿起灶臺邊的抹布，抖了抖灰，開始擦拭那張冰冷的鑄鐵面板。</p>
+<p>抹布太髒了，越擦越花。</p>
+<p>蘇念荷看著自己的傑作，無奈地笑了一下。</p>
+<p>一百五十年的食修宗師，如今連塊抹布都沒有一條乾淨的。</p>
+<p>真是……要從頭開始了啊。</p>
+    </div>
+    <div class="chapter-nav">
+      <a href="./">&larr; 目錄</a>
+      <a href="ch002.html">下一章 &rarr;</a>
+    </div>
+</div>
+<footer><p>小說閱讀站</p></footer>
+</body>
+</html>

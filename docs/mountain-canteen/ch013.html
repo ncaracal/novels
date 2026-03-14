@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>暴雨夜的一碗麵 - 深山食堂開飯了</title>
+<style>
+:root {
+  --bg: #faf8f5;
+  --text: #2c2c2c;
+  --accent: #8b6914;
+  --card-bg: #fff;
+  --border: #e8e0d4;
+  --shadow: rgba(0,0,0,0.06);
+  --code-bg: #f5f0e8;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #1a1a1a;
+    --text: #e0dcd6;
+    --accent: #d4a530;
+    --card-bg: #252525;
+    --border: #3a3a3a;
+    --shadow: rgba(0,0,0,0.3);
+    --code-bg: #2a2520;
+  }
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: "Noto Serif TC", "Source Han Serif TC", "PMingLiU", serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.9;
+  min-height: 100vh;
+}
+
+.container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 2rem 1.5rem;
+}
+
+header {
+  text-align: center;
+  padding: 3rem 0 2rem;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 2rem;
+}
+
+header h1 {
+  font-size: 2.2rem;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  color: var(--accent);
+}
+
+header p {
+  margin-top: 0.5rem;
+  font-size: 0.95rem;
+  opacity: 0.7;
+}
+
+.book-card {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 1.8rem;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 2px 8px var(--shadow);
+  transition: transform 0.2s;
+}
+
+.book-card:hover {
+  transform: translateY(-2px);
+}
+
+.book-card h2 {
+  font-size: 1.5rem;
+  margin-bottom: 0.3rem;
+}
+
+.book-card h2 a {
+  color: var(--text);
+  text-decoration: none;
+}
+
+.book-card h2 a:hover {
+  color: var(--accent);
+}
+
+.book-card .meta {
+  font-size: 0.85rem;
+  opacity: 0.6;
+  margin-bottom: 1rem;
+}
+
+.book-card .abstract-preview {
+  font-size: 0.95rem;
+  line-height: 1.8;
+}
+
+/* Book page */
+.book-header {
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.book-header h1 {
+  font-size: 2rem;
+  color: var(--accent);
+}
+
+.book-header .author-name {
+  font-size: 1rem;
+  opacity: 0.7;
+  margin-top: 0.3rem;
+}
+
+.section {
+  margin-bottom: 2.5rem;
+}
+
+.section h2 {
+  font-size: 1.3rem;
+  color: var(--accent);
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.toc-list {
+  list-style: none;
+  counter-reset: chapter;
+}
+
+.toc-list li {
+  counter-increment: chapter;
+  margin-bottom: 0.5rem;
+}
+
+.toc-list li a {
+  color: var(--text);
+  text-decoration: none;
+  display: flex;
+  align-items: baseline;
+  gap: 0.8rem;
+  padding: 0.5rem 0.8rem;
+  border-radius: 4px;
+  transition: background 0.15s;
+}
+
+.toc-list li a:hover {
+  background: var(--code-bg);
+  color: var(--accent);
+}
+
+.toc-list li a::before {
+  content: "第" counter(chapter, cjk-ideographic) "章";
+  font-size: 0.85rem;
+  opacity: 0.5;
+  flex-shrink: 0;
+}
+
+/* Chapter page */
+.chapter-header {
+  text-align: center;
+  padding: 2rem 0;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 2rem;
+}
+
+.chapter-header .book-title {
+  font-size: 0.9rem;
+  opacity: 0.5;
+}
+
+.chapter-header h1 {
+  font-size: 1.8rem;
+  margin-top: 0.5rem;
+}
+
+.chapter-header .chapter-num {
+  font-size: 0.85rem;
+  color: var(--accent);
+  margin-top: 0.3rem;
+}
+
+.chapter-body {
+  font-size: 1.05rem;
+  text-align: justify;
+}
+
+.chapter-body p {
+  margin-bottom: 1.2rem;
+  text-indent: 2em;
+}
+
+.chapter-body p:first-child {
+  text-indent: 0;
+}
+
+.chapter-nav {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 3rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--border);
+}
+
+.chapter-nav a {
+  color: var(--accent);
+  text-decoration: none;
+  font-size: 0.95rem;
+}
+
+.chapter-nav a:hover {
+  text-decoration: underline;
+}
+
+.back-link {
+  display: inline-block;
+  margin-bottom: 1.5rem;
+  color: var(--accent);
+  text-decoration: none;
+  font-size: 0.9rem;
+}
+
+.back-link:hover {
+  text-decoration: underline;
+}
+
+.author-section {
+  background: var(--code-bg);
+  border-radius: 8px;
+  padding: 1.5rem;
+}
+
+.author-section h1, .author-section h2, .author-section h3 {
+  font-size: 1.1rem;
+  margin-bottom: 0.8rem;
+}
+
+.author-section ul {
+  list-style: none;
+  padding-left: 0;
+}
+
+.author-section li {
+  margin-bottom: 0.4rem;
+  padding-left: 0;
+}
+
+footer {
+  text-align: center;
+  padding: 2rem 0;
+  font-size: 0.8rem;
+  opacity: 0.4;
+  border-top: 1px solid var(--border);
+  margin-top: 3rem;
+}
+</style>
+
+</head>
+<body>
+<div class="container">
+
+    <a href="./" class="back-link">&larr; 返回目錄</a>
+    <div class="chapter-header">
+      <div class="book-title">深山食堂開飯了</div>
+      <h1>暴雨夜的一碗麵</h1>
+      <div class="chapter-num">第13章</div>
+    </div>
+    <div class="chapter-body">
+      <p>那場暴雨是毫無預兆的。</p>
+<p>七月的雲嶺山，午後還是明晃晃的大太陽，蟬鳴震天，溪水懶洋洋地流。到了傍晚六點，西邊的天忽然暗下來，一大片鐵灰色的雲像被誰潑了一盆墨水，從山脊線後面壓過來，速度快得像修仙界的萬裡烏雲陣。</p>
+<p>蘇念荷站在院子裡收曬了一天的乾菜，抬頭看了一眼天色，心裡咯噔了一下。</p>
+<p>不是普通的雷雨。</p>
+<p>她雖然靈力盡失，但一百五十年食修的感知還在——空氣裡的濕度在幾分鐘內飆升到了飽和，氣壓急劇下降，風向混亂地來回切換。這是山區暴風雨的前兆，而且是那種能把山路沖塌的大暴雨。</p>
+<p>「阿橘！進屋！」</p>
+<p>阿橘本來蹲在院牆上盯著那隻花斑母雞，聽見蘇念荷的喊聲，耳朵轉了轉，用一種「你少大驚小怪」的表情跳下牆。但牠落地後，四隻爪子在泥地上頓了一下，毛突然全部倒豎——</p>
+<p>阿橘是山靈。牠感覺到了。</p>
+<p>這場雨不小。</p>
+<p>第一道閃電在七點整劈下來，照亮了整個雲嶺山的輪廓。緊接著是一聲沉悶的雷鳴，像有什麼人在天上翻了一張巨大的鐵皮桌子。</p>
+<p>然後雨就砸下來了。</p>
+<p>不是落下來，是砸下來。雨點大得像玻璃珠，打在鐵皮屋頂上乒乒乓乓地響，打在窗玻璃上像有人在外面扔沙子。院子裡的積水在十分鐘之內漫過了腳踝，蘇念荷趕緊把幾袋怕潮的乾貨搬到高處。</p>
+<p>暴雨越下越大，山上傳來轟隆隆的悶響——那是泥石鬆動的聲音。蘇念荷在修仙界見過山崩地裂的場面，知道那種悶響意味著什麼：山路塌了。</p>
+<p>今晚，雲嶺村和外面的世界斷開了。</p>
+<p>她把食堂的門窗都關緊，又檢查了後廚的排水。阿橘鑽進了碎花布簾後面，把自己團成一個不願面對世界的橘色球。蘇念荷忙完一切，泡了一壺茶，坐在吧檯後面聽雨。</p>
+<p>暴雨的夜晚，其實也有一種特別的寧靜。當所有的聲音都被雨聲覆蓋，世界反而變得純粹了——只剩下水的聲音，密密麻麻的，像一張鋪天蓋地的網，把人溫柔地兜住。</p>
+<p>蘇念荷打了個哈欠，正準備回房間睡覺，忽然聽到了一個不屬於雨夜的聲音。</p>
+<p>咚咚咚——</p>
+<p>有人在敲門。</p>
+<p>不是劉婆婆。劉婆婆敲門是「噹噹噹」三下，又快又脆。這個敲門聲是一陣急促的亂敲，帶著慌張和無助。</p>
+<p>蘇念荷起身去開門。</p>
+<p>門一拉開，風雨裹著一股涼氣撲面而來。門口站著三個渾身濕透的人——一個三十出頭的男人，懷裡抱著一個小女孩，旁邊站著一個同齡的女人。三個人都穿著城裡人的衝鋒衣和登山鞋，但此刻全身上下沒有一處是乾的。</p>
+<p>男人的頭髮貼在臉上，雨水順著鼻尖往下滴，嘴唇凍得發白。</p>
+<p>「對不起——」他的聲音在風雨裡幾乎聽不見，「我們被困在山上了——路塌了——能不能——」</p>
+<p>他懷裡的小女孩大概五歲，把臉埋在爸爸的肩窩裡，全身都在發抖，哭聲斷斷續續的，像受傷的小動物。</p>
+<p>女人的眼眶紅紅的，嘴唇一直在哆嗦，但還是下意識地把丈夫和孩子往自己身後擋了擋，好像這樣就能替他們多遮一點雨。</p>
+<p>蘇念荷二話沒說，把門拉到最大。</p>
+<p>「快進來。」</p>
+<p>三個人跌跌撞撞地走進食堂。蘇念荷先去找了三條乾毛巾——本來就不多，但她把自己的那條也翻出來了。又從房間裡找了兩套換洗衣服，都是她的舊衣服，男人穿不了，但女人和孩子湊合能換。</p>
+<p>「先把濕衣服脫了，孩子別著涼。浴室在後面，有熱水。」</p>
+<p>女人抱著孩子去了浴室，男人接過毛巾擦了擦臉，雙手不停地搓著，又是感激又是不好意思。</p>
+<p>「我姓方，這是我太太，那是我女兒方圓圓。」他語速很快，像是不把事情說清楚就無法安心，「我們今天從城裡開車過來爬雲嶺山，網上看到這邊有個很紅的食堂，想順便來嘗嘗。結果上山的時候還好好的，下山的時候突然下暴雨，走了一半路就塌了，車根本過不去——我們只能往回走，摸了好久才摸到你這裡——」</p>
+<p>「路上沒有受傷吧？」</p>
+<p>「沒有沒有，就是嚇著了。圓圓一直在哭，她怕打雷……」</p>
+<p>蘇念荷點了點頭，走進廚房，開始生火。</p>
+<p>灶臺裡的柴火還有存貨，她選了幾根劈好的松木塞進去，火柴一擦，火苗舔上去，「噼裡啪啦」地燒起來。松木的油脂在火裡炸開，帶出一股清冽的松香，整個廚房頓時暖和了。</p>
+<p>她開始和麵。</p>
+<p>這種天氣，沒有什麼比一碗熱湯麵更能讓人活過來。</p>
+<p>麵粉是她從鎮上買的普通麵粉，但和麵用的是靈泉水。她把水溫控制在三十五度左右，一點一點地加進麵粉裡，手掌用力揉按。靈泉水的靈氣在揉麵的過程中被激發出來，滲入麵粉的每一個分子裡，讓麵團變得格外光滑柔韌，帶著一種活生生的彈性。</p>
+<p>她把麵團醒了十分鐘——正常要醒半小時，但靈泉水的效果讓這個過程大大縮短。然後擀開，切成寬寬的麵條，每一根都厚薄均勻，邊緣整齊得像用尺子量過的。</p>
+<p>湯底用的是她早上熬的大骨湯。牛骨和豬筒骨一起熬了四個小時，湯色乳白如玉，骨髓的精華全部融在湯裡，撒了一點鹽和白胡椒粉，鮮得眉毛都要飛起來。</p>
+<p>麵條在滾水裡煮了兩分鐘，撈出來放進大碗，澆上滾燙的骨湯。上面鋪了一層嫩綠的小白菜，一個荷包蛋——蛋白凝了、蛋黃還是流心的那種——再撒上一把蔥花和幾滴芝麻油。</p>
+<p>三碗麵。兩大一小。</p>
+<p>小的那碗麵條切得更短更細，方便小孩子吃，荷包蛋也切成了小塊。</p>
+<p>蘇念荷把麵端出去的時候，方先生一家已經換好了衣服坐在桌邊。女人穿著蘇念荷的舊棉布衫，大了好幾號，袖子挽了兩圈。小女孩方圓圓裹在一件乾爽的大T恤裡，頭髮還是濕的，臉上掛著淚痕，眼眶紅通通的，一下一下地抽噎。</p>
+<p>三碗麵放上桌的瞬間，蒸汽撲面而來，裹著骨湯和蔥花的香氣。方圓圓的抽噎聲頓了一下，她從媽媽懷裡抬起小臉，鼻子使勁聞了聞。</p>
+<p>「好香……」小女孩的聲音細細的，帶著哭腔。</p>
+<p>「快吃吧，趁熱。」蘇念荷把小碗推到她面前。</p>
+<p>方先生夫婦千恩萬謝地拿起筷子。第一口麵條入口的瞬間，方先生的動作停了。</p>
+<p>麵條滑嫩彈牙，帶著靈泉水特有的清甜，咬下去有一股韌勁兒，但又不硬，在牙齒間彈了兩下就斷了，釋放出麵粉最本真的麥香。骨湯的鮮味緊跟著蔓延上來，濃郁但不油膩，溫溫柔柔地裹住整個口腔，像一雙溫暖的大手捧住了冰冷的臉。</p>
+<p>方先生的眼眶紅了。</p>
+<p>他是個三十多歲的大男人，在公司做中層管理，每天西裝革履地開會、做報表、應酬。上山的時候他信心滿滿，覺得帶老婆孩子來個週末戶外沒什麼大不了的。結果山路塌方，暴雨傾盆，車開不了人也走不動，五歲的女兒嚇得嚎啕大哭，老婆的腿在泥裡打滑時被劃了一道口子——他抱著女兒在黑暗的山路上深一腳淺一腳地走了四十多分鐘，不知道前面有沒有路，不知道有沒有人，不知道今晚能不能活著下山。</p>
+<p>那四十分鐘的恐懼，被這一碗熱湯麵，一口一口地化開了。</p>
+<p>他老婆也哭了。她是那種哭的時候不出聲的人，眼淚噗噗地往碗裡掉，但筷子一直沒停。</p>
+<p>蘇念荷沒有在旁邊看著。她讓人家好好吃飯，自己轉回廚房去做第二道——桂花甜湯。</p>
+<p>這是專門給方圓圓準備的。</p>
+<p>小女孩被暴雨和雷電嚇壞了，從方先生的描述來看，大概處於那種「哭累了但還是一直在抽噎」的應激狀態。普通的安撫方式作用有限，需要一點溫和的靈食幫她的情緒慢慢平復。</p>
+<p>桂花甜湯的做法不難：幹桂花用靈泉水泡開，加一小塊老冰糖，小火煮到糖化花融，湯色澄黃透亮。再加幾顆去了皮的小圓子——她用糯米粉和靈泉水揉的，小小的，白白的，像一粒粒迷你珍珠。</p>
+<p>靈氣在桂花的香氣裡化開，帶著一種安定心神的力量。不是藥效，更像是一種古老的溫柔——就像冬天被人塞了一個暖手爐，不治病，但讓人覺得安全。</p>
+<p>蘇念荷把甜湯盛在一個小花碗裡，端到方圓圓面前。</p>
+<p>「圓圓對不對？」她蹲下來，和小女孩平視，聲音很輕，「這個是桂花湯圓，甜甜的，你試試看。」</p>
+<p>方圓圓的眼睛紅紅腫腫的，睫毛上還掛著淚珠。她怯怯地看了蘇念荷一眼，又看了看碗裡的甜湯——金色的桂花漂在澄黃的湯裡，小圓子白白胖胖地浮著，冒著細細的熱氣。</p>
+<p>她用勺子舀了一顆小圓子，放進嘴裡。</p>
+<p>糯米的軟糯在舌尖化開，帶著桂花的幽香和冰糖的清甜。暖暖的甜湯順著喉嚨滑下去，像被人從裡到外擁抱了一下。</p>
+<p>方圓圓的抽噎聲終於停了。</p>
+<p>她一顆接一顆地吃小圓子，小嘴鼓鼓的，吃得很認真。吃完最後一顆，她把碗捧起來，把湯也喝了個乾淨，然後抬起頭，用一種剛哭完特有的沙啞嗓音說：</p>
+<p>「姐姐，還有嗎？」</p>
+<p>蘇念荷笑了：「有，再給你盛一碗。」</p>
+<p>就在蘇念荷轉身去盛湯的時候，一團橘色的毛球無聲無息地跳上了方圓圓身邊的椅子。</p>
+<p>阿橘。</p>
+<p>這隻平時對所有陌生人都保持三米以上安全距離的傲嬌山靈，不知道什麼時候從後廚溜出來了。牠坐在椅子上，和方圓圓面對面，金黃色的眼睛看了小女孩兩秒——然後，出乎所有人的意料，牠一腳跨到方圓圓腿上，團成一個球，把腦袋埋進了自己的肚子裡。</p>
+<p>方圓圓驚喜得小臉都亮了。她伸出小手，輕輕摸了摸阿橘的背。阿橘的毛是乾燥溫暖的，帶著一點淡淡的松木香——那是牠窩在後廚角落裡沾上的灶火氣息。</p>
+<p>「貓貓好暖……」方圓圓把臉貼在阿橘的背上，小聲地說。</p>
+<p>阿橘的表情依然是標準的不屑，眼睛半閉著，彷彿在說「本座只是剛好覺得這個位置的溫度適合午睡，跟你沒有任何關係」。</p>
+<p>但牠的呼嚕聲出賣了牠。那是一種低沉的、有節奏的震動，像一臺小小的發動機在胸腔裡運轉，通過皮毛傳到方圓圓的掌心裡。</p>
+<p>方先生和太太看著女兒終於不哭了，對視一眼，都紅了眼眶。</p>
+<p>那個暴風雨的夜晚，一家三口就在雲嶺食堂裡住了下來。蘇念荷把食堂的兩張桌子拼在一起，鋪上被褥，給他們搭了個簡易的床。方圓圓抱著阿橘睡了一整夜——阿橘全程沒有掙扎，甚至在半夜小女孩被雷聲嚇醒的時候，用尾巴輕輕掃了掃她的手背。</p>
+<p>第二天早上，雨停了。</p>
+<p>陽光從雲層的縫隙裡灑下來，雨後的山林綠得像洗過一樣，空氣裡全是泥土和草葉的清香。蘇念荷早起給一家人做了早餐——小米粥、煎蛋、涼拌黃瓜、手工饅頭。</p>
+<p>村裡的人已經開始清理山路了。劉婆婆過來報信說塌方不嚴重，繞一下就能走。</p>
+<p>方家人收拾好東西準備離開的時候，方圓圓死死抱著阿橘不撒手。</p>
+<p>「我不要走！我要跟貓貓在一起！」</p>
+<p>阿橘被一個五歲小孩揉來揉去了整整十分鐘——臉被捏成了各種奇怪的形狀，耳朵被拉了無數次，肚皮被搓得毛都亂了。牠的表情全程保持著一種深沉的、哲學般的嫌棄，眼神空洞地望向遠方，彷彿在思考生命的意義。</p>
+<p>但牠沒有掙扎。連爪子都沒有伸。</p>
+<p>最後方圓圓被媽媽連哄帶騙地抱上了車，從車窗裡伸出小手揮啊揮：「貓貓拜拜！我還會來看你的！」</p>
+<p>阿橘坐在食堂門口的石階上，看著車子順著泥濘的山路開遠。</p>
+<p>牠的尾巴動了一下。只動了一下。</p>
+<p>然後牠站起來，頭也不回地走進了後廚，鑽進碎花布簾後面，把自己團成了一個拒絕交流的球。</p>
+<p>三天後，方先生在社群媒體上發了一篇長文，標題是：</p>
+<p>《暴風雨之夜，深山裡的一碗麵救了我全家》</p>
+<p>文章寫得真摯動人，配了幾張雨後山林的照片和一張方圓圓抱著阿橘笑的照片。文章裡詳細描述了那碗熱湯麵的味道，桂花甜湯的溫暖，以及那隻「嘴上嫌棄但身體很誠實」的橘貓。</p>
+<p>文章在一天之內被轉發了兩萬次。</p>
+<p>【看哭了，這才是人間煙火氣】<br>【那隻橘貓是什麼絕世傲嬌啊我好想rua】<br>【暴雨夜能遇到這樣一個地方，他們一家的運氣也太好了吧】<br>【看了這篇文章，我已經在訂下週去雲嶺村的車票了】<br>【蘇老闆是不是有什麼魔法啊，怎麼她做的東西看文字描述就覺得香】</p>
+<p>雲嶺食堂又上了一次熱搜。</p>
+<p>蘇念荷看著手機上不斷跳出的通知，默默地把它翻過去扣在桌上。</p>
+<p>她看向窗外——雨後的雲嶺山，雲霧在半山腰繞來繞去，像一條白色的絲帶。遠處有鳥叫，近處有蟬鳴，院子裡的積水映著天光，一閃一閃的。</p>
+<p>挺好的，她想。</p>
+<p>不管在哪個世界，一碗熱飯的力量都是一樣的。</p>
+    </div>
+    <div class="chapter-nav">
+      <a href="ch012.html">&larr; 上一章</a>
+      <a href="ch014.html">下一章 &rarr;</a>
+    </div>
+</div>
+<footer><p>小說閱讀站</p></footer>
+</body>
+</html>

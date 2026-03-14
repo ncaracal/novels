@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>深山食堂開飯了</title>
+<style>
+:root {
+  --bg: #faf8f5;
+  --text: #2c2c2c;
+  --accent: #8b6914;
+  --card-bg: #fff;
+  --border: #e8e0d4;
+  --shadow: rgba(0,0,0,0.06);
+  --code-bg: #f5f0e8;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #1a1a1a;
+    --text: #e0dcd6;
+    --accent: #d4a530;
+    --card-bg: #252525;
+    --border: #3a3a3a;
+    --shadow: rgba(0,0,0,0.3);
+    --code-bg: #2a2520;
+  }
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: "Noto Serif TC", "Source Han Serif TC", "PMingLiU", serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.9;
+  min-height: 100vh;
+}
+
+.container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 2rem 1.5rem;
+}
+
+header {
+  text-align: center;
+  padding: 3rem 0 2rem;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 2rem;
+}
+
+header h1 {
+  font-size: 2.2rem;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  color: var(--accent);
+}
+
+header p {
+  margin-top: 0.5rem;
+  font-size: 0.95rem;
+  opacity: 0.7;
+}
+
+.book-card {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 1.8rem;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 2px 8px var(--shadow);
+  transition: transform 0.2s;
+}
+
+.book-card:hover {
+  transform: translateY(-2px);
+}
+
+.book-card h2 {
+  font-size: 1.5rem;
+  margin-bottom: 0.3rem;
+}
+
+.book-card h2 a {
+  color: var(--text);
+  text-decoration: none;
+}
+
+.book-card h2 a:hover {
+  color: var(--accent);
+}
+
+.book-card .meta {
+  font-size: 0.85rem;
+  opacity: 0.6;
+  margin-bottom: 1rem;
+}
+
+.book-card .abstract-preview {
+  font-size: 0.95rem;
+  line-height: 1.8;
+}
+
+/* Book page */
+.book-header {
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.book-header h1 {
+  font-size: 2rem;
+  color: var(--accent);
+}
+
+.book-header .author-name {
+  font-size: 1rem;
+  opacity: 0.7;
+  margin-top: 0.3rem;
+}
+
+.section {
+  margin-bottom: 2.5rem;
+}
+
+.section h2 {
+  font-size: 1.3rem;
+  color: var(--accent);
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.toc-list {
+  list-style: none;
+  counter-reset: chapter;
+}
+
+.toc-list li {
+  counter-increment: chapter;
+  margin-bottom: 0.5rem;
+}
+
+.toc-list li a {
+  color: var(--text);
+  text-decoration: none;
+  display: flex;
+  align-items: baseline;
+  gap: 0.8rem;
+  padding: 0.5rem 0.8rem;
+  border-radius: 4px;
+  transition: background 0.15s;
+}
+
+.toc-list li a:hover {
+  background: var(--code-bg);
+  color: var(--accent);
+}
+
+.toc-list li a::before {
+  content: "第" counter(chapter, cjk-ideographic) "章";
+  font-size: 0.85rem;
+  opacity: 0.5;
+  flex-shrink: 0;
+}
+
+/* Chapter page */
+.chapter-header {
+  text-align: center;
+  padding: 2rem 0;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 2rem;
+}
+
+.chapter-header .book-title {
+  font-size: 0.9rem;
+  opacity: 0.5;
+}
+
+.chapter-header h1 {
+  font-size: 1.8rem;
+  margin-top: 0.5rem;
+}
+
+.chapter-header .chapter-num {
+  font-size: 0.85rem;
+  color: var(--accent);
+  margin-top: 0.3rem;
+}
+
+.chapter-body {
+  font-size: 1.05rem;
+  text-align: justify;
+}
+
+.chapter-body p {
+  margin-bottom: 1.2rem;
+  text-indent: 2em;
+}
+
+.chapter-body p:first-child {
+  text-indent: 0;
+}
+
+.chapter-nav {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 3rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--border);
+}
+
+.chapter-nav a {
+  color: var(--accent);
+  text-decoration: none;
+  font-size: 0.95rem;
+}
+
+.chapter-nav a:hover {
+  text-decoration: underline;
+}
+
+.back-link {
+  display: inline-block;
+  margin-bottom: 1.5rem;
+  color: var(--accent);
+  text-decoration: none;
+  font-size: 0.9rem;
+}
+
+.back-link:hover {
+  text-decoration: underline;
+}
+
+.author-section {
+  background: var(--code-bg);
+  border-radius: 8px;
+  padding: 1.5rem;
+}
+
+.author-section h1, .author-section h2, .author-section h3 {
+  font-size: 1.1rem;
+  margin-bottom: 0.8rem;
+}
+
+.author-section ul {
+  list-style: none;
+  padding-left: 0;
+}
+
+.author-section li {
+  margin-bottom: 0.4rem;
+  padding-left: 0;
+}
+
+footer {
+  text-align: center;
+  padding: 2rem 0;
+  font-size: 0.8rem;
+  opacity: 0.4;
+  border-top: 1px solid var(--border);
+  margin-top: 3rem;
+}
+</style>
+
+</head>
+<body>
+<div class="container">
+
+  <a href="../" class="back-link">&larr; 返回書單</a>
+  <div class="book-header">
+    <h1>深山食堂開飯了</h1>
+    <div class="author-name">作者：佚名</div>
+  </div>
+
+  <div class="section">
+    <h2>大綱</h2>
+    <h2>類型</h2><br>治癒系種田｜美食｜輕修仙｜現代日常</p><h2>簡介</h2><p>食修蘇念荷在修仙界潛心鑽研廚道一百五十年，渡劫失敗後一覺醒來，竟回到了現代——還是在一個快被遺忘的深山小村裡。</p><p>身下是奶奶留下的老木床，窗外是雲霧繚繞的雲嶺山。奶奶過世後，曾經熱鬧的小麵館早已落滿灰塵。</p><p>蘇念荷本想低調養傷，卻意外發現後山藏著一眼靈泉。用靈泉水煮出的粥，能讓失眠三年的人一覺到天亮；靈氣番茄燉的湯，喝一碗就能緩解多年的慢性疼痛；就連最普通的一碗清湯麵，都香得讓路過的登山客追到廚房門口。</p><p>「⋯⋯要不，把奶奶的食堂重新開起來吧。」</p><p>於是，雲嶺村那間落灰的小麵館重新亮起了燈。</p><p>一隻自稱「本座」的肥橘貓霸佔了收銀臺，失眠的急診醫生成了常客，被霸凌的少女在這裡重新開口說話，燒傷少年終於敢在人前露出手臂。</p><p>開發商想買山，親戚來爭房，網路上有人捧有人黑——但蘇念荷只管種菜、做飯、餵貓，用一道道靈食，悄悄治癒每一個走進食堂的人。</p><h2>主要角色</h2><ul><li><strong>蘇念荷</strong>：前食修，廚道宗師，外表二十四歲。擅長以靈氣入菜，性格溫和但護短，廚房裡是絕對的王者。</li><br><li><strong>阿橘</strong>：雲嶺山山靈，平時以肥橘貓形態出現。傲嬌話少，初期靠踢東西和甩尾巴表達不滿，後期學會說話，語氣欠揍。</li><br><li><strong>陳時予</strong>：三十二歲急診科醫生，嚴重失眠與職業倦怠，因一碗粥與食堂結緣，最終留在村裡開了診所。</li><br><li><strong>林小竹</strong>：十四歲，寄住在爺爺奶奶家，在學校遭受霸凌後選擇性緘默，在食堂廚房裡慢慢找回聲音。</li><br><li><strong>阿亮</strong>：十七歲少年，幼時火災留下大面積燒傷疤痕，總是穿長袖遮掩。食堂的靈食讓疤痕逐漸軟化淡去。</li><br><li><strong>劉婆婆</strong>：村裡最熱心的老太太，消息靈通，是蘇念荷的第一個食客和頭號粉絲。</li><br><li><strong>周開元</strong>：房地產開發商，計畫在雲嶺山建度假村，多次上門收購未果後開始使用手段。</li><br></ul>
+  </div>
+
+  <div class="section">
+    <h2>章節目錄</h2>
+    <ol class="toc-list">
+      <li><a href="ch001.html">車禍後的陌生天花板</a></li>
+<li><a href="ch002.html">奶奶的老灶臺</a></li>
+<li><a href="ch003.html">後山有靈泉</a></li>
+<li><a href="ch004.html">第一鍋靈粥</a></li>
+<li><a href="ch005.html">不請自來的肥橘</a></li>
+<li><a href="ch006.html">失眠的陳醫生</a></li>
+<li><a href="ch007.html">小食堂開張</a></li>
+<li><a href="ch008.html">靈食入口的瞬間</a></li>
+<li><a href="ch009.html">不會吧這也能上熱搜</a></li>
+<li><a href="ch010.html">差評風波</a></li>
+<li><a href="ch011.html">燒傷少年阿亮</a></li>
+<li><a href="ch012.html">阿橘踢翻了魚缸</a></li>
+<li><a href="ch013.html">暴雨夜的一碗麵</a></li>
+<li><a href="ch014.html">開發商來了</a></li>
+<li><a href="ch015.html">全村動員種靈菜</a></li>
+<li><a href="ch016.html">不說話的女孩</a></li>
+<li><a href="ch017.html">阿橘開口了</a></li>
+<li><a href="ch018.html">美食博主的挑戰</a></li>
+<li><a href="ch019.html">陳醫生的選擇</a></li>
+<li><a href="ch020.html">叔叔一家上門</a></li>
+<li><a href="ch021.html">開發商的陰謀</a></li>
+<li><a href="ch022.html">靈泉保衛戰</a></li>
+<li><a href="ch023.html">山靈現真身</a></li>
+<li><a href="ch024.html">春日食堂祭</a></li>
+<li><a href="ch025.html">山間有靈食</a></li>
+
+    </ol>
+  </div>
+
+  <div class="section">
+    <h2>關於作者</h2>
+    <div class="author-section">
+      <h1>作者：雲間食客</h1><h2>簡介</h2><p>雲間食客，網路小說作者，擅長治癒系種田文。筆下故事以溫暖的鄉村日常、細膩的美食描寫和輕快的修仙元素見長。作品風格清新療癒，注重小人物的生活轉變與情感刻畫，善於將煙火氣十足的市井百態與奇幻設定自然融合。</p><h2>代表作</h2><ul><li>《深山食堂開飯了》</li><br></ul>
+    </div>
+  </div>
+</div>
+<footer><p>小說閱讀站</p></footer>
+</body>
+</html>

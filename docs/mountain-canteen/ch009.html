@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>不會吧這也能上熱搜 - 深山食堂開飯了</title>
+<style>
+:root {
+  --bg: #faf8f5;
+  --text: #2c2c2c;
+  --accent: #8b6914;
+  --card-bg: #fff;
+  --border: #e8e0d4;
+  --shadow: rgba(0,0,0,0.06);
+  --code-bg: #f5f0e8;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #1a1a1a;
+    --text: #e0dcd6;
+    --accent: #d4a530;
+    --card-bg: #252525;
+    --border: #3a3a3a;
+    --shadow: rgba(0,0,0,0.3);
+    --code-bg: #2a2520;
+  }
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: "Noto Serif TC", "Source Han Serif TC", "PMingLiU", serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.9;
+  min-height: 100vh;
+}
+
+.container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 2rem 1.5rem;
+}
+
+header {
+  text-align: center;
+  padding: 3rem 0 2rem;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 2rem;
+}
+
+header h1 {
+  font-size: 2.2rem;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  color: var(--accent);
+}
+
+header p {
+  margin-top: 0.5rem;
+  font-size: 0.95rem;
+  opacity: 0.7;
+}
+
+.book-card {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 1.8rem;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 2px 8px var(--shadow);
+  transition: transform 0.2s;
+}
+
+.book-card:hover {
+  transform: translateY(-2px);
+}
+
+.book-card h2 {
+  font-size: 1.5rem;
+  margin-bottom: 0.3rem;
+}
+
+.book-card h2 a {
+  color: var(--text);
+  text-decoration: none;
+}
+
+.book-card h2 a:hover {
+  color: var(--accent);
+}
+
+.book-card .meta {
+  font-size: 0.85rem;
+  opacity: 0.6;
+  margin-bottom: 1rem;
+}
+
+.book-card .abstract-preview {
+  font-size: 0.95rem;
+  line-height: 1.8;
+}
+
+/* Book page */
+.book-header {
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.book-header h1 {
+  font-size: 2rem;
+  color: var(--accent);
+}
+
+.book-header .author-name {
+  font-size: 1rem;
+  opacity: 0.7;
+  margin-top: 0.3rem;
+}
+
+.section {
+  margin-bottom: 2.5rem;
+}
+
+.section h2 {
+  font-size: 1.3rem;
+  color: var(--accent);
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.toc-list {
+  list-style: none;
+  counter-reset: chapter;
+}
+
+.toc-list li {
+  counter-increment: chapter;
+  margin-bottom: 0.5rem;
+}
+
+.toc-list li a {
+  color: var(--text);
+  text-decoration: none;
+  display: flex;
+  align-items: baseline;
+  gap: 0.8rem;
+  padding: 0.5rem 0.8rem;
+  border-radius: 4px;
+  transition: background 0.15s;
+}
+
+.toc-list li a:hover {
+  background: var(--code-bg);
+  color: var(--accent);
+}
+
+.toc-list li a::before {
+  content: "第" counter(chapter, cjk-ideographic) "章";
+  font-size: 0.85rem;
+  opacity: 0.5;
+  flex-shrink: 0;
+}
+
+/* Chapter page */
+.chapter-header {
+  text-align: center;
+  padding: 2rem 0;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 2rem;
+}
+
+.chapter-header .book-title {
+  font-size: 0.9rem;
+  opacity: 0.5;
+}
+
+.chapter-header h1 {
+  font-size: 1.8rem;
+  margin-top: 0.5rem;
+}
+
+.chapter-header .chapter-num {
+  font-size: 0.85rem;
+  color: var(--accent);
+  margin-top: 0.3rem;
+}
+
+.chapter-body {
+  font-size: 1.05rem;
+  text-align: justify;
+}
+
+.chapter-body p {
+  margin-bottom: 1.2rem;
+  text-indent: 2em;
+}
+
+.chapter-body p:first-child {
+  text-indent: 0;
+}
+
+.chapter-nav {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 3rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--border);
+}
+
+.chapter-nav a {
+  color: var(--accent);
+  text-decoration: none;
+  font-size: 0.95rem;
+}
+
+.chapter-nav a:hover {
+  text-decoration: underline;
+}
+
+.back-link {
+  display: inline-block;
+  margin-bottom: 1.5rem;
+  color: var(--accent);
+  text-decoration: none;
+  font-size: 0.9rem;
+}
+
+.back-link:hover {
+  text-decoration: underline;
+}
+
+.author-section {
+  background: var(--code-bg);
+  border-radius: 8px;
+  padding: 1.5rem;
+}
+
+.author-section h1, .author-section h2, .author-section h3 {
+  font-size: 1.1rem;
+  margin-bottom: 0.8rem;
+}
+
+.author-section ul {
+  list-style: none;
+  padding-left: 0;
+}
+
+.author-section li {
+  margin-bottom: 0.4rem;
+  padding-left: 0;
+}
+
+footer {
+  text-align: center;
+  padding: 2rem 0;
+  font-size: 0.8rem;
+  opacity: 0.4;
+  border-top: 1px solid var(--border);
+  margin-top: 3rem;
+}
+</style>
+
+</head>
+<body>
+<div class="container">
+
+    <a href="./" class="back-link">&larr; 返回目錄</a>
+    <div class="chapter-header">
+      <div class="book-title">深山食堂開飯了</div>
+      <h1>不會吧這也能上熱搜</h1>
+      <div class="chapter-num">第9章</div>
+    </div>
+    <div class="chapter-body">
+      <p>阿秀的那條短影片，在發出去的第三天，播放量突破了五十萬。</p>
+<p>起初只是她的朋友們在點讚轉發，配上「好羨慕」「帶我去」之類的評論。然後不知道是哪個節點被演算法捕獲了——可能是那碗麵在陽光下的特寫太好看了，也可能是阿橘四十五度角側顏的截圖太有梗了——總之，影片開始瘋狂擴散。</p>
+<p>評論區在短短兩天之內就變成了大型許願現場：</p>
+<p>【這是什麼神仙小店？？坐標在哪裡求求了】<br>【那碗麵的湯色也太好看了⋯⋯是開了濾鏡嗎？？不像啊】<br>【看那個橘貓我好想去！好大一坨！那個眼神絕了哈哈哈哈哈】<br>【假的吧，深山裡能有這種店？而且十二塊一碗麵？現在哪裡還有這種價格】<br>【樓上你是沒去過農村吧，我老家鎮上米粉還五塊錢一碗呢】<br>【重點不是價格！重點是那個吃哭的男生！他是演的嗎！！】<br>【@阿秀秀看世界 快更新後續！你們後來又去了嗎？】<br>【橘貓：本座不接受線上預約】<br>【笑死，那個貓每張照片都是閉眼的，這是什麼偶像包袱】<br>【已經在查雲嶺山怎麼去了⋯⋯最近的高鐵站是哪個？】</p>
+<p>阿秀本人也懵了。她平時發的登山影片頂多幾百個讚，這條隨手拍的食堂影片直接起飛了。她又趕緊翻出手機裡的其他素材——阿橘蹲在門口的全身照、菜單的特寫、空碗見底的對比圖——剪了第二條影片發出去。</p>
+<p>第二條比第一條還火。</p>
+<p>主要是因為她在影片最後放了一段阿橘的慢動作：橘貓在夕陽下打哈欠，露出粉色的嘴巴和一截小小的舌頭，陽光把牠的毛照得像一團燃燒的火焰。</p>
+<p>【我宣佈這是全網最帥橘貓沒有之一】<br>【這隻貓比我帥，比我有氣場，比我吃得好⋯⋯我不如一隻貓】<br>【有沒有人注意到那個老闆娘？好漂亮啊感覺仙氣飄飄的】<br>【一個漂亮老闆娘+一隻霸氣橘貓+深山裡的神秘小食堂=流量密碼】<br>【話說回來，評論裡有人真的去吃過嗎？那個麵真的有那麼好吃？】<br>【我！！！我上週去了！！真的好吃到我在店裡坐了一個小時不想走！那個湯鮮得我以為自己在做夢！而且老闆娘人超好！貓超兇但超可愛！五星好評！】</p>
+<p>蘇念荷本人對這一切毫不知情。</p>
+<p>她不用社群媒體——不是不想用，是真的不會用。原身的手機裡倒是裝了幾個應用程式，但蘇念荷連解鎖都要試三次（原身設的密碼她花了兩天才從記憶碎片裡翻出來），更別說什麼短影片平臺了。在修仙界的一百五十年裡，最先進的通訊方式是傳音玉簡，用法大概相當於⋯⋯語音留言。</p>
+<p>所以當週六早上，她像往常一樣打開食堂大門，看到門外烏壓壓站了三十多個人的時候，她的第一反應是——</p>
+<p>「⋯⋯今天是什麼節日嗎？」</p>
+<p>「念魚！念魚！」劉婆婆從人群裡擠過來，激動得滿臉通紅，「你上網了！上什麼熱搜了！我孫子給我看的！好多好多人來吃你的麵！」</p>
+<p>「熱⋯⋯搜？」</p>
+<p>「就是那個、那個手機上面、大家都在看的那個——」劉婆婆的科技詞彙明顯不夠用了，她用力比劃著，「反正就是很多很多人知道你了！」</p>
+<p>蘇念荷站在門口，看著眼前這條從食堂門口一直排到村口老槐樹下的人龍，陷入了短暫的沉默。</p>
+<p>三十多個人。她的食堂只有六張桌子。她一個人掌廚。今天準備的食材大概夠做⋯⋯十五個人的份量。</p>
+<p>完了。</p>
+<p>「大家、大家稍等一下啊——」她試圖維持秩序，但聲音很快淹沒在嘈雜的人群裡。</p>
+<p>「老闆娘！那碗清湯麵還有嗎？」<br>「請問橘貓在哪裡？我是專門來看貓的！」<br>「能拍照嗎？我想發社群！」<br>「排到我大概要等多久？」<br>「有沒有預約制？」</p>
+<p>阿橘蹲在牠的專屬高凳上，看著這個混亂的場面，瞳孔微微收縮。牠的尾巴開始不安地左右甩動——這是牠表達「本座不高興了」的第一級警告。</p>
+<p>蘇念荷深吸一口氣。冷靜，冷靜。她在修仙界的時候，曾經一個人做過三百人份的渡劫宴——當然那時候她有金丹期的體力和神識加持。現在嘛⋯⋯</p>
+<p>「各位！」她提高了聲音，露出一個溫和但堅定的笑容，「食堂很小，食材有限，今天大概只能接待⋯⋯二十位客人。到不了的朋友，非常抱歉，歡迎下次再來——但最好提前打電話。」</p>
+<p>「電話多少！」幾個人同時喊道。</p>
+<p>蘇念荷報了號碼。她看到至少十個人同時在手機上存號碼的畫面，忽然有一種不真實感。一百五十年的修仙生涯裡，她被人這樣追捧過嗎？好像⋯⋯有的。但那些追捧裡帶著算計和利用，不像眼前這些人——他們只是單純地想吃一碗好吃的麵。</p>
+<p>就在她手忙腳亂地往灶臺後面衝的時候，一個熟悉的身影出現在了人群裡。</p>
+<p>陳時予。</p>
+<p>他穿了一件淺灰色的長袖T恤，看起來比上次來的時候精神了不少——雖然眼下的黑眼圈還在，但至少臉色從青白變成了正常的淡粉。他背著一個小書包，看到食堂門口的盛況，先是愣了一下，然後迅速做出了一個判斷。</p>
+<p>「需要幫忙嗎？」他擠到灶臺邊上，對蘇念荷說。</p>
+<p>蘇念荷看了他一眼。這個失眠醫生怎麼又來了？不過現在不是問這個的時候。</p>
+<p>「會端盤子嗎？」</p>
+<p>「急診科出身，什麼都會。」</p>
+<p>「那就拜託了——碗在那邊，筷子在竹筒裡。客人坐下來先倒杯水，茶壺在架子上。」</p>
+<p>陳時予二話不說，捲起袖子就開始幹活。急診科醫生的本事在這裡得到了充分發揮——他天生對混亂場面有一種冷靜的掌控力，三分鐘之內就在六張桌子之間建立起了高效的輪轉制度：每桌限時四十分鐘，吃完的馬上收桌，下一位請入座。</p>
+<p>「您好，裡面請。今天有清湯麵和靈泉白粥，小炒和桂花糕已經售罄了——對不起，桂花糕確實只有十份，明天可以來早一點。這邊坐，我給您倒水。」</p>
+<p>他端盤子的姿勢穩得像端著手術托盤。碗碟在他手裡排列得整整齊齊，穿過擁擠的桌椅之間時身法靈活得像一條游魚。劉婆婆在旁邊看得目瞪口呆：「這個小夥子，是當過服務員？」</p>
+<p>「人家是醫生！」旁邊有人說。</p>
+<p>「醫生端盤子端得這麼好？」</p>
+<p>「急診科的嘛，什麼場面沒見過。」</p>
+<p>蘇念荷在灶臺後面忙得飛起。水燒了一鍋又一鍋，麵下了一碗又一碗。她的手速比普通人快了不止一倍——食修的功底在這裡終於有了用武之地。擀麵、切麵、下鍋、撈麵、盛湯、擺盤，一系列動作行雲流水，快得像一段被加速播放的影片。</p>
+<p>但她控制靈氣的手法一點都沒馬虎。每一碗麵裡都注入了同樣的心意——不多不少，剛好讓食材的味道綻放到最完美的狀態。</p>
+<p>阿橘在混亂中維持著牠的尊嚴。牠依然蹲在門口的高凳上，但姿態從「慵懶假寐」切換成了「嚴肅執勤」。每一個進門的客人都要經過牠的審視——雖然牠的審視標準至今沒人能看懂。有的人牠看都不看一眼就放行了；有的人牠會盯著看三秒鐘，然後輕輕「嗯」一聲，像是勉強批准；還有一個試圖繞過牠直接闖進去的壯漢，被牠一爪子拍在了小腿上。</p>
+<p>「你家貓是不是把自己當保全了？」壯漢苦笑著問。</p>
+<p>「差不多，」陳時予端著盤子路過，面不改色地回答，「而且牠不打卡、不休假、不領薪水。」</p>
+<p>午後一點半的時候，最後一批客人終於吃完離開了。</p>
+<p>蘇念荷靠在灶臺邊上，長長地呼出一口氣。圍裙上沾滿了湯漬和麵粉，馬尾散了半邊，額頭上全是汗。她低頭看了看自己的手——因為連續幾個小時的高強度勞動，虎口有點發紅。</p>
+<p>要是有金丹期的體力就好了，她想。</p>
+<p>「辛苦了。」陳時予遞過來一杯水。</p>
+<p>她接過來喝了一大口，然後看了看他：「你也辛苦了。你不是來吃飯的嗎？」</p>
+<p>「吃飯可以等，」他把水杯放在桌上，「但你一個人忙不過來。」</p>
+<p>蘇念荷想了想，覺得他說得對。今天要不是他臨時幫忙，場面恐怕早就失控了。她不是不能應付——在修仙界她連魔宴都辦過——但那是有靈力加持的情況。現在她的修為只剩不到築基期的一成，體力跟普通人差不了太多。</p>
+<p>「謝謝你，陳醫生。」她認真地說。</p>
+<p>「不客氣。」他頓了頓，「而且⋯⋯我這幾天都住在山下的民宿。上次吃了你的粥以後，我連著睡了兩個好覺。三年來最好的兩個覺。所以——」</p>
+<p>他微微側過頭，看著窗外被夕陽染成金色的竹林，聲音放輕了：</p>
+<p>「所以如果可以的話，我想明天也來幫忙。」</p>
+<p>蘇念荷看著他。夕陽落在他的側臉上，那雙因為長期失眠而顯得疲憊的眼睛裡，這一刻有了一點不一樣的光。</p>
+<p>不是醫生面對病人時的沉穩，也不是面對陌生人時的禮貌。是一個在黑暗裡走了很久的人，忽然在某個角落看到了一盞燈時的那種⋯⋯不敢置信的小心翼翼。</p>
+<p>她笑了。</p>
+<p>「行啊。明天早上八點半，不要遲到。」</p>
+<p>陳時予點了點頭，嘴角微微勾了一下——這大概是他三年來最接近笑容的一個表情。</p>
+<p>劉婆婆在一旁看著這一幕，眼珠子轉了轉，嘴角浮起一個意味深長的笑。但她難得地什麼都沒說。</p>
+<p>倒是阿橘，牠從高凳上跳下來，晃著圓滾滾的身體走到陳時予腳邊，抬頭看了他一眼。</p>
+<p>然後伸出爪子，在他的鞋子上輕輕拍了一下。</p>
+<p>不疼。</p>
+<p>像是——蓋了個章。</p>
+<p>「⋯⋯這是什麼意思？」陳時予低頭問。</p>
+<p>蘇念荷彎腰把阿橘撈了起來（十五斤的重量讓她的手臂微微顫了一下），揉了揉牠毛茸茸的腦袋：</p>
+<p>「大概是⋯⋯批准你明天來上班了吧。」</p>
+<p>阿橘把臉別到一邊，尾巴甩了甩。</p>
+<p>才不是。</p>
+<p>才不是什麼批准。</p>
+<p>只是這個人身上的氣息不像其他那些吵吵嚷嚷的凡人那麼煩。</p>
+<p>只是這樣而已。</p>
+    </div>
+    <div class="chapter-nav">
+      <a href="ch008.html">&larr; 上一章</a>
+      <a href="ch010.html">下一章 &rarr;</a>
+    </div>
+</div>
+<footer><p>小說閱讀站</p></footer>
+</body>
+</html>

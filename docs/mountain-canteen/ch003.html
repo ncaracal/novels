@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>後山有靈泉 - 深山食堂開飯了</title>
+<style>
+:root {
+  --bg: #faf8f5;
+  --text: #2c2c2c;
+  --accent: #8b6914;
+  --card-bg: #fff;
+  --border: #e8e0d4;
+  --shadow: rgba(0,0,0,0.06);
+  --code-bg: #f5f0e8;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #1a1a1a;
+    --text: #e0dcd6;
+    --accent: #d4a530;
+    --card-bg: #252525;
+    --border: #3a3a3a;
+    --shadow: rgba(0,0,0,0.3);
+    --code-bg: #2a2520;
+  }
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: "Noto Serif TC", "Source Han Serif TC", "PMingLiU", serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.9;
+  min-height: 100vh;
+}
+
+.container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 2rem 1.5rem;
+}
+
+header {
+  text-align: center;
+  padding: 3rem 0 2rem;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 2rem;
+}
+
+header h1 {
+  font-size: 2.2rem;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  color: var(--accent);
+}
+
+header p {
+  margin-top: 0.5rem;
+  font-size: 0.95rem;
+  opacity: 0.7;
+}
+
+.book-card {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 1.8rem;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 2px 8px var(--shadow);
+  transition: transform 0.2s;
+}
+
+.book-card:hover {
+  transform: translateY(-2px);
+}
+
+.book-card h2 {
+  font-size: 1.5rem;
+  margin-bottom: 0.3rem;
+}
+
+.book-card h2 a {
+  color: var(--text);
+  text-decoration: none;
+}
+
+.book-card h2 a:hover {
+  color: var(--accent);
+}
+
+.book-card .meta {
+  font-size: 0.85rem;
+  opacity: 0.6;
+  margin-bottom: 1rem;
+}
+
+.book-card .abstract-preview {
+  font-size: 0.95rem;
+  line-height: 1.8;
+}
+
+/* Book page */
+.book-header {
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.book-header h1 {
+  font-size: 2rem;
+  color: var(--accent);
+}
+
+.book-header .author-name {
+  font-size: 1rem;
+  opacity: 0.7;
+  margin-top: 0.3rem;
+}
+
+.section {
+  margin-bottom: 2.5rem;
+}
+
+.section h2 {
+  font-size: 1.3rem;
+  color: var(--accent);
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.toc-list {
+  list-style: none;
+  counter-reset: chapter;
+}
+
+.toc-list li {
+  counter-increment: chapter;
+  margin-bottom: 0.5rem;
+}
+
+.toc-list li a {
+  color: var(--text);
+  text-decoration: none;
+  display: flex;
+  align-items: baseline;
+  gap: 0.8rem;
+  padding: 0.5rem 0.8rem;
+  border-radius: 4px;
+  transition: background 0.15s;
+}
+
+.toc-list li a:hover {
+  background: var(--code-bg);
+  color: var(--accent);
+}
+
+.toc-list li a::before {
+  content: "第" counter(chapter, cjk-ideographic) "章";
+  font-size: 0.85rem;
+  opacity: 0.5;
+  flex-shrink: 0;
+}
+
+/* Chapter page */
+.chapter-header {
+  text-align: center;
+  padding: 2rem 0;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 2rem;
+}
+
+.chapter-header .book-title {
+  font-size: 0.9rem;
+  opacity: 0.5;
+}
+
+.chapter-header h1 {
+  font-size: 1.8rem;
+  margin-top: 0.5rem;
+}
+
+.chapter-header .chapter-num {
+  font-size: 0.85rem;
+  color: var(--accent);
+  margin-top: 0.3rem;
+}
+
+.chapter-body {
+  font-size: 1.05rem;
+  text-align: justify;
+}
+
+.chapter-body p {
+  margin-bottom: 1.2rem;
+  text-indent: 2em;
+}
+
+.chapter-body p:first-child {
+  text-indent: 0;
+}
+
+.chapter-nav {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 3rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--border);
+}
+
+.chapter-nav a {
+  color: var(--accent);
+  text-decoration: none;
+  font-size: 0.95rem;
+}
+
+.chapter-nav a:hover {
+  text-decoration: underline;
+}
+
+.back-link {
+  display: inline-block;
+  margin-bottom: 1.5rem;
+  color: var(--accent);
+  text-decoration: none;
+  font-size: 0.9rem;
+}
+
+.back-link:hover {
+  text-decoration: underline;
+}
+
+.author-section {
+  background: var(--code-bg);
+  border-radius: 8px;
+  padding: 1.5rem;
+}
+
+.author-section h1, .author-section h2, .author-section h3 {
+  font-size: 1.1rem;
+  margin-bottom: 0.8rem;
+}
+
+.author-section ul {
+  list-style: none;
+  padding-left: 0;
+}
+
+.author-section li {
+  margin-bottom: 0.4rem;
+  padding-left: 0;
+}
+
+footer {
+  text-align: center;
+  padding: 2rem 0;
+  font-size: 0.8rem;
+  opacity: 0.4;
+  border-top: 1px solid var(--border);
+  margin-top: 3rem;
+}
+</style>
+
+</head>
+<body>
+<div class="container">
+
+    <a href="./" class="back-link">&larr; 返回目錄</a>
+    <div class="chapter-header">
+      <div class="book-title">深山食堂開飯了</div>
+      <h1>後山有靈泉</h1>
+      <div class="chapter-num">第3章</div>
+    </div>
+    <div class="chapter-body">
+      <p>蘇念荷搬來雲嶺村的第七天，身體已經恢復了七八成。</p>
+<p>她每天清晨起來在院子裡打一套修仙界的基礎吐納功，雖然丹田裡的靈力幾乎為零，但凡人的身體經過吐納調理，氣血運行順暢了許多，面色也從蠟黃漸漸變得紅潤。</p>
+<p>這天吃過早飯，蘇念荷決定去後山走走。</p>
+<p>原身的記憶裡，小時候奶奶常帶她去後山挖野菜、撿菌子。雲嶺村背靠一座不算高的山，村裡人叫它「後龍山」，山上樹木茂密，常年雲霧繚繞，據說從前山上有座廟，後來塌了，就沒再修。</p>
+<p>蘇念荷沿著一條長滿雜草的小路往山上走。</p>
+<p>五月的山間正是最好看的時節。路兩旁的灌木叢開滿了白色的野薔薇，花瓣只有指甲蓋大小，卻密密匝匝地擠在一起，遠遠看去像一團團落在枝頭的雪。空氣裡混著青草的苦香、泥土的腥甜，以及一種說不出名字的清冽氣息——</p>
+<p>蘇念荷忽然停下了腳步。</p>
+<p>她的鼻尖微微翕動，那一縷殘存的靈識像一根被撥動的琴弦，發出了極其微弱的嗡鳴。</p>
+<p>靈氣。</p>
+<p>非常稀薄，稀薄到幾乎可以忽略不計，但確確實實是靈氣。</p>
+<p>蘇念荷在修仙界待了一百五十年，對靈氣的敏感度早已刻進了骨子裡。這一絲靈氣波動放在修仙界連門檻都摸不著，但在這個靈氣幾乎枯竭的現代世界，無異於沙漠裡發現了一眼泉水。</p>
+<p>她循著那若有若無的靈氣波動，離開小路，鑽進了旁邊的樹林。</p>
+<p>山裡的樹長得很密，頭頂的樹冠交織在一起，把陽光切割成無數碎片撒在地上。腳下是厚厚的落葉層，踩上去鬆軟得像地毯，偶爾有蘑菇從落葉間探出圓滾滾的小腦袋。</p>
+<p>蘇念荷走了大約一刻鐘，穿過一片竹林，眼前忽然開闊起來。</p>
+<p>面前是一塊被巨石圍成半圓形的凹地，像是山體在某個遙遠的年代塌陷後形成的天然石室。三面是長滿青苔的石壁，石壁上垂掛著密密麻麻的藤蔓和蕨類植物，綠得發黑。石壁的底部有一個不起眼的縫隙，一股細細的水流從縫隙裡滲出來，匯成一個不到一米寬的小水潭。</p>
+<p>水潭很淺，潭底鋪著細碎的白色石子，水清澈見底，清到連石子上的紋路都看得一清二楚。</p>
+<p>靈氣就是從這裡散發出來的。</p>
+<p>蘇念荷蹲在水潭邊，將那一絲殘存的靈識小心翼翼地探入水中。</p>
+<p>靈識接觸到泉水的瞬間，她的瞳孔微微收縮。</p>
+<p>這水裡確實含有靈氣。極其稀薄，大約只有修仙界最低等靈泉的千分之一濃度，但它是活的——靈氣在水分子間緩緩流轉，形成了一個微型的自然循環。這說明泉眼深處連通著某種天然的靈脈，即便靈氣濃度低得可憐，卻能源源不斷地補充。</p>
+<p>在靈氣枯竭的現代世界裡，這簡直就是一個奇蹟。</p>
+<p>蘇念荷抑制住內心的激動，伸手捧起一掬泉水。</p>
+<p>水很涼，涼得像融化的雪，但入手的觸感卻異常柔滑，像是液態的絲綢。她低頭喝了一口——</p>
+<p>甘甜。</p>
+<p>不是糖水的那種甜，是一種從舌根深處漫上來的、帶著礦石和草木氣息的清甜。水滑過喉嚨時幾乎沒有任何阻礙，像一尾小魚游進了胃裡，然後化作一股暖流，順著經脈緩緩擴散到四肢百骸。</p>
+<p>蘇念荷閉上眼睛，感受著那一丁點靈氣在體內流轉。丹田裡殘存的靈識像被澆了雨的乾涸種子，微微顫動了一下。</p>
+<p>她又喝了一口。</p>
+<p>然後又喝了一口。</p>
+<p>然後她意識到自己已經趴在潭邊咕嘟咕嘟喝了好幾大口了。</p>
+<p>……一百五十年的食修宗師體面何在。</p>
+<p>蘇念荷直起身，用袖子擦了擦嘴角的水漬，故作鎮定地環顧四周。</p>
+<p>幸好沒人看到。</p>
+<p>她站起來，開始仔細觀察水潭周圍的環境。石壁上的苔蘚比山裡其他地方長得更密更綠，蕨類植物的葉片舒展得格外茂盛，有幾株野草甚至開出了在這個海拔不該出現的花。泉水滋養過的土地和植被，明顯比周圍更有生機。</p>
+<p>如果用這泉水來做飯——</p>
+<p>蘇念荷的腦子裡瞬間閃過無數念頭。</p>
+<p>靈泉水的靈氣濃度雖然低，但對凡人來說已經綽綽有餘。在修仙界，她曾用百倍濃度的靈泉水烹製靈膳，效果是直接提升修為。而在現代，即便只有這麼一點點靈氣，配合食修手法引導滲透，做出來的食物也足以調理凡人的身體——舒筋活絡、養顏潤膚、增強免疫力，甚至對一些慢性病症都可能有緩解作用。</p>
+<p>她找了個乾淨的竹筒，在水潭裡灌滿了水，小心翼翼地帶回了家。</p>
+<p>回到廚房，蘇念荷先把灶火燒起來，往鍋裡倒了半竹筒泉水，等水燒到八十度左右時關火，取出奶奶留下的一個粗陶茶壺和兩個土碗。</p>
+<p>茶葉是劉婆婆前兩天送來的，說是村裡老李頭自家茶樹上摘的，手工炒制，粗糙得很，但勝在新鮮。蘇念荷抓了一小撮放進茶壺，沖入溫度剛好的泉水。</p>
+<p>壺嘴冒出一縷細細的白煙，帶著茶葉的清香。但不同於普通的茶香，這煙氣裡多了一絲說不清道不明的韻味，像是山間晨霧裡摻了一點花露，又像是雨後泥土上飄起的第一縷水汽，清冽、幽遠、沁人心脾。</p>
+<p>蘇念荷倒了一碗，雙手捧起來喝了一口。</p>
+<p>茶湯入口的瞬間，她閉上了眼睛。</p>
+<p>醇厚。</p>
+<p>不是高級茶葉那種層次分明的醇厚，而是一種由內而外的、渾然天成的圓潤。粗茶的苦澀被泉水的甘甜中和了大半，剩下的是一股沉穩的回甘，從舌尖慢慢蔓延到整個口腔，再順著喉嚨滑下去，在胃裡化成暖融融的一團。</p>
+<p>比修仙界的靈茶差了十萬八千里，但比她在現代喝過的所有茶都好上百倍。</p>
+<p>蘇念荷放下茶碗，眼睛亮了。</p>
+<p>如果連最粗糙的茶葉都能有這種效果，那用靈泉水配合食修手法來煮粥、做菜、熬湯呢？</p>
+<p>她的腦海中浮現出一幅畫面：灶火燒得旺旺的，鍋裡咕嘟咕嘟冒著泡，香氣從廚房飄到院子裡，飄到小路上，飄到整個雲嶺村——</p>
+<p>蘇念荷嘴角微微上揚。</p>
+<p>食修宗師不做飯，那跟鹹魚有什麼區別？</p>
+<p>就算沒有靈米、沒有仙蠶絲粉、沒有鳳髓，就算只有最普通的柴米油鹽——只要有這一眼靈泉，她依然可以做出讓人心滿意足的一頓飯。</p>
+<p>她站起身，走到院子裡，深深吸了一口山間的空氣。</p>
+<p>天很藍，雲很白，後龍山的輪廓在夕陽裡鍍了一層金邊。院子裡的棗樹上，幾隻麻雀嘰嘰喳喳地開著晚間的會議。</p>
+<p>蘇念荷忽然覺得，渡劫失敗也不全是壞事。</p>
+<p>至少她現在有一眼靈泉、一座灶臺、一本食譜，以及——</p>
+<p>一個可以重新開始的地方。</p>
+<p>明天去後山多取些水回來。</p>
+<p>然後——做飯。</p>
+    </div>
+    <div class="chapter-nav">
+      <a href="ch002.html">&larr; 上一章</a>
+      <a href="ch004.html">下一章 &rarr;</a>
+    </div>
+</div>
+<footer><p>小說閱讀站</p></footer>
+</body>
+</html>

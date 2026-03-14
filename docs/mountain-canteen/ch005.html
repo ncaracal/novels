@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>不請自來的肥橘 - 深山食堂開飯了</title>
+<style>
+:root {
+  --bg: #faf8f5;
+  --text: #2c2c2c;
+  --accent: #8b6914;
+  --card-bg: #fff;
+  --border: #e8e0d4;
+  --shadow: rgba(0,0,0,0.06);
+  --code-bg: #f5f0e8;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #1a1a1a;
+    --text: #e0dcd6;
+    --accent: #d4a530;
+    --card-bg: #252525;
+    --border: #3a3a3a;
+    --shadow: rgba(0,0,0,0.3);
+    --code-bg: #2a2520;
+  }
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: "Noto Serif TC", "Source Han Serif TC", "PMingLiU", serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.9;
+  min-height: 100vh;
+}
+
+.container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 2rem 1.5rem;
+}
+
+header {
+  text-align: center;
+  padding: 3rem 0 2rem;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 2rem;
+}
+
+header h1 {
+  font-size: 2.2rem;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  color: var(--accent);
+}
+
+header p {
+  margin-top: 0.5rem;
+  font-size: 0.95rem;
+  opacity: 0.7;
+}
+
+.book-card {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 1.8rem;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 2px 8px var(--shadow);
+  transition: transform 0.2s;
+}
+
+.book-card:hover {
+  transform: translateY(-2px);
+}
+
+.book-card h2 {
+  font-size: 1.5rem;
+  margin-bottom: 0.3rem;
+}
+
+.book-card h2 a {
+  color: var(--text);
+  text-decoration: none;
+}
+
+.book-card h2 a:hover {
+  color: var(--accent);
+}
+
+.book-card .meta {
+  font-size: 0.85rem;
+  opacity: 0.6;
+  margin-bottom: 1rem;
+}
+
+.book-card .abstract-preview {
+  font-size: 0.95rem;
+  line-height: 1.8;
+}
+
+/* Book page */
+.book-header {
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.book-header h1 {
+  font-size: 2rem;
+  color: var(--accent);
+}
+
+.book-header .author-name {
+  font-size: 1rem;
+  opacity: 0.7;
+  margin-top: 0.3rem;
+}
+
+.section {
+  margin-bottom: 2.5rem;
+}
+
+.section h2 {
+  font-size: 1.3rem;
+  color: var(--accent);
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.toc-list {
+  list-style: none;
+  counter-reset: chapter;
+}
+
+.toc-list li {
+  counter-increment: chapter;
+  margin-bottom: 0.5rem;
+}
+
+.toc-list li a {
+  color: var(--text);
+  text-decoration: none;
+  display: flex;
+  align-items: baseline;
+  gap: 0.8rem;
+  padding: 0.5rem 0.8rem;
+  border-radius: 4px;
+  transition: background 0.15s;
+}
+
+.toc-list li a:hover {
+  background: var(--code-bg);
+  color: var(--accent);
+}
+
+.toc-list li a::before {
+  content: "第" counter(chapter, cjk-ideographic) "章";
+  font-size: 0.85rem;
+  opacity: 0.5;
+  flex-shrink: 0;
+}
+
+/* Chapter page */
+.chapter-header {
+  text-align: center;
+  padding: 2rem 0;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 2rem;
+}
+
+.chapter-header .book-title {
+  font-size: 0.9rem;
+  opacity: 0.5;
+}
+
+.chapter-header h1 {
+  font-size: 1.8rem;
+  margin-top: 0.5rem;
+}
+
+.chapter-header .chapter-num {
+  font-size: 0.85rem;
+  color: var(--accent);
+  margin-top: 0.3rem;
+}
+
+.chapter-body {
+  font-size: 1.05rem;
+  text-align: justify;
+}
+
+.chapter-body p {
+  margin-bottom: 1.2rem;
+  text-indent: 2em;
+}
+
+.chapter-body p:first-child {
+  text-indent: 0;
+}
+
+.chapter-nav {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 3rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--border);
+}
+
+.chapter-nav a {
+  color: var(--accent);
+  text-decoration: none;
+  font-size: 0.95rem;
+}
+
+.chapter-nav a:hover {
+  text-decoration: underline;
+}
+
+.back-link {
+  display: inline-block;
+  margin-bottom: 1.5rem;
+  color: var(--accent);
+  text-decoration: none;
+  font-size: 0.9rem;
+}
+
+.back-link:hover {
+  text-decoration: underline;
+}
+
+.author-section {
+  background: var(--code-bg);
+  border-radius: 8px;
+  padding: 1.5rem;
+}
+
+.author-section h1, .author-section h2, .author-section h3 {
+  font-size: 1.1rem;
+  margin-bottom: 0.8rem;
+}
+
+.author-section ul {
+  list-style: none;
+  padding-left: 0;
+}
+
+.author-section li {
+  margin-bottom: 0.4rem;
+  padding-left: 0;
+}
+
+footer {
+  text-align: center;
+  padding: 2rem 0;
+  font-size: 0.8rem;
+  opacity: 0.4;
+  border-top: 1px solid var(--border);
+  margin-top: 3rem;
+}
+</style>
+
+</head>
+<body>
+<div class="container">
+
+    <a href="./" class="back-link">&larr; 返回目錄</a>
+    <div class="chapter-header">
+      <div class="book-title">深山食堂開飯了</div>
+      <h1>不請自來的肥橘</h1>
+      <div class="chapter-num">第5章</div>
+    </div>
+    <div class="chapter-body">
+      <p>蘇念荷做了一個夢。</p>
+<p>夢裡她又站在食修宗的大殿裡，面前擺著一百零八道靈膳，每道菜都散發著五彩靈光，整個大殿被照得如同白晝。宗主坐在上首，捋著白鬍子連連點頭，說「念魚啊，你的廚道已臻化境」。</p>
+<p>然後一隻巨大的橘色毛球從天而降，砸在了她精心擺盤的靈膳上，把一百零八道菜碾了個稀碎。</p>
+<p>蘇念荷驚醒了。</p>
+<p>清晨的光透過窗簾的縫隙照進來，院子裡有鳥叫。她揉了揉眼睛，翻身坐起來。</p>
+<p>然後她聽到了廚房裡傳來的聲響。</p>
+<p>「啪嗒。」</p>
+<p>像是什麼東西掉在地上的聲音。</p>
+<p>蘇念荷皺了皺眉。她一個人住在這裡，昨晚睡前明明把門窗都關好了。她輕手輕腳地下了床，踩著拖鞋走向廚房。</p>
+<p>廚房的門半開著——她記得自己關了門的。</p>
+<p>蘇念荷把門推開，借著窗外的晨光看清了廚房裡的景象，然後整個人定在了門口。</p>
+<p>灶臺邊蹲著一隻貓。</p>
+<p>不，說「一隻」太輕描淡寫了。</p>
+<p>那是一團。一團巨大的、橘色的、圓滾滾的毛球，蹲坐在灶臺邊的地面上，佔據了大約半個平方米的面積。它的身形大得離譜，光是肚子就有一個小西瓜那麼圓，四條短腿幾乎被肥厚的肚皮遮住了，只露出四個圓滾滾的爪子，像四顆橘色的糯米糰子。</p>
+<p>橘貓的毛色是那種飽和度很高的深橘，背上有幾道淺色的虎斑紋，肚皮則是奶白色的，毛茸茸地鋪在地上。一張大餅臉上，兩隻琥珀色的圓眼睛正瞪著蘇念荷，那眼神——</p>
+<p>怎麼說呢。</p>
+<p>如果「不屑」是一種藝術，這隻貓已經修煉到了宗師境界。</p>
+<p>它看蘇念荷的眼神，就像是一位閱盡千帆的老饕看到了一個剛學會切菜的學徒——充滿了禮貌而疏離的嫌棄。</p>
+<p>蘇念荷注意到灶臺上原本放著的一隻搪瓷杯不見了，低頭一看，搪瓷杯正躺在地上，裡面的水灑了一地。</p>
+<p>剛才的「啪嗒」聲破案了。</p>
+<p>「你是……誰家的貓？」蘇念荷蹲下身，試探性地伸出一根手指。</p>
+<p>橘貓看了她一眼，把大餅臉往旁邊偏了二十度，下巴微微抬起，一副「本座不接受搭訕」的架勢。尾巴在地上慢悠悠地甩了一下，啪嗒啪嗒，帶起幾粒灰塵。</p>
+<p>蘇念荷的手指停在半空中。</p>
+<p>然後她做了一件事——她把那一縷殘存的靈識，小心翼翼地探了過去。</p>
+<p>探到的瞬間，她愣住了。</p>
+<p>這隻貓的體內有靈力波動。</p>
+<p>非常微弱，比靈泉水裡的靈氣還要稀薄，但確確實實存在著。而且這靈力的質感和靈泉裡的很不一樣——泉水中的靈氣像是流水，而這隻貓體內的靈力像是泥土，厚重、沉穩，帶著一種古老而深沉的氣息。</p>
+<p>像是……山的氣息。</p>
+<p>蘇念荷瞳孔微縮。她在修仙界的典籍裡讀到過這種存在——山靈。每一座山都有自己的靈，是山川日月萬年孕育的產物。修仙界的山靈多半是氣態或虛體的存在，擁有不可思議的力量。</p>
+<p>但在靈氣枯竭的現代世界，一座小山的山靈竟然以一隻橘貓的形態出現了。</p>
+<p>而且——還這麼肥。</p>
+<p>橘貓似乎感應到了她的靈識探查，大餅臉上閃過一絲顯而易見的惱怒。它猛地抬起右前爪，以一種與它圓滾滾的體型完全不符的迅捷速度，「啪」的一巴掌拍在灶臺邊沿的另一個杯子上。</p>
+<p>杯子飛了出去，在空中翻了兩個跟頭，「啪嗒」一聲摔在地上，碎成了三瓣。</p>
+<p>蘇念荷：「……」</p>
+<p>橘貓收回爪子，昂起頭，琥珀色的眼睛直直地瞪著她，彷彿在說——「未經允許就探查本座，你是不是很有禮貌？」</p>
+<p>蘇念荷看著地上的碎杯子，又看了看氣鼓鼓的橘貓，無奈地嘆了口氣。</p>
+<p>「好吧，是我的錯，不該偷看你。」她站起身，把地上的碎片撿起來扔進垃圾桶，「你到底是怎麼進來的？」</p>
+<p>橘貓不理她，把臉偏向另一邊。肥嘟嘟的臉頰隨著這個動作抖了抖，像一碗被晃動的橘色布丁。</p>
+<p>蘇念荷決定換一個策略。</p>
+<p>作為一個食修宗師，她深知一個真理——這世上沒有什麼問題是一頓好飯解決不了的。如果有，那就做兩頓。</p>
+<p>她轉身打開水缸，舀了兩瓢靈泉水倒進鍋裡。又從劉婆婆昨天送來的食材裡找出兩條小溪魚——劉婆婆說是她老伴兒在村口的小溪裡釣的，只有巴掌大，但肉嫩刺少。</p>
+<p>蘇念荷手起刀落，三兩下就把魚處理好了。魚肉剔成薄片，魚骨和魚頭留下來熬湯底。</p>
+<p>橘貓的耳朵微微動了一下。</p>
+<p>蘇念荷假裝沒看到，繼續處理食材。她把昨天剩下的米飯拿出來，加入泉水和魚骨一起下鍋，大火燒開後轉小火慢熬。在等粥底熬好的間隙，她把魚片用一點鹽和薑汁醃了一下，又切了一小把翠綠的蔥花。</p>
+<p>魚骨在鍋裡慢慢釋放出鮮味，泉水的靈氣在加熱過程中被逼出來，和魚鮮融合在一起，形成了一種讓人無法抗拒的香氣——不是那種猛烈的衝擊，而是一種溫柔的、持續不斷的誘惑，像有人在你耳邊不停地低語：「來一口嘛，就一口。」</p>
+<p>橘貓的鼻子動了。</p>
+<p>動了好幾下。</p>
+<p>它依然保持著高傲的姿態，大餅臉朝著牆壁的方向，但身體已經不由自主地微微轉向了灶臺的方向。肥碩的身軀隨著呼吸一起一伏，鼻翼翕動的頻率越來越快。</p>
+<p>蘇念荷在心裡笑了一下。</p>
+<p>粥底熬好後，她把魚片均勻地鋪在粥面上，蓋上鍋蓋燜了一分鐘。這一分鐘之內，魚片被粥的餘熱恰好燙熟，肉質會保持最嫩最滑的狀態，鮮味也會完整地鎖在薄薄的魚片裡。</p>
+<p>揭開鍋蓋。</p>
+<p>蘇念荷往粥上撒了蔥花、幾滴麻油，一碗魚片粥就完成了。</p>
+<p>粥面上飄著一層薄薄的油光，雪白的魚片微微捲曲，像幾瓣落在雲朵上的花瓣。翠綠的蔥花零星點綴，麻油的香氣和魚鮮的氣息纏繞在一起，化作一縷溫暖的白煙，悠悠地飄向灶臺邊那團橘色的毛球。</p>
+<p>橘貓終於繃不住了。</p>
+<p>它「喵」的一聲——</p>
+<p>不，那不是普通的「喵」。那聲音低沉而短促，帶著一種與生俱來的威嚴感，像是國王在說「准奏」，又像是美食評論家在說「可以端上來了」。</p>
+<p>蘇念荷盛了一碗，放在地上。</p>
+<p>橘貓看了看碗，又看了看蘇念荷，琥珀色的眼睛裡閃過一絲極其複雜的表情——大概是在「本座的尊嚴」和「這碗粥真的好香」之間做激烈的思想鬥爭。</p>
+<p>思想鬥爭持續了大約三秒鐘。</p>
+<p>然後尊嚴敗了。</p>
+<p>橘貓邁著小碎步走到碗前——它走路的方式非常有趣，因為太胖了，兩條後腿走起來會微微外八，肥嘟嘟的肚皮幾乎擦著地面，整個身體像一艘橘色的小船在地面上緩緩航行。</p>
+<p>它低下頭，先是用鼻子湊近碗面嗅了嗅，然後伸出粉色的小舌頭，非常矜持地舔了一口粥湯。</p>
+<p>停頓。</p>
+<p>橘貓的身體僵住了大約一秒鐘。</p>
+<p>然後它開始瘋狂地吃。</p>
+<p>大餅臉幾乎整個埋進碗裡，粉色的舌頭飛速攪動，粥湯和魚片以肉眼可見的速度減少。它吃得又快又急，兩邊的腮幫子鼓得圓圓的，偶爾發出「呼嚕呼嚕」的滿足聲。</p>
+<p>不到兩分鐘，碗見底了。</p>
+<p>橘貓把碗底舔得像洗過一樣乾淨，然後抬起頭，嘴角粘著一粒米和半片蔥花，琥珀色的眼睛裡帶著一種劫後餘生般的迷離和滿足。</p>
+<p>但這種表情只持續了大約兩秒鐘。</p>
+<p>然後橘貓像是忽然想起了什麼，猛地收起滿足的表情，重新換上那副「本座只是隨便嚐嚐」的高傲面孔。它用爪子擦了擦嘴角，昂首闊步地走到灶臺邊，蹲坐下來，尾巴在身前優雅地繞了一圈。</p>
+<p>那個姿勢和位置的選擇非常有講究——正好在灶臺旁邊，離火最近，也離食物的出口最近。</p>
+<p>一副「本座就住這了，你有意見嗎？」的架勢。</p>
+<p>蘇念荷看著這只吃完了還嘴硬的肥橘貓，忍不住笑出了聲。</p>
+<p>「行吧，」她對著橘貓說，「你要住就住。不過你得有個名字——我叫你什麼？」</p>
+<p>橘貓看了她一眼，把臉偏向灶臺的方向。</p>
+<p>「叫你橘子？」</p>
+<p>貓耳朵往後壓了壓，表示嫌棄。</p>
+<p>「橘大人？」</p>
+<p>尾巴不耐煩地甩了一下。</p>
+<p>「阿橘？」</p>
+<p>橘貓的耳朵動了動，嘴巴微微張開，露出一個幾乎看不出來的呵欠。</p>
+<p>在貓的語言體系裡，這大概算是「不反對」的最高評價了。</p>
+<p>「那就阿橘吧。」蘇念荷蹲下身，和橘貓平視，「阿橘，既然你是後龍山的山靈，那我在這裡開食堂，也算是在你的地盤上討生活。多多關照了。」</p>
+<p>阿橘瞥了她一眼，用爪子撥了撥空碗，碗在地上轉了一圈，發出清脆的聲響。</p>
+<p>意思很明確——別廢話，再來一碗。</p>
+<p>蘇念荷站起身，認命地走向灶臺。</p>
+<p>她一邊往鍋裡添水，一邊忍不住在心裡感嘆——一百五十年的食修宗師，到頭來竟然要給一隻肥橘貓當廚子。</p>
+<p>灶火燒得旺旺的，水汽蒸騰起來，廚房裡又彌漫開那股溫暖的粥香。阿橘蹲在灶臺邊，肥碩的身體像一尊橘色的雕塑，琥珀色的眼睛半瞇著，被灶火映得像兩顆琥珀寶石。</p>
+<p>蘇念荷忽然覺得，這個畫面好像在哪裡見過。</p>
+<p>對了。</p>
+<p>奶奶的食譜扉頁上，用圓珠筆畫了一幅很潦草的簡筆畫——一個灶臺，灶臺邊蹲著一隻胖胖的貓。</p>
+<p>原身小時候問過奶奶那是什麼，奶奶笑著說：「那是灶王爺派來監工的貓，有它在，做的飯才會好吃。」</p>
+<p>蘇念荷低頭看了看灶臺邊的阿橘，又想起了那幅簡筆畫，嘴角微微上揚。</p>
+<p>「阿橘，」她說，「歡迎監工。」</p>
+<p>阿橘傲慢地哼了一聲，算是回應。</p>
+<p>窗外的晨光灑進來，落在一人一貓身上，溫暖而安寧。院子裡的棗樹上，麻雀們又開始了新一天的嘰嘰喳喳。遠處的後龍山在薄霧中露出黛青色的輪廓，像一幅還沒畫完的水墨畫。</p>
+<p>蘇念荷的食堂，就這樣多了一位不請自來的、脾氣很大的、飯量驚人的——監工。</p>
+<p>鍋裡的粥又開始冒泡了。</p>
+<p>新的一天，開飯了。</p>
+    </div>
+    <div class="chapter-nav">
+      <a href="ch004.html">&larr; 上一章</a>
+      <a href="ch006.html">下一章 &rarr;</a>
+    </div>
+</div>
+<footer><p>小說閱讀站</p></footer>
+</body>
+</html>

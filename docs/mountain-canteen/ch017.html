@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>阿橘開口了 - 深山食堂開飯了</title>
+<style>
+:root {
+  --bg: #faf8f5;
+  --text: #2c2c2c;
+  --accent: #8b6914;
+  --card-bg: #fff;
+  --border: #e8e0d4;
+  --shadow: rgba(0,0,0,0.06);
+  --code-bg: #f5f0e8;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #1a1a1a;
+    --text: #e0dcd6;
+    --accent: #d4a530;
+    --card-bg: #252525;
+    --border: #3a3a3a;
+    --shadow: rgba(0,0,0,0.3);
+    --code-bg: #2a2520;
+  }
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: "Noto Serif TC", "Source Han Serif TC", "PMingLiU", serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.9;
+  min-height: 100vh;
+}
+
+.container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 2rem 1.5rem;
+}
+
+header {
+  text-align: center;
+  padding: 3rem 0 2rem;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 2rem;
+}
+
+header h1 {
+  font-size: 2.2rem;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  color: var(--accent);
+}
+
+header p {
+  margin-top: 0.5rem;
+  font-size: 0.95rem;
+  opacity: 0.7;
+}
+
+.book-card {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 1.8rem;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 2px 8px var(--shadow);
+  transition: transform 0.2s;
+}
+
+.book-card:hover {
+  transform: translateY(-2px);
+}
+
+.book-card h2 {
+  font-size: 1.5rem;
+  margin-bottom: 0.3rem;
+}
+
+.book-card h2 a {
+  color: var(--text);
+  text-decoration: none;
+}
+
+.book-card h2 a:hover {
+  color: var(--accent);
+}
+
+.book-card .meta {
+  font-size: 0.85rem;
+  opacity: 0.6;
+  margin-bottom: 1rem;
+}
+
+.book-card .abstract-preview {
+  font-size: 0.95rem;
+  line-height: 1.8;
+}
+
+/* Book page */
+.book-header {
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.book-header h1 {
+  font-size: 2rem;
+  color: var(--accent);
+}
+
+.book-header .author-name {
+  font-size: 1rem;
+  opacity: 0.7;
+  margin-top: 0.3rem;
+}
+
+.section {
+  margin-bottom: 2.5rem;
+}
+
+.section h2 {
+  font-size: 1.3rem;
+  color: var(--accent);
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.toc-list {
+  list-style: none;
+  counter-reset: chapter;
+}
+
+.toc-list li {
+  counter-increment: chapter;
+  margin-bottom: 0.5rem;
+}
+
+.toc-list li a {
+  color: var(--text);
+  text-decoration: none;
+  display: flex;
+  align-items: baseline;
+  gap: 0.8rem;
+  padding: 0.5rem 0.8rem;
+  border-radius: 4px;
+  transition: background 0.15s;
+}
+
+.toc-list li a:hover {
+  background: var(--code-bg);
+  color: var(--accent);
+}
+
+.toc-list li a::before {
+  content: "第" counter(chapter, cjk-ideographic) "章";
+  font-size: 0.85rem;
+  opacity: 0.5;
+  flex-shrink: 0;
+}
+
+/* Chapter page */
+.chapter-header {
+  text-align: center;
+  padding: 2rem 0;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 2rem;
+}
+
+.chapter-header .book-title {
+  font-size: 0.9rem;
+  opacity: 0.5;
+}
+
+.chapter-header h1 {
+  font-size: 1.8rem;
+  margin-top: 0.5rem;
+}
+
+.chapter-header .chapter-num {
+  font-size: 0.85rem;
+  color: var(--accent);
+  margin-top: 0.3rem;
+}
+
+.chapter-body {
+  font-size: 1.05rem;
+  text-align: justify;
+}
+
+.chapter-body p {
+  margin-bottom: 1.2rem;
+  text-indent: 2em;
+}
+
+.chapter-body p:first-child {
+  text-indent: 0;
+}
+
+.chapter-nav {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 3rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--border);
+}
+
+.chapter-nav a {
+  color: var(--accent);
+  text-decoration: none;
+  font-size: 0.95rem;
+}
+
+.chapter-nav a:hover {
+  text-decoration: underline;
+}
+
+.back-link {
+  display: inline-block;
+  margin-bottom: 1.5rem;
+  color: var(--accent);
+  text-decoration: none;
+  font-size: 0.9rem;
+}
+
+.back-link:hover {
+  text-decoration: underline;
+}
+
+.author-section {
+  background: var(--code-bg);
+  border-radius: 8px;
+  padding: 1.5rem;
+}
+
+.author-section h1, .author-section h2, .author-section h3 {
+  font-size: 1.1rem;
+  margin-bottom: 0.8rem;
+}
+
+.author-section ul {
+  list-style: none;
+  padding-left: 0;
+}
+
+.author-section li {
+  margin-bottom: 0.4rem;
+  padding-left: 0;
+}
+
+footer {
+  text-align: center;
+  padding: 2rem 0;
+  font-size: 0.8rem;
+  opacity: 0.4;
+  border-top: 1px solid var(--border);
+  margin-top: 3rem;
+}
+</style>
+
+</head>
+<body>
+<div class="container">
+
+    <a href="./" class="back-link">&larr; 返回目錄</a>
+    <div class="chapter-header">
+      <div class="book-title">深山食堂開飯了</div>
+      <h1>阿橘開口了</h1>
+      <div class="chapter-num">第17章</div>
+    </div>
+    <div class="chapter-body">
+      <p>雲嶺村的夜晚安靜得像一幅水墨畫。</p>
+<p>山風穿過竹林，發出沙沙的聲響，像有人在遠處翻書頁。蟲鳴此起彼伏，蛙聲從稻田那邊一波一波地傳來，織成一張密密的聲網。天上掛著一彎細細的月牙，月光被雲霧濾過，灑在院子裡，清清淡淡的，像灑了一層薄荷味的糖霜。</p>
+<p>蘇念荷睡不著。</p>
+<p>不是失眠——修行者可以十天半個月不睡覺，何況她現在丹田裡那一絲殘存的靈識已經比剛穿來時強了不少，精力充沛得很。她睡不著是因為腦子裡一直在轉一道菜。</p>
+<p>蓮子百合羹。</p>
+<p>配方她在修仙界就做過上百次了，閉著眼睛都能做。但現代的食材和修仙界不一樣，靈氣濃度差了十萬八千里，同樣的做法出來的效果大打折扣。她最近一直在嘗試調整比例，用靈泉水來補償靈氣的不足，但總覺得差了一點什麼。</p>
+<p>凌晨一點，她索性爬起來，套上一件舊棉襖，踩著拖鞋去了廚房。</p>
+<p>廚房裡的燈是一盞白熾燈泡，拉繩開關，「啪」的一聲亮了，橘黃色的光把整間屋子照得暖烘烘的。蘇念荷把靈泉水倒進砂鍋，開了小火，一邊等水燒開一邊從罐子裡取蓮子。</p>
+<p>這批蓮子是她上週在後山的靈池裡摘的，顆顆飽滿，白如凝脂，還帶著一層淡淡的靈光。百合是阿亮幫她在山坡上挖的野百合，瓣大肉厚，曬乾之後有一股淡淡的甘甜。</p>
+<p>她把蓮子和百合一起放進砂鍋，又加了兩顆冰糖和一小撮枸杞。靈泉水在砂鍋裡咕嘟咕嘟地冒著小泡，蒸氣裊裊上升，帶著蓮子特有的清雅香氣。</p>
+<p>蘇念荷拿起湯匙攪了攪，眉頭微蹙。</p>
+<p>不對。還是不對。</p>
+<p>蓮子的甜味和百合的甘味之間，缺少一個過渡。在修仙界她會加一味「月華露」——那是用千年老蓮採集月光精華凝結而成的靈露，一滴就能讓整道甜品的味道渾然天成。但在現代，哪裡去找月華露？</p>
+<p>她嘗了一口。</p>
+<p>好喝，但只是好喝。離「驚豔」差了一步。</p>
+<p>「差在哪呢……」她自言自語，又嚐了一口，讓湯汁在舌尖停留了幾秒。</p>
+<p>灶臺上，不知什麼時候多了一個毛茸茸的橘色身影。</p>
+<p>阿橘蹲在灶臺邊角，四隻爪子整整齊齊地並攏，尾巴繞到身前，姿態端莊得像一尊銅像。牠的琥珀色眼睛半睜半閉，但蘇念荷知道牠一直在看。</p>
+<p>這隻肥橘貓有一個習慣：每次蘇念荷深夜做菜，牠都會不聲不響地出現在灶臺上，蹲在那裡一看就是幾個小時。蘇念荷起初以為牠是來蹭吃的，後來發現不是——阿橘對普通的食物根本不屑一顧，只有加了靈泉水的靈食才能入牠的法眼。</p>
+<p>而且牠不是在看食物。</p>
+<p>牠是在看蘇念荷做菜。</p>
+<p>那種眼神，蘇念荷在修仙界見過。她的師父——食道至尊凌霄散人——在品鑑弟子的靈膳時，也是這種眼神。不動聲色，但什麼都看在眼裡。</p>
+<p>蘇念荷又盛了一碗蓮子百合羹，放在阿橘面前。</p>
+<p>阿橘低頭聞了聞，鬍鬚顫了顫。</p>
+<p>然後牠抬起頭，琥珀色的瞳孔在燈光下收縮了一下。</p>
+<p>「甜。」</p>
+<p>蘇念荷的手猛地一抖。</p>
+<p>湯匙從她手中滑落，在砂鍋邊沿撞了一下，發出清脆的「叮」一聲。</p>
+<p>她以為自己幻聽了。</p>
+<p>深夜的廚房裡，除了砂鍋冒泡的聲音和遠處的蟲鳴，什麼都沒有。阿橘蹲在灶臺上，依然是那副目中無人的表情，彷彿剛才什麼都沒發生。</p>
+<p>蘇念荷盯著牠看了三秒鐘。</p>
+<p>「你——」</p>
+<p>「太甜。」阿橘又開口了。</p>
+<p>這次蘇念荷聽清楚了。</p>
+<p>是一個清亮的少年音，帶著一種與生俱來的傲慢和不耐煩，像是一個被迫參加無聊聚會的貴族少爺終於忍不住開口抱怨。聲音從阿橘微微張開的嘴裡傳出來，但嘴型和聲音並不完全同步——更像是一種念力傳音，只是借了嘴巴的形式。</p>
+<p>蘇念荷瞪大了眼。</p>
+<p>她養過各種靈獸。修仙界裡，高階靈獸開口說話並不稀奇——她師父的那隻仙鶴從第一天起就能吟詩作賦，隔壁宗門的靈狐更是口若懸河到讓人想給牠塞個塞子。但那些靈獸至少都是化形期以上的修為，而阿橘——</p>
+<p>蘇念荷仔細感受了一下阿橘身上的靈氣波動。</p>
+<p>嗯……大概相當於修仙界的築基中期。</p>
+<p>一隻築基中期的山靈，能開口說話？</p>
+<p>「你——你會說話？」蘇念荷壓下心中的驚濤駭浪，努力讓自己的語氣保持平靜。</p>
+<p>阿橘瞥了她一眼，那個眼神分明在說：「本座是山靈，會說話有什麼好大驚小怪的。」</p>
+<p>但牠只說了一個字：「嗯。」</p>
+<p>蘇念荷深吸一口氣。好。冷靜。冷靜。</p>
+<p>她當了一百五十年的食修宗師，什麼場面沒見過？不就是一隻貓說話了嗎？在修仙界這連個新聞都算不上。</p>
+<p>她把砂鍋裡的蓮子百合羹又嚐了一口：「太甜？甜在哪裡？」</p>
+<p>阿橘低頭又聞了一下碗裡的羹湯，鬍鬚尖沾上了一滴湯汁。</p>
+<p>「冰糖。」牠說。停了一秒，又擠出兩個字：「多了。」</p>
+<p>蘇念荷恍然。</p>
+<p>對了。她用的靈泉水本身就帶有一絲天然的甘甜，再加兩顆冰糖確實多了。在修仙界她用的是寒玉糖，甜而不膩，和蓮子百合的清雅完美配合。但冰糖的甜太直接了，蓋住了蓮子本身的清香。</p>
+<p>「那如果我把冰糖減半，用蜂蜜替代呢？後山那窩野蜂的蜜，你覺得——」</p>
+<p>「行。」阿橘乾脆利落。</p>
+<p>蘇念荷二話不說，重新起鍋。倒水、放蓮子百合、這次只加了一小顆冰糖，最後起鍋前淋了一圈後山的野蜂蜜。蜂蜜是琥珀色的，在燈光下像液態的黃金，落進雪白的蓮子羹裡，一圈一圈地暈開。</p>
+<p>她盛了一碗，放在阿橘面前。</p>
+<p>阿橘低頭舔了一口。</p>
+<p>牠的耳朵動了一下——蘇念荷注意到了，那是一個非常微小的動作，但她養了一百五十年靈獸，太清楚這意味著什麼了。</p>
+<p>那是滿意的信號。</p>
+<p>但阿橘的嘴裡只吐出一個字：「行。」</p>
+<p>面無表情。語氣平淡。好像在評價一碗路邊攤的泡麵。</p>
+<p>蘇念荷有點不服氣了。</p>
+<p>她轉身又開始做第三道菜：靈泉桂圓紅棗茶。桂圓乾是她自己用靈氣烘的，紅棗也是後山那棵老棗樹上結的靈棗，每一顆都有鴿子蛋那麼大，甜得能拉出絲來。</p>
+<p>做好了，端到阿橘面前。</p>
+<p>阿橘聞了聞：「膩。」</p>
+<p>第四道：薄荷綠豆糕。靈泉水和的面，後山野薄荷榨的汁，綠瑩瑩的像一塊翡翠。</p>
+<p>阿橘看了一眼：「淡。」</p>
+<p>第五道：酒釀圓子。蘇念荷拿出壓箱底的手藝，用靈泉水發酵的酒釀，搓得圓潤剔透的小圓子，桂花碎和枸杞的配色漂亮得像一幅畫。</p>
+<p>阿橘嘗了一口，耳朵又動了一下。</p>
+<p>「還行。」</p>
+<p>蘇念荷注意到那個「還」字。比前面的「行」多了一個字。</p>
+<p>她正要乘勝追擊再做第六道，阿橘忽然從灶臺上跳了下來。</p>
+<p>那個跳躍動作非常優雅——以牠那個噸位來說簡直不可思議，四隻短腿在空中劃了一個漂亮的弧線，落地時無聲無息，像一片樹葉飄落。</p>
+<p>牠落地之後，甩了甩尾巴，頭也不回地朝門口走去。</p>
+<p>走到門檻的時候，丟下一個字。</p>
+<p>「睡。」</p>
+<p>然後橘色的身影消失在月光裡。</p>
+<p>蘇念荷站在灶臺前，看著空蕩蕩的門口，愣了好幾秒。</p>
+<p>然後她笑了。</p>
+<p>不是微笑，是那種憋不住的、從胸腔裡湧上來的笑，笑得眼淚都快出來了。她一手撐著灶臺，一手捂著嘴，肩膀一抖一抖的，在深夜的廚房裡笑得停不下來。</p>
+<p>修仙一百五十年，她養過凌霄宗的四翼金鵬，馴過南海的碧眼蛟龍，照顧過崑崙雪山上的九尾冰狐。那些靈獸一個比一個驕傲，一個比一個難伺候。</p>
+<p>但沒有一個——真的沒有一個——比這隻十五斤的肥橘貓更欠揍。</p>
+<p>「甜」「膩」「淡」「行」「睡」。</p>
+<p>五道菜，五個字。</p>
+<p>蘇念荷笑完之後，把阿橘嘗過的碗都收了回來。每一碗都舔得乾乾淨淨，連碗壁上的一點殘渣都沒留下。</p>
+<p>嘴上說著不好吃，碗比誰都乾淨。</p>
+<p>她把碗泡進水池裡，心想：這傢伙和修仙界的傲嬌靈獸簡直一脈相承。嘴硬心軟，死不承認好吃，但身體很誠實。</p>
+<p>蘇念荷關了燈，走回臥室。</p>
+<p>月光從窗戶照進來，照在走廊盡頭的一團橘色毛球上。阿橘已經佔據了走廊最好的位置——那塊被月光照得銀白的地板——四仰八叉地躺著，肚皮朝天，呼嚕聲震天響。</p>
+<p>十五斤的山靈，睡姿毫無尊嚴。</p>
+<p>蘇念荷輕手輕腳地走過去，彎下腰，在那個圓滾滾的肚子上輕輕戳了一下。</p>
+<p>阿橘的呼嚕聲頓了一拍，爪子無意識地撲騰了一下，然後繼續呼嚕。</p>
+<p>「晚安，鑑菜官。」蘇念荷小聲說。</p>
+<p>回到床上，她躺下來，盯著天花板。</p>
+<p>一百五十年了。從踏入食道的第一天起，她就是一個人在廚房裡琢磨。師父只教基礎，更高深的菜式全靠自己領悟。她試過無數次，失敗過無數次，有些菜反反覆覆做了上千遍才成功。</p>
+<p>從來沒有人在旁邊說一句「甜了」或者「淡了」。</p>
+<p>那些靈獸們吃她做的靈膳，只會發出滿足的吼叫，從來不會評價。凌霄宗的弟子們更不敢——她是宗師，誰敢說她做的菜不好吃？</p>
+<p>結果到了這個靈氣匱乏的現代，一隻築基中期的山靈，蹲在灶臺上用一個字一個字地嫌棄她的手藝。</p>
+<p>蘇念荷翻了個身，把臉埋進枕頭裡，無聲地笑了很久。</p>
+<p>窗外，月牙沉進了雲層，蛙聲漸漸稀了。</p>
+<p>雲嶺村的夜晚重新安靜下來，只有廚房方向還飄著一點殘餘的蓮子百合羹的香氣，甜甜的，暖暖的，在夜風裡慢慢散開，像一個溫柔的、不肯承認自己溫柔的擁抱。</p>
+    </div>
+    <div class="chapter-nav">
+      <a href="ch016.html">&larr; 上一章</a>
+      <a href="ch018.html">下一章 &rarr;</a>
+    </div>
+</div>
+<footer><p>小說閱讀站</p></footer>
+</body>
+</html>

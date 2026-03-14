@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>第一鍋靈粥 - 深山食堂開飯了</title>
+<style>
+:root {
+  --bg: #faf8f5;
+  --text: #2c2c2c;
+  --accent: #8b6914;
+  --card-bg: #fff;
+  --border: #e8e0d4;
+  --shadow: rgba(0,0,0,0.06);
+  --code-bg: #f5f0e8;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #1a1a1a;
+    --text: #e0dcd6;
+    --accent: #d4a530;
+    --card-bg: #252525;
+    --border: #3a3a3a;
+    --shadow: rgba(0,0,0,0.3);
+    --code-bg: #2a2520;
+  }
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: "Noto Serif TC", "Source Han Serif TC", "PMingLiU", serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.9;
+  min-height: 100vh;
+}
+
+.container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 2rem 1.5rem;
+}
+
+header {
+  text-align: center;
+  padding: 3rem 0 2rem;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 2rem;
+}
+
+header h1 {
+  font-size: 2.2rem;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  color: var(--accent);
+}
+
+header p {
+  margin-top: 0.5rem;
+  font-size: 0.95rem;
+  opacity: 0.7;
+}
+
+.book-card {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 1.8rem;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 2px 8px var(--shadow);
+  transition: transform 0.2s;
+}
+
+.book-card:hover {
+  transform: translateY(-2px);
+}
+
+.book-card h2 {
+  font-size: 1.5rem;
+  margin-bottom: 0.3rem;
+}
+
+.book-card h2 a {
+  color: var(--text);
+  text-decoration: none;
+}
+
+.book-card h2 a:hover {
+  color: var(--accent);
+}
+
+.book-card .meta {
+  font-size: 0.85rem;
+  opacity: 0.6;
+  margin-bottom: 1rem;
+}
+
+.book-card .abstract-preview {
+  font-size: 0.95rem;
+  line-height: 1.8;
+}
+
+/* Book page */
+.book-header {
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.book-header h1 {
+  font-size: 2rem;
+  color: var(--accent);
+}
+
+.book-header .author-name {
+  font-size: 1rem;
+  opacity: 0.7;
+  margin-top: 0.3rem;
+}
+
+.section {
+  margin-bottom: 2.5rem;
+}
+
+.section h2 {
+  font-size: 1.3rem;
+  color: var(--accent);
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.toc-list {
+  list-style: none;
+  counter-reset: chapter;
+}
+
+.toc-list li {
+  counter-increment: chapter;
+  margin-bottom: 0.5rem;
+}
+
+.toc-list li a {
+  color: var(--text);
+  text-decoration: none;
+  display: flex;
+  align-items: baseline;
+  gap: 0.8rem;
+  padding: 0.5rem 0.8rem;
+  border-radius: 4px;
+  transition: background 0.15s;
+}
+
+.toc-list li a:hover {
+  background: var(--code-bg);
+  color: var(--accent);
+}
+
+.toc-list li a::before {
+  content: "第" counter(chapter, cjk-ideographic) "章";
+  font-size: 0.85rem;
+  opacity: 0.5;
+  flex-shrink: 0;
+}
+
+/* Chapter page */
+.chapter-header {
+  text-align: center;
+  padding: 2rem 0;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 2rem;
+}
+
+.chapter-header .book-title {
+  font-size: 0.9rem;
+  opacity: 0.5;
+}
+
+.chapter-header h1 {
+  font-size: 1.8rem;
+  margin-top: 0.5rem;
+}
+
+.chapter-header .chapter-num {
+  font-size: 0.85rem;
+  color: var(--accent);
+  margin-top: 0.3rem;
+}
+
+.chapter-body {
+  font-size: 1.05rem;
+  text-align: justify;
+}
+
+.chapter-body p {
+  margin-bottom: 1.2rem;
+  text-indent: 2em;
+}
+
+.chapter-body p:first-child {
+  text-indent: 0;
+}
+
+.chapter-nav {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 3rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--border);
+}
+
+.chapter-nav a {
+  color: var(--accent);
+  text-decoration: none;
+  font-size: 0.95rem;
+}
+
+.chapter-nav a:hover {
+  text-decoration: underline;
+}
+
+.back-link {
+  display: inline-block;
+  margin-bottom: 1.5rem;
+  color: var(--accent);
+  text-decoration: none;
+  font-size: 0.9rem;
+}
+
+.back-link:hover {
+  text-decoration: underline;
+}
+
+.author-section {
+  background: var(--code-bg);
+  border-radius: 8px;
+  padding: 1.5rem;
+}
+
+.author-section h1, .author-section h2, .author-section h3 {
+  font-size: 1.1rem;
+  margin-bottom: 0.8rem;
+}
+
+.author-section ul {
+  list-style: none;
+  padding-left: 0;
+}
+
+.author-section li {
+  margin-bottom: 0.4rem;
+  padding-left: 0;
+}
+
+footer {
+  text-align: center;
+  padding: 2rem 0;
+  font-size: 0.8rem;
+  opacity: 0.4;
+  border-top: 1px solid var(--border);
+  margin-top: 3rem;
+}
+</style>
+
+</head>
+<body>
+<div class="container">
+
+    <a href="./" class="back-link">&larr; 返回目錄</a>
+    <div class="chapter-header">
+      <div class="book-title">深山食堂開飯了</div>
+      <h1>第一鍋靈粥</h1>
+      <div class="chapter-num">第4章</div>
+    </div>
+    <div class="chapter-body">
+      <p>清晨五點半，天色還沒有完全亮透，蘇念荷就起來了。</p>
+<p>她拎著兩個竹筒去後山取泉水，來回走了三趟，把家裡那口大水缸裝了個半滿。泉水在缸裡泛著微微的瑩光——不仔細看根本看不出來，但蘇念荷的靈識能清楚地感應到那一絲絲靈氣在水中緩緩流轉，像無數細小的銀色魚苗在游動。</p>
+<p>回到廚房時，東邊的天際已經被朝霞染成了橘粉色。</p>
+<p>灶臺上擺著她昨天準備好的食材：劉婆婆送來的新米、後山採的幾把野菜、水缸裡養了一夜的泉水。</p>
+<p>蘇念荷洗了手，在灶前站定，深吸一口氣。</p>
+<p>一百五十年了，她的身體雖然換了，但手上的記憶還在。</p>
+<p>她先把米淘洗乾淨。普通人淘米就是加水搓兩下把灰塵洗掉，但蘇念荷不一樣。她用指尖輕輕撥動米粒，讓每一粒米都在水中翻滾一圈，同時以靈識感應米粒的狀態——這些米是今年的新米，顆粒飽滿，澱粉含量適中，有一股淡淡的稻花香。品質算不上頂級，但勝在新鮮，適合煮粥。</p>
+<p>淘好的米用泉水浸泡了半個時辰，讓米粒充分吸水膨脹。蘇念荷趁這段時間處理野菜。</p>
+<p>後山採回來的野菜有三種：薺菜、馬齒莧和一小把嫩蕨芽。都是最常見的山野菜，但因為生長在靈泉附近，植物纖維裡含著一絲若有若無的靈氣。</p>
+<p>蘇念荷把薺菜和馬齒莧分別焯水去澀，切成細碎的末。蕨芽只取最嫩的頂端，在沸水裡滾了十秒鐘就撈出來過涼水，保持那一抹翠綠。</p>
+<p>萬事俱備。</p>
+<p>她往灶膛裡添了柴，火焰舔上灶壁，鐵鍋開始慢慢升溫。蘇念荷往鍋裡倒入泉水，等水燒至將沸未沸時，把浸泡好的米倒了進去。</p>
+<p>米粒落入熱水的瞬間，發出一連串細密的聲響，像雨滴打在荷葉上。水面翻了幾個小泡，然後歸於平靜。</p>
+<p>接下來才是關鍵。</p>
+<p>蘇念荷左手拿著一把長柄木勺，開始緩慢而均勻地攪動鍋中的米粥。她的動作看起來很普通，就是繞著鍋底畫圈，但如果有修行者在場，就會發現她的靈識正隨著木勺的軌跡一同運轉，將泉水中那一絲絲靈氣從水分子間剝離出來，均勻地引導進每一粒米的核心。</p>
+<p>這是食修的基本功——靈氣引導術。</p>
+<p>在修仙界，她用這個手法可以在短短幾息之間讓一鍋靈粥的靈氣含量翻十倍。但現在靈力近乎於零，她只能用殘存的靈識一點一點地引導，像用牙籤在沙灘上畫畫，精細而緩慢。</p>
+<p>攪動的節奏很重要。太快會破壞米粒的結構，太慢靈氣會沉澱到鍋底。蘇念荷保持著每三秒一圈的速度，順時針七圈，逆時針三圈，周而復始。這個比例是她在修仙界花了二十年才摸索出的最佳靈氣分布方案——順七逆三，合乎天地之數。</p>
+<p>灶膛裡的火候也在她的控制之下。先是大火催開，讓米粒快速糊化；然後轉中火保持沸騰，讓澱粉充分釋放；最後轉小火慢熬，讓米湯變得濃稠如膏。</p>
+<p>整個過程持續了整整四十五分鐘。</p>
+<p>在最後十分鐘，蘇念荷把切好的薺菜末和馬齒莧末撒進粥裡，輕輕攪拌均勻。嫩綠的碎葉點綴在雪白的米粥中，像是一幅水墨畫裡灑了幾筆青綠。蕨芽則留到最後，擺在碗中做點綴。</p>
+<p>粥煮好了。</p>
+<p>蘇念荷揭開鍋蓋的那一刻，一股香氣噴薄而出。</p>
+<p>那香氣太犯規了。</p>
+<p>不是那種濃烈的、奪人眼球的香，而是一種溫溫柔柔的、帶著稻穀和山野氣息的清香。它像一雙溫暖的手，輕輕地撫過你的鼻尖，然後不由分說地鑽進你的五臟六腑，讓你整個人從頭到腳都鬆軟下來。</p>
+<p>粥的表面浮著一層薄薄的米油，在晨光中泛著珍珠般的柔潤光澤。米粒已經完全化開了，和米湯融為一體，稠度恰到好處——舀起一勺，粥會沿著勺沿緩緩流下，像是液態的白玉。綠色的野菜碎末均勻地散布其中，像翡翠碎片嵌在羊脂裡。</p>
+<p>蘇念荷滿意地點了點頭。</p>
+<p>雖然食材和靈氣都差了修仙界十萬八千里，但她一百五十年的食修經驗和手法還在，硬是把一鍋最普通的食材做出了不普通的味道。</p>
+<p>她盛了一碗，蕨芽往粥面上一擺，翠綠的嫩芽微微捲曲，像一枚精緻的玉鉤。</p>
+<p>正準備嚐第一口，院門口傳來了劉婆婆的聲音。</p>
+<p>「念魚？你在做什麼好吃的？好香啊！我在路上走著呢，這味道一下子就把我引過來了！」</p>
+<p>蘇念荷笑了，朝門口喊：「婆婆，進來喝粥！」</p>
+<p>劉婆婆推門進來，手裡還拎著一把芹菜，大概是準備給蘇念荷送菜的。她一進廚房就吸了一口氣，整個人愣住了。</p>
+<p>「哎喲，這粥怎麼這麼香？我活了七十多歲，煮了一輩子粥，都沒聞過這種香味！」</p>
+<p>蘇念荷給她盛了滿滿一大碗，又放了一勺紅糖進去。「趁熱喝，婆婆。」</p>
+<p>劉婆婆也不客氣，端起碗就喝了一大口。</p>
+<p>然後她的表情變了。</p>
+<p>先是眉頭微微一蹙——不是因為不好喝，而是太好喝了，好喝到她的表情系統短暫當機了。然後眉頭慢慢展開，眼睛逐漸睜大，嘴角不受控制地往上翹，整張佈滿皺紋的臉龐綻放出一種近乎孩子般的驚喜。</p>
+<p>「這……這粥！」劉婆婆結結巴巴地說，「這是什麼米？怎麼煮的？太好喝了！甜的！不是紅糖的甜，是那個米本身就甜！還有那個野菜的味道，鮮得很，像春天咬了一口嘴巴！」</p>
+<p>蘇念荷被她最後那個比喻逗笑了。</p>
+<p>劉婆婆捨不得大口喝了，改成小口小口地啜，每一口都閉著眼睛細細品味。一碗粥喝到一半時，她忽然放下碗，用力活動了幾下右手的手指。</p>
+<p>「念魚。」她的聲音有些顫抖。</p>
+<p>「怎麼了婆婆？」</p>
+<p>「我這手……」劉婆婆難以置信地盯著自己的右手，把五根手指反覆握緊、張開，「我的手指不疼了。」</p>
+<p>蘇念荷神情不變，心裡卻一動。</p>
+<p>劉婆婆的關節炎她是知道的。老人家的手指關節腫大變形，尤其是右手的食指和中指，平時連握勺子都疼，每到陰天下雨更是疼得整夜睡不著。村裡離鎮上的醫院太遠，老人家嫌麻煩，一直就靠貼膏藥硬扛著。</p>
+<p>而現在，一碗靈粥下去，疼了好幾年的關節炎就緩解了大半。</p>
+<p>靈泉水加食修手法的效果，比她預想的還要好。</p>
+<p>「可能是粥比較養人。」蘇念荷沒有解釋太多，只是微微笑了笑，「婆婆喜歡喝就多喝點，鍋裡還有。」</p>
+<p>劉婆婆哪裡聽得進去，端起碗又喝了兩大口，然後放下碗，一把抓住蘇念荷的手，老眼裡閃著激動的淚花。</p>
+<p>「丫頭！你這手藝哪學來的？你奶奶做飯就好吃，你比她還厲害！——不行不行，你得認我做乾奶奶！不不不，你就是我親孫女！」</p>
+<p>蘇念荷被她搖得東倒西歪，哭笑不得。</p>
+<p>「婆婆，先別搖了，粥要涼了。」</p>
+<p>「涼了也好喝！」劉婆婆松開手，又端起碗咕嘟咕嘟把剩下的粥喝了個乾淨，連碗底的米油都舔得一絲不剩，這才滿足地靠在椅背上，打了個飽嗝。</p>
+<p>「舒坦。」她摸著肚子，感嘆道，「念魚啊，我跟你說，你要是真開麵館，就衝這碗粥的手藝，全村的老頭老太太天天來排隊。」</p>
+<p>蘇念荷笑著搖搖頭，開始收拾碗筷。</p>
+<p>劉婆婆坐了一會兒，忽然像想起什麼似的跳起來：「不行，我得回去給老王頭他們說，讓他們也來嚐嚐！」</p>
+<p>「婆婆——」</p>
+<p>「等著啊！」</p>
+<p>老太太風風火火地拎著芹菜就跑了，速度快得完全不像一個七十多歲膝蓋不好的老人。</p>
+<p>蘇念荷站在院門口，看著劉婆婆矯健的背影，忍不住感嘆——</p>
+<p>這靈粥的療效，確實比預期的好。</p>
+<p>她低頭看了看自己的手。這雙手在修仙界握了一百五十年的靈刀靈鍋，做過數以萬計的靈膳，餵飽過整個食修宗上上下下三千弟子。</p>
+<p>如今，它只做了一碗粥。</p>
+<p>但劉婆婆笑得那麼開心。</p>
+<p>蘇念荷忽然覺得，也許做一碗讓人開心的粥，和做一桌讓人突破境界的靈宴，重量是一樣的。</p>
+<p>她回到廚房，給自己也盛了一碗，坐在灶臺邊慢慢喝。</p>
+<p>粥很好喝。</p>
+<p>窗外的陽光照進來，落在她的膝蓋上，暖融融的。</p>
+<p>遠處傳來劉婆婆中氣十足的嗓門：「老王頭！你趕緊的！蘇家丫頭煮了一鍋粥，好喝得要命！快去快去！」</p>
+<p>蘇念荷端著碗，嘴角的弧度越來越大。</p>
+<p>好吧。</p>
+<p>看來這個食堂，是真的要開起來了。</p>
+    </div>
+    <div class="chapter-nav">
+      <a href="ch003.html">&larr; 上一章</a>
+      <a href="ch005.html">下一章 &rarr;</a>
+    </div>
+</div>
+<footer><p>小說閱讀站</p></footer>
+</body>
+</html>

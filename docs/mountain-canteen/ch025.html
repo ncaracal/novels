@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>山間有靈食 - 深山食堂開飯了</title>
+<style>
+:root {
+  --bg: #faf8f5;
+  --text: #2c2c2c;
+  --accent: #8b6914;
+  --card-bg: #fff;
+  --border: #e8e0d4;
+  --shadow: rgba(0,0,0,0.06);
+  --code-bg: #f5f0e8;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #1a1a1a;
+    --text: #e0dcd6;
+    --accent: #d4a530;
+    --card-bg: #252525;
+    --border: #3a3a3a;
+    --shadow: rgba(0,0,0,0.3);
+    --code-bg: #2a2520;
+  }
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: "Noto Serif TC", "Source Han Serif TC", "PMingLiU", serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.9;
+  min-height: 100vh;
+}
+
+.container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 2rem 1.5rem;
+}
+
+header {
+  text-align: center;
+  padding: 3rem 0 2rem;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 2rem;
+}
+
+header h1 {
+  font-size: 2.2rem;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  color: var(--accent);
+}
+
+header p {
+  margin-top: 0.5rem;
+  font-size: 0.95rem;
+  opacity: 0.7;
+}
+
+.book-card {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 1.8rem;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 2px 8px var(--shadow);
+  transition: transform 0.2s;
+}
+
+.book-card:hover {
+  transform: translateY(-2px);
+}
+
+.book-card h2 {
+  font-size: 1.5rem;
+  margin-bottom: 0.3rem;
+}
+
+.book-card h2 a {
+  color: var(--text);
+  text-decoration: none;
+}
+
+.book-card h2 a:hover {
+  color: var(--accent);
+}
+
+.book-card .meta {
+  font-size: 0.85rem;
+  opacity: 0.6;
+  margin-bottom: 1rem;
+}
+
+.book-card .abstract-preview {
+  font-size: 0.95rem;
+  line-height: 1.8;
+}
+
+/* Book page */
+.book-header {
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.book-header h1 {
+  font-size: 2rem;
+  color: var(--accent);
+}
+
+.book-header .author-name {
+  font-size: 1rem;
+  opacity: 0.7;
+  margin-top: 0.3rem;
+}
+
+.section {
+  margin-bottom: 2.5rem;
+}
+
+.section h2 {
+  font-size: 1.3rem;
+  color: var(--accent);
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.toc-list {
+  list-style: none;
+  counter-reset: chapter;
+}
+
+.toc-list li {
+  counter-increment: chapter;
+  margin-bottom: 0.5rem;
+}
+
+.toc-list li a {
+  color: var(--text);
+  text-decoration: none;
+  display: flex;
+  align-items: baseline;
+  gap: 0.8rem;
+  padding: 0.5rem 0.8rem;
+  border-radius: 4px;
+  transition: background 0.15s;
+}
+
+.toc-list li a:hover {
+  background: var(--code-bg);
+  color: var(--accent);
+}
+
+.toc-list li a::before {
+  content: "第" counter(chapter, cjk-ideographic) "章";
+  font-size: 0.85rem;
+  opacity: 0.5;
+  flex-shrink: 0;
+}
+
+/* Chapter page */
+.chapter-header {
+  text-align: center;
+  padding: 2rem 0;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 2rem;
+}
+
+.chapter-header .book-title {
+  font-size: 0.9rem;
+  opacity: 0.5;
+}
+
+.chapter-header h1 {
+  font-size: 1.8rem;
+  margin-top: 0.5rem;
+}
+
+.chapter-header .chapter-num {
+  font-size: 0.85rem;
+  color: var(--accent);
+  margin-top: 0.3rem;
+}
+
+.chapter-body {
+  font-size: 1.05rem;
+  text-align: justify;
+}
+
+.chapter-body p {
+  margin-bottom: 1.2rem;
+  text-indent: 2em;
+}
+
+.chapter-body p:first-child {
+  text-indent: 0;
+}
+
+.chapter-nav {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 3rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--border);
+}
+
+.chapter-nav a {
+  color: var(--accent);
+  text-decoration: none;
+  font-size: 0.95rem;
+}
+
+.chapter-nav a:hover {
+  text-decoration: underline;
+}
+
+.back-link {
+  display: inline-block;
+  margin-bottom: 1.5rem;
+  color: var(--accent);
+  text-decoration: none;
+  font-size: 0.9rem;
+}
+
+.back-link:hover {
+  text-decoration: underline;
+}
+
+.author-section {
+  background: var(--code-bg);
+  border-radius: 8px;
+  padding: 1.5rem;
+}
+
+.author-section h1, .author-section h2, .author-section h3 {
+  font-size: 1.1rem;
+  margin-bottom: 0.8rem;
+}
+
+.author-section ul {
+  list-style: none;
+  padding-left: 0;
+}
+
+.author-section li {
+  margin-bottom: 0.4rem;
+  padding-left: 0;
+}
+
+footer {
+  text-align: center;
+  padding: 2rem 0;
+  font-size: 0.8rem;
+  opacity: 0.4;
+  border-top: 1px solid var(--border);
+  margin-top: 3rem;
+}
+</style>
+
+</head>
+<body>
+<div class="container">
+
+    <a href="./" class="back-link">&larr; 返回目錄</a>
+    <div class="chapter-header">
+      <div class="book-title">深山食堂開飯了</div>
+      <h1>山間有靈食</h1>
+      <div class="chapter-num">第25章</div>
+    </div>
+    <div class="chapter-body">
+      <p>春日食堂祭過後的第三天，一切歸於平常。</p>
+<p>但這個「平常」，和一年前的「平常」已經完全不同了。</p>
+<p>清晨五點半，天還沒全亮。雲嶺山的東面透出第一絲魚肚白，晨霧像一匹巨大的灰藍色絲綢，從山谷裡緩緩升起，纏繞在半山腰的松林間。幾聲早起的鳥鳴穿透霧氣，清脆得像有人用小錘子敲玻璃珠。</p>
+<p>蘇念荷已經在廚房裡了。</p>
+<p>她的一天永遠從灶臺開始。先燒水——靈泉水在鐵壺裡慢慢加熱，氣泡從壺底細細密密地升起來，水聲由低沉漸漸轉為清亮，像一首慢慢爬升的曲子。等水燒到將沸未沸的時候，舀出一瓢放涼，用來和麵。</p>
+<p>今天的早餐是蔥油拌麵。</p>
+<p>麵粉是村裡陳老伯今年新磨的，自家種的冬小麥，麥粒飽滿結實，磨出來的粉微微泛著象牙色，手指捏一把能感覺到細膩中帶著筋道。蘇念荷把靈泉水慢慢倒進麵粉裡，用手一點一點地揉。</p>
+<p>揉麵是一件需要耐心的事。她從不用攪拌機——機器揉出來的麵團均勻但缺少溫度。人的手掌有體溫、有力道、有節奏，這些細微的東西會被麵團記住。在修仙界，她用靈力揉麵，每一寸麵團裡都注入了精確到毫釐的靈氣。現在沒有靈力了，但她有一百五十年的手感，有這雙在無數道靈膳中磨練出來的手。</p>
+<p>麵團揉到三光——手光、盆光、面光——蓋上溼布醒半個時辰。</p>
+<p>這段時間裡，她開始熬蔥油。</p>
+<p>蔥是院子裡自己種的小香蔥，根根細長翠綠，帶著清晨的露珠。切成蔥段，分蔥白和蔥綠。菜籽油倒進鍋裡小火慢慢燒熱，先下蔥白——油溫不能太高，要讓蔥白在油裡慢慢地、慢慢地把香氣釋放出來。廚房裡漸漸瀰漫起一股焦甜的蔥香，混著菜籽油特有的醇厚氣息，像一隻溫熱的手掌貼在人的臉上，叫人忍不住深吸一口。</p>
+<p>等蔥白炸到金黃微焦的時候，關火，利用餘溫把蔥綠放進去。蔥綠遇到熱油的那一瞬間，發出一聲輕柔的「滋——」，像一個滿足的嘆息。綠色的蔥段在油裡蜷縮、變深、釋放出最後一層清新的草本香氣，和蔥白的焦甜交融在一起。</p>
+<p>一小碗蔥油，金黃透亮，碗底沉著深淺不一的蔥段，表面浮著細碎的光。</p>
+<p>蘇念荷滿意地點了點頭。</p>
+<p>「香。」</p>
+<p>窗臺上傳來一個字。阿橘蹲在老位子上，被清晨的第一縷陽光曬得渾身發亮，像一塊融化了一半的橘子糖。牠的鼻子微微抽動，嘴角——如果貓有嘴角的話——帶著一絲極力掩飾的期待。</p>
+<p>「你的那份在鍋裡。」蘇念荷頭也不回。</p>
+<p>阿橘的尾巴不自覺地晃了一下，然後迅速停住，裝作若無其事地偏過頭去看風景。</p>
+<p>門外傳來腳步聲。</p>
+<p>阿亮推門進來，帶著一身露水的清涼氣息。他今天穿的還是短袖，胳膊上的肌肉線條已經很好看了——這半年來他跟著蘇念荷在廚房裡搬鍋端灶、揉麵切菜，瘦削的少年不知不覺間長出了結實的輪廓。</p>
+<p>「姐，今天我來煮麵吧？」他邊說邊繫上圍裙，動作利落得像做過一千次。</p>
+<p>事實上他確實做過不止一千次了。</p>
+<p>蘇念荷靠在灶臺邊看他操作。水燒開，下麵條，筷子輕輕攪一圈防止黏連。火候控制得剛好——沸而不滾，讓麵條在水裡舒展開來卻不會煮過頭。三分鐘撈起，過一遍涼水收緊筋道，瀝乾水分盛進碗裡，淋上蔥油，撒一點生抽，拌勻。</p>
+<p>一碗蔥油拌麵。</p>
+<p>麵條根根分明，掛著晶亮的蔥油，蔥段的焦香、生抽的鮮鹹、麵條的麥香，三重味道簡單而飽滿。不需要花哨的配菜和擺盤，一碗樸素的拌麵，但每一根麵條都帶著靈泉水的清潤和手工揉製的溫度。</p>
+<p>蘇念荷嘗了一口，點了點頭：「可以了。」</p>
+<p>阿亮笑得眼睛彎成了月牙：「真的？」</p>
+<p>「嗯。你可以出師了。」</p>
+<p>少年的笑容在晨光裡亮得晃眼。他低下頭，假裝在擦灶臺，但耳朵尖紅得像熟透的山楂。</p>
+<p>「我以後⋯⋯想開一家自己的店。」他小聲說，像是怕說得太大聲夢就會碎。</p>
+<p>「好啊。」蘇念荷說得雲淡風輕，好像他只是說了一句「今天天氣不錯」。</p>
+<p>「不是馬上。」阿亮連忙補充，「我還要再跟姐學幾年。至少把所有菜都學會。然後攢錢。然後⋯⋯」</p>
+<p>「然後找個好地方，開一家乾乾淨淨的小店，做幾道自己拿手的菜，讓走進來的人都能吃得舒舒服服的。」蘇念荷替他說完了。</p>
+<p>阿亮使勁點頭，眼眶有點紅。</p>
+<p>蘇念荷伸手拍了拍他的肩膀。什麼都沒多說——有些話不需要說。一個在火災裡失去過一切的少年，現在站在灶臺前，認認真真地煮一碗麵，認認真真地說出自己的夢想。</p>
+<p>這比任何華麗的詞句都動人。</p>
+<p>早餐時段很快就忙起來了。</p>
+<p>劉婆婆照例第一個到，今天帶了自己醃的酸蘿蔔，非要給每桌放一小碟。林小竹來得第二早，她現在每天早上都來幫忙，話不多，但會開口了。昨天她跟劉婆婆說了一句「婆婆，椅子我來搬」，劉婆婆感動得又抹了半天眼淚。</p>
+<p>陳時予八點鐘準時從隔壁的診所走過來吃早飯。他現在的作息規律得像一座鐘——六點起床、七點跑步、七點半看早診、八點來食堂吃飯。他的診所不大，但該有的都有，村民們有個頭疼腦熱的再也不用跑鎮上了。</p>
+<p>「小竹的心理狀況在持續好轉。」他坐下來，壓低聲音跟蘇念荷說，「我建議暑假讓她試試回學校。不急，一步一步來。」</p>
+<p>蘇念荷點了點頭。</p>
+<p>「還有，」陳時予端起碗，喝了一口靈泉水煮的小米粥，表情瞬間柔和下來，「劉婆婆的風濕最近好了很多，老趙的胃潰瘍也幾乎不疼了⋯⋯這個村子的健康水平，說句不誇張的，比城裡大部分社區都好。」</p>
+<p>他抬眼看了看蘇念荷，目光裡帶著一種他自己可能都沒意識到的敬佩：「你到底是怎麼做到的？」</p>
+<p>蘇念荷笑了笑：「做菜而已。」</p>
+<p>「⋯⋯做菜而已。」陳時予搖了搖頭，低頭繼續喝粥，不再追問。</p>
+<p>有些事情不需要答案。他是一個受過嚴格科學訓練的醫生，有些現象他解釋不了，但他接受它們的存在。就像他接受了那碗粥治好了自己的失眠，接受了這個村子改變了他的人生。</p>
+<p>上午十點左右，村裡又熱鬧起來了。</p>
+<p>回來的年輕人比過年的時候更多了。有在城裡做過廚師的小楊，回來幫張大叔管理靈菜田——他說城裡的餐廳再好，也種不出這種番茄。有學過設計的曉琳，在村口那棟空了十年的老房子裡開了一家小民宿，牆上掛的都是她自己拍的雲嶺山風景。還有做過程式設計師的阿凱，架了網路直播設備，每天下午直播村裡的日常——種菜、做飯、曬太陽、擼貓。觀眾意外地多。</p>
+<p>【我每天下班就看這個直播，比任何綜藝都解壓】<br>【阿橘又搶鏡了！！快看牠那個表情哈哈哈哈】<br>【這個村子是真實存在的嗎？為什麼感覺像世外桃源？】<br>【存在的，我去過，比影片裡更好。空氣裡的味道是拍不出來的】</p>
+<p>蘇念荷站在食堂門口，看著院子裡進進出出的人，看著遠處田裡彎腰幹活的身影，看著炊煙從各家各戶的屋頂升起來，和山間的晨霧融在一起。</p>
+<p>恍惚間，她想起了修仙界。</p>
+<p>一百五十年。</p>
+<p>她在玉璃峰的洞府裡，用千年玄鐵灶和三味真火，煉製過無數珍稀靈膳。她為渡劫期的大能做過續命的九轉靈丹粥，為受傷的劍修熬過修復經脈的龍骨湯，為整個宗門的弟子操持過萬人盛宴。</p>
+<p>她的廚道被稱為「通天之路」——只要繼續精進，就能以食入道，證得大道，飛升仙界。</p>
+<p>但她渡劫失敗了。</p>
+<p>靈力盡散，金丹碎裂，一百五十年的修為化為烏有。她從雲端跌落凡塵，醒來時躺在一間漏風的老房子裡，面前只有一座積了灰的磚砌柴火灶。</p>
+<p>那時候她以為，這是天道的懲罰。</p>
+<p>現在她站在食堂門口，看著這個熱熱鬧鬧的小村子，看著那些因為一碗飯、一碗粥而亮起來的眼睛，忽然想明白了一件事。</p>
+<p>或許從一開始，她追求的就不是渡劫飛升。</p>
+<p>廚道的真意不在雲端，不在仙界，不在什麼三味真火和千年玄鐵。</p>
+<p>就在這裡。在一口最普通的灶臺前，在一鍋咕嘟咕嘟冒泡的湯裡，在每一個走進食堂時疲憊的眼神變得柔和的瞬間。</p>
+<p>用一道道菜，溫暖每一個走進來的人。</p>
+<p>這就是道。</p>
+<p>她想通了這件事，忽然覺得丹田深處那根細如游絲的靈識微微震顫了一下。不是變強了，只是變得⋯⋯更穩了。像一根在風裡搖晃了很久的蠟燭，終於找到了一個避風的角落，火苗不再忽明忽暗，而是安安靜靜地、篤篤定定地燃燒著。</p>
+<p>蘇念荷笑了笑。</p>
+<p>她轉身走回廚房，拿起掛在牆上的那張手寫菜單。這張菜單已經更新過很多次了，從最初的四道菜變成了十幾道，每一道都是她用心打磨過的。紙張邊角微微捲起，上面的毛筆字深深淺淺，記錄著這一年裡的每一次嘗試和每一次進步。</p>
+<p>她拿起筆，在菜單的最後面，添了一道新菜——</p>
+<p>「春日桃花粥」。</p>
+<p>用後山的野桃花瓣、靈泉水、新米煮的粥。粉白的花瓣浮在米粥裡，看起來像春天掉進了碗裡。</p>
+<p>她把菜單掛回牆上，轉身聽到門口傳來了腳步聲。</p>
+<p>不是熟悉的腳步。不是劉婆婆的拖鞋聲，不是阿亮輕快的布鞋聲，不是陳時予沉穩的皮鞋聲。</p>
+<p>是一雙疲憊的、沉重的、走了很遠很遠的路才停下來的腳步。</p>
+<p>蘇念荷走到門口。</p>
+<p>門外站著一個人。背著一個碩大的登山包，包上掛滿了零零碎碎的掛件——水壺、毛巾、一頂皺巴巴的漁夫帽。臉上是長途跋涉後的疲憊和風塵，但眼睛裡還有光——那種「我只是累了，不是放棄了」的光。</p>
+<p>旅人站在門口，有些不確定地看了看頭頂那塊寫著「雲嶺食堂」的木牌，又看了看裡面溫暖的燈光和飄出來的食物香氣。</p>
+<p>蘇念荷靠在門框上，微笑。</p>
+<p>那個笑容很輕很淡，但不知為什麼讓人覺得安心——像推開一扇門，發現裡面有人在等你；像走了很遠的路，看見前面亮著一盞燈。</p>
+<p>「歡迎光臨，想吃點什麼？」</p>
+<p>旅人的肩膀微微放鬆了。</p>
+<p>阿橘在這個時候跳上了收銀臺——牠每次都要在最恰當的時機出場，這大概是山靈的某種執念。十五斤的肥橘貓穩穩地蹲在收銀臺上，尾巴悠悠地晃了一下，用那雙圓溜溜的、微微發光的眼睛打量了旅人一眼。</p>
+<p>然後牠偏過頭，發出一聲短促的、帶著少年音的鼻音。</p>
+<p>「坐。」</p>
+<p>旅人愣了一下，然後笑了。</p>
+<p>他放下沉重的背包，在靠窗的位子坐下來。窗外，雲嶺山的春風把桂花——不對，現在是春天——把桃花的香氣吹了進來，和灶臺上正在熬煮的粥的香氣混在一起，甜得像一個溫柔的擁抱。</p>
+<p>蘇念荷轉身走進廚房，繫上那件洗得發白的藍格子圍裙。</p>
+<p>灶上的火焰跳動著，靈泉水在鍋裡輕輕哼著歌。窗臺上的綠蘿長出了新的藤蔓，嫩綠的葉尖在春風裡微微顫動。遠處，有人在田裡唱歌，走了調的曲子被風送上來，碎成了一地的音符。</p>
+<p>阿橘從收銀臺上跳下來，踱到廚房門口，蹲下，半瞇著眼，用那種「本座在監督你做菜」的表情看著她。</p>
+<p>蘇念荷低下頭，開始切菜。</p>
+<p>刀面撞擊案板的聲音，篤、篤、篤，清脆而有節奏，像一首永遠不會結束的歌。</p>
+<p>窗外，雲嶺山的春風翻過屋頂，穿過院子，把桃花的香吹滿了整個村子。</p>
+<p>（全文完）</p>
+    </div>
+    <div class="chapter-nav">
+      <a href="ch024.html">&larr; 上一章</a>
+      <a href="./">回到目錄 &rarr;</a>
+    </div>
+</div>
+<footer><p>小說閱讀站</p></footer>
+</body>
+</html>

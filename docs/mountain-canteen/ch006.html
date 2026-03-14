@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>失眠的陳醫生 - 深山食堂開飯了</title>
+<style>
+:root {
+  --bg: #faf8f5;
+  --text: #2c2c2c;
+  --accent: #8b6914;
+  --card-bg: #fff;
+  --border: #e8e0d4;
+  --shadow: rgba(0,0,0,0.06);
+  --code-bg: #f5f0e8;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #1a1a1a;
+    --text: #e0dcd6;
+    --accent: #d4a530;
+    --card-bg: #252525;
+    --border: #3a3a3a;
+    --shadow: rgba(0,0,0,0.3);
+    --code-bg: #2a2520;
+  }
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: "Noto Serif TC", "Source Han Serif TC", "PMingLiU", serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.9;
+  min-height: 100vh;
+}
+
+.container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 2rem 1.5rem;
+}
+
+header {
+  text-align: center;
+  padding: 3rem 0 2rem;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 2rem;
+}
+
+header h1 {
+  font-size: 2.2rem;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  color: var(--accent);
+}
+
+header p {
+  margin-top: 0.5rem;
+  font-size: 0.95rem;
+  opacity: 0.7;
+}
+
+.book-card {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 1.8rem;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 2px 8px var(--shadow);
+  transition: transform 0.2s;
+}
+
+.book-card:hover {
+  transform: translateY(-2px);
+}
+
+.book-card h2 {
+  font-size: 1.5rem;
+  margin-bottom: 0.3rem;
+}
+
+.book-card h2 a {
+  color: var(--text);
+  text-decoration: none;
+}
+
+.book-card h2 a:hover {
+  color: var(--accent);
+}
+
+.book-card .meta {
+  font-size: 0.85rem;
+  opacity: 0.6;
+  margin-bottom: 1rem;
+}
+
+.book-card .abstract-preview {
+  font-size: 0.95rem;
+  line-height: 1.8;
+}
+
+/* Book page */
+.book-header {
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.book-header h1 {
+  font-size: 2rem;
+  color: var(--accent);
+}
+
+.book-header .author-name {
+  font-size: 1rem;
+  opacity: 0.7;
+  margin-top: 0.3rem;
+}
+
+.section {
+  margin-bottom: 2.5rem;
+}
+
+.section h2 {
+  font-size: 1.3rem;
+  color: var(--accent);
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.toc-list {
+  list-style: none;
+  counter-reset: chapter;
+}
+
+.toc-list li {
+  counter-increment: chapter;
+  margin-bottom: 0.5rem;
+}
+
+.toc-list li a {
+  color: var(--text);
+  text-decoration: none;
+  display: flex;
+  align-items: baseline;
+  gap: 0.8rem;
+  padding: 0.5rem 0.8rem;
+  border-radius: 4px;
+  transition: background 0.15s;
+}
+
+.toc-list li a:hover {
+  background: var(--code-bg);
+  color: var(--accent);
+}
+
+.toc-list li a::before {
+  content: "第" counter(chapter, cjk-ideographic) "章";
+  font-size: 0.85rem;
+  opacity: 0.5;
+  flex-shrink: 0;
+}
+
+/* Chapter page */
+.chapter-header {
+  text-align: center;
+  padding: 2rem 0;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 2rem;
+}
+
+.chapter-header .book-title {
+  font-size: 0.9rem;
+  opacity: 0.5;
+}
+
+.chapter-header h1 {
+  font-size: 1.8rem;
+  margin-top: 0.5rem;
+}
+
+.chapter-header .chapter-num {
+  font-size: 0.85rem;
+  color: var(--accent);
+  margin-top: 0.3rem;
+}
+
+.chapter-body {
+  font-size: 1.05rem;
+  text-align: justify;
+}
+
+.chapter-body p {
+  margin-bottom: 1.2rem;
+  text-indent: 2em;
+}
+
+.chapter-body p:first-child {
+  text-indent: 0;
+}
+
+.chapter-nav {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 3rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--border);
+}
+
+.chapter-nav a {
+  color: var(--accent);
+  text-decoration: none;
+  font-size: 0.95rem;
+}
+
+.chapter-nav a:hover {
+  text-decoration: underline;
+}
+
+.back-link {
+  display: inline-block;
+  margin-bottom: 1.5rem;
+  color: var(--accent);
+  text-decoration: none;
+  font-size: 0.9rem;
+}
+
+.back-link:hover {
+  text-decoration: underline;
+}
+
+.author-section {
+  background: var(--code-bg);
+  border-radius: 8px;
+  padding: 1.5rem;
+}
+
+.author-section h1, .author-section h2, .author-section h3 {
+  font-size: 1.1rem;
+  margin-bottom: 0.8rem;
+}
+
+.author-section ul {
+  list-style: none;
+  padding-left: 0;
+}
+
+.author-section li {
+  margin-bottom: 0.4rem;
+  padding-left: 0;
+}
+
+footer {
+  text-align: center;
+  padding: 2rem 0;
+  font-size: 0.8rem;
+  opacity: 0.4;
+  border-top: 1px solid var(--border);
+  margin-top: 3rem;
+}
+</style>
+
+</head>
+<body>
+<div class="container">
+
+    <a href="./" class="back-link">&larr; 返回目錄</a>
+    <div class="chapter-header">
+      <div class="book-title">深山食堂開飯了</div>
+      <h1>失眠的陳醫生</h1>
+      <div class="chapter-num">第6章</div>
+    </div>
+    <div class="chapter-body">
+      <p>陳時予已經連續七十二小時沒有真正睡著了。</p>
+<p>不是沒閉過眼。急診科的值班室裡，他躺在那張被無數同事壓出凹痕的行軍床上，閉著眼睛數過羊、數過呼吸、數過天花板上的裂紋——但大腦像一臺卡死的機器，嗡嗡地轉，關不掉。</p>
+<p>三年了。</p>
+<p>自從那個除夕夜連續搶救了九個小時、最後還是沒能把那個四歲的孩子從死神手裡拽回來之後，他的睡眠就像一塊碎掉的玻璃，再也拼不回完整的形狀。安眠藥從半顆加到一顆，從一顆加到兩顆，現在連兩顆都只能換來三個小時的淺眠——還伴隨著令人窒息的夢境。</p>
+<p>「陳哥，你的臉色真的很難看。」小護士怯怯地看著他。</p>
+<p>「嗯。」</p>
+<p>「主任說了，你的年假再不休就要作廢了——」</p>
+<p>「知道了。」</p>
+<p>他終於請了假。</p>
+<p>不是因為年假要作廢，而是因為上週他差點把一份藥單開錯了劑量。手在抖。眼皮在跳。大腦像隔了一層霧。他看著那份差點害人的藥單，出了一身冷汗，然後走進主任辦公室，說：「我需要休息。」</p>
+<p>主任看了他一眼，那種過來人的、帶著心疼的眼神：「去吧，去遠一點。」</p>
+<p>所以他來了雲嶺山。</p>
+<p>車開到鎮上就沒了路，剩下的七公里全靠腳走。初秋的山路鋪滿了落葉，踩上去沙沙作響。空氣裡有泥土的味道、松脂的味道、不知名野花的味道。這些氣味比任何香薰機都有用——至少他的頭暫時沒那麼痛了。</p>
+<p>走到第五公里的時候，他聞到了另一種味道。</p>
+<p>是粥的香氣。</p>
+<p>不是普通的白粥。那股香氣像一隻溫柔的手，從山風裡探出來，不急不躁地牽住了他。甜的、糯的、帶著一點點花香，又壓了一層溫厚的穀物底韻。他的胃忽然發出一聲極不體面的咕嚕，這才意識到自己已經快二十個小時沒吃東西了。</p>
+<p>順著香味拐了個彎，眼前出現一棟老舊的木屋。</p>
+<p>門口掛著一塊手寫的木牌——「雲嶺食堂」，字跡清秀，用的是毛筆。門檻上蹲著一隻巨大的橘貓，把整個門檻佔得滿滿當當。那貓少說有十五斤，渾身的毛蓬鬆得像個行走的抱枕，此刻正瞇著眼睛，用一種極其不屑的目光審視著他。</p>
+<p>陳時予站在門口，一時有些猶豫。</p>
+<p>「進來呀。」一個年輕女孩的聲音從裡面傳來，清清脆脆的，像山泉叮咚。</p>
+<p>他低頭看了看擋路的橘貓。橘貓嫌棄地瞥了他一眼，極為不情願地把屁股挪了兩寸——只夠一個人側身擠過去。</p>
+<p>食堂裡面比外面看著寬敞些。六張木桌，配著竹編的椅子。牆角有一盆綠蘿長得瘋了似的，藤蔓一直爬到了窗框上。灶臺後面站著一個紮著馬尾的女孩，看起來二十出頭，穿一件洗得發白的藍格子圍裙，正往一只砂鍋裡撒什麼東西。</p>
+<p>蘇念荷抬起頭看了他一眼。</p>
+<p>就這一眼，她的眉尖微微蹙了蹙。</p>
+<p>這個人的氣色太差了。面色青白，眼下是深得發紫的黑眼圈，嘴唇沒什麼血色，走路的步子虛浮，像踩在棉花上。最關鍵的是他的氣息——混亂、枯竭、像一盞快要燒乾的油燈。在修仙界，這種狀態叫「神魂不歸位」，是長期不寐導致的魂魄損耗。</p>
+<p>嚴重的話，是會出大問題的。</p>
+<p>「坐吧，」她說，語氣自然得像對待一個老鄰居，「想吃點什麼？粥剛煮好。」</p>
+<p>陳時予在靠窗的位子坐下。窗外是一片竹林，風吹過來，竹葉窸窣作響，陽光透過竹隙在桌面上投下搖晃的光斑。他忽然覺得有些恍惚——這個場景太安靜了，安靜得不像真的。</p>
+<p>「有什麼粥？」他問。</p>
+<p>「今天煮了蓮子百合桂圓粥，」蘇念荷一邊說一邊往砂鍋裡看了一眼，「適合你。」</p>
+<p>「⋯⋯適合我？」</p>
+<p>「嗯，看你氣色不太好，這個粥養氣安神。」</p>
+<p>陳時予愣了愣，然後苦笑了一下。養氣安神，這話他在中醫科聽了不下一百遍。該喝的藥都喝過了，酸棗仁湯、天王補心丹、歸脾湯⋯⋯中藥西藥輪著來，他的失眠依然雷打不動。</p>
+<p>但他沒拒絕。一是真的餓了，二是那股粥香實在太蠱惑人心。</p>
+<p>蘇念荷盛粥的時候，手法比任何人想像的都要講究。砂鍋裡的粥已經煮到了米花開裂、漿液黏稠的程度，蓮子軟爛卻沒有散形，百合瓣薄如蟬翼、微微透明，桂圓肉飽滿圓潤，沉在粥底像一顆顆琥珀珠。她用竹勺舀起一碗，手腕輕輕一轉——這個動作看起來毫不起眼，但實際上她正用食修手法將一絲靈氣引入粥中，精準地附著在蓮子心和百合的纖維裡。</p>
+<p>這絲靈氣不多，只是最細微的一縷。但它的作用不是治病，而是引導——像一個溫柔的嚮導，帶著食物中的養分去到最需要的地方。</p>
+<p>碗端到陳時予面前。</p>
+<p>白瓷碗裡的粥呈淡象牙色，表面浮著一層晶亮的米油，幾瓣百合半沉半浮，桂圓的甜香和蓮子的清氣交織在一起，熱氣裊裊上升，在午後的光線裡變成了一小團金色的霧。</p>
+<p>陳時予拿起勺子，舀了一口放進嘴裡。</p>
+<p>他頓住了。</p>
+<p>那口粥是溫的——不是物理意義上的溫度，而是一種更深層的、從舌尖蔓延到喉嚨、再從喉嚨滑到胸腔的溫暖。米漿綿密得像在口腔裡鋪了一層柔軟的絨毯，蓮子的粉糯、百合的清潤、桂圓的蜜甜，三種味道像三條小溪匯成一道暖流，緩緩地淌進他乾涸已久的身體裡。</p>
+<p>他愣了足足五秒，然後低下頭，默默地吃第二口。第三口。第四口。</p>
+<p>吃到半碗的時候，一種奇異的感覺從後腦勺漫上來。那個已經緊繃了三年的、像鋼絲一樣死死繃著的東西，忽然開始一點一點地鬆動。不是藥物造成的那種沉重的昏沉感，而是一種自然的、像日落一樣緩慢而篤定的放鬆。</p>
+<p>他的眼皮開始發沉。</p>
+<p>蘇念荷沒有說話，只是安靜地在灶臺後面擦拭竈面。阿橘不知道什麼時候踱到了他桌邊的椅子上，團成一個巨大的橘色毛球，尾巴有一搭沒一搭地晃著。</p>
+<p>陳時予把最後一口粥吃完，放下勺子。碗底乾乾淨淨，連一粒米都沒剩。</p>
+<p>「那邊有竹椅，」蘇念荷頭也不抬地說，「靠著歇一會兒吧。」</p>
+<p>他想說不用了，他只是路過，吃完就走。但身體比大腦誠實。他鬼使神差地站起來，走到窗邊那把寬大的竹躺椅旁邊——椅子上還鋪著一張洗得很軟的藍花棉布——然後坐下來。</p>
+<p>竹椅的弧度恰好承住了他的後背和脖頸。窗外的竹林在風裡沙沙響著，像無數人同時在低聲說「噓——」。陽光暖洋洋地落在他的膝蓋上。阿橘跳到了竹椅的扶手上，龐大的身軀壓得竹子咯吱一聲。牠的尾巴搭在他的手臂上，那一小截毛茸茸的重量意外地令人安心。</p>
+<p>陳時予閉上眼睛。</p>
+<p>這一次，那個永遠在轉的大腦終於停了下來。</p>
+<p>不是被強行按停的，而是像一個疲憊至極的旅人終於看到了可以歇腳的地方，於是心甘情願地放下了行囊。那些翻來覆去的念頭、那個除夕夜的記憶、那些再也回不來的人——它們沒有消失，只是被一隻看不見的溫柔的手輕輕地蓋上了一層薄毯，安撫著，說，先休息吧，先休息吧。</p>
+<p>他睡著了。</p>
+<p>蘇念荷在灶臺後面看了他一眼，輕輕嘆了口氣。</p>
+<p>她見過太多這樣的人。在修仙界，修士們為了突破境界可以不眠不休地苦修數年，最後神魂枯竭、走火入魔。她以為回到凡間不會再看到這種自我燃燒的人——然而凡人不修仙，卻有自己的修羅場。</p>
+<p>「阿橘，看著他，別讓蟲子叮。」她低聲說。</p>
+<p>阿橘的耳朵動了動，尾巴甩了一下，算是回應。然後牠調整了一下姿勢，把自己更穩當地趴在了扶手上，半瞇著眼，像一個盡忠職守的——非常圓的——守衛。</p>
+<p>陳時予這一覺睡了六個小時。</p>
+<p>從午後一直睡到了黃昏。</p>
+<p>他醒來的時候，食堂裡亮起了暖黃色的燈。一盞老式的白熾燈泡，掛在房梁上，光線柔和得像化開的蜂蜜。窗外的天已經變成了玫瑰紫色，遠處的山脊線像一幅水墨畫的邊緣。</p>
+<p>他坐起來，愣了很久。</p>
+<p>然後他摸了摸自己的臉——是乾的。不對，眼角有一點濕。</p>
+<p>六個小時。他已經不記得上一次連續睡六個小時是什麼時候的事了。沒有夢。沒有那個除夕夜。沒有被強行按進黑暗裡的窒息感。就只是——睡著了。像小時候那樣，輕飄飄地、安安穩穩地睡著了。</p>
+<p>「醒啦？」蘇念荷端著一杯水走過來，「喝點水，別急著起來。」</p>
+<p>陳時予接過水杯，張了張嘴，喉嚨卻像被什麼東西堵住了。</p>
+<p>他最後只說了兩個字：「多少錢？」</p>
+<p>「一碗粥，十五塊。」</p>
+<p>他又愣了一下。十五塊。省城隨便一家咖啡店的最低消費都不止這個數。而他為了治失眠花過的錢——進口安眠藥、心理諮詢、中醫調理、冥想課程、各種助眠產品——加起來夠買一輛車了。</p>
+<p>他掏出手機掃了碼，付了十五塊錢。</p>
+<p>然後他站在食堂門口，看著暮色裡的雲嶺山，深深地吸了一口氣。山風裡夾著松脂和野花的味道。遠處有人家的炊煙升起來，和暮靄融在一起，分不清哪是煙哪是雲。</p>
+<p>「這裡⋯⋯每天都開嗎？」他回頭問。</p>
+<p>蘇念荷靠在門框上，懷裡不知何時多了那隻橘貓——不對，是橘貓硬擠到她懷裡的——她笑了笑：</p>
+<p>「每天都開。」</p>
+<p>陳時予點了點頭，背起登山包，踩著暮色往山下的民宿走去。</p>
+<p>走出去很遠，他忽然停下腳步，回頭望了望。食堂的燈光在暮色裡亮成一個小小的橙色光點，像深山裡一盞不會熄的夜燈。</p>
+<p>他想，明天還要來。</p>
+    </div>
+    <div class="chapter-nav">
+      <a href="ch005.html">&larr; 上一章</a>
+      <a href="ch007.html">下一章 &rarr;</a>
+    </div>
+</div>
+<footer><p>小說閱讀站</p></footer>
+</body>
+</html>

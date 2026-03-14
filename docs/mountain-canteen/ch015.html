@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>全村動員種靈菜 - 深山食堂開飯了</title>
+<style>
+:root {
+  --bg: #faf8f5;
+  --text: #2c2c2c;
+  --accent: #8b6914;
+  --card-bg: #fff;
+  --border: #e8e0d4;
+  --shadow: rgba(0,0,0,0.06);
+  --code-bg: #f5f0e8;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #1a1a1a;
+    --text: #e0dcd6;
+    --accent: #d4a530;
+    --card-bg: #252525;
+    --border: #3a3a3a;
+    --shadow: rgba(0,0,0,0.3);
+    --code-bg: #2a2520;
+  }
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: "Noto Serif TC", "Source Han Serif TC", "PMingLiU", serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.9;
+  min-height: 100vh;
+}
+
+.container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 2rem 1.5rem;
+}
+
+header {
+  text-align: center;
+  padding: 3rem 0 2rem;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 2rem;
+}
+
+header h1 {
+  font-size: 2.2rem;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  color: var(--accent);
+}
+
+header p {
+  margin-top: 0.5rem;
+  font-size: 0.95rem;
+  opacity: 0.7;
+}
+
+.book-card {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 1.8rem;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 2px 8px var(--shadow);
+  transition: transform 0.2s;
+}
+
+.book-card:hover {
+  transform: translateY(-2px);
+}
+
+.book-card h2 {
+  font-size: 1.5rem;
+  margin-bottom: 0.3rem;
+}
+
+.book-card h2 a {
+  color: var(--text);
+  text-decoration: none;
+}
+
+.book-card h2 a:hover {
+  color: var(--accent);
+}
+
+.book-card .meta {
+  font-size: 0.85rem;
+  opacity: 0.6;
+  margin-bottom: 1rem;
+}
+
+.book-card .abstract-preview {
+  font-size: 0.95rem;
+  line-height: 1.8;
+}
+
+/* Book page */
+.book-header {
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.book-header h1 {
+  font-size: 2rem;
+  color: var(--accent);
+}
+
+.book-header .author-name {
+  font-size: 1rem;
+  opacity: 0.7;
+  margin-top: 0.3rem;
+}
+
+.section {
+  margin-bottom: 2.5rem;
+}
+
+.section h2 {
+  font-size: 1.3rem;
+  color: var(--accent);
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.toc-list {
+  list-style: none;
+  counter-reset: chapter;
+}
+
+.toc-list li {
+  counter-increment: chapter;
+  margin-bottom: 0.5rem;
+}
+
+.toc-list li a {
+  color: var(--text);
+  text-decoration: none;
+  display: flex;
+  align-items: baseline;
+  gap: 0.8rem;
+  padding: 0.5rem 0.8rem;
+  border-radius: 4px;
+  transition: background 0.15s;
+}
+
+.toc-list li a:hover {
+  background: var(--code-bg);
+  color: var(--accent);
+}
+
+.toc-list li a::before {
+  content: "第" counter(chapter, cjk-ideographic) "章";
+  font-size: 0.85rem;
+  opacity: 0.5;
+  flex-shrink: 0;
+}
+
+/* Chapter page */
+.chapter-header {
+  text-align: center;
+  padding: 2rem 0;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 2rem;
+}
+
+.chapter-header .book-title {
+  font-size: 0.9rem;
+  opacity: 0.5;
+}
+
+.chapter-header h1 {
+  font-size: 1.8rem;
+  margin-top: 0.5rem;
+}
+
+.chapter-header .chapter-num {
+  font-size: 0.85rem;
+  color: var(--accent);
+  margin-top: 0.3rem;
+}
+
+.chapter-body {
+  font-size: 1.05rem;
+  text-align: justify;
+}
+
+.chapter-body p {
+  margin-bottom: 1.2rem;
+  text-indent: 2em;
+}
+
+.chapter-body p:first-child {
+  text-indent: 0;
+}
+
+.chapter-nav {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 3rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--border);
+}
+
+.chapter-nav a {
+  color: var(--accent);
+  text-decoration: none;
+  font-size: 0.95rem;
+}
+
+.chapter-nav a:hover {
+  text-decoration: underline;
+}
+
+.back-link {
+  display: inline-block;
+  margin-bottom: 1.5rem;
+  color: var(--accent);
+  text-decoration: none;
+  font-size: 0.9rem;
+}
+
+.back-link:hover {
+  text-decoration: underline;
+}
+
+.author-section {
+  background: var(--code-bg);
+  border-radius: 8px;
+  padding: 1.5rem;
+}
+
+.author-section h1, .author-section h2, .author-section h3 {
+  font-size: 1.1rem;
+  margin-bottom: 0.8rem;
+}
+
+.author-section ul {
+  list-style: none;
+  padding-left: 0;
+}
+
+.author-section li {
+  margin-bottom: 0.4rem;
+  padding-left: 0;
+}
+
+footer {
+  text-align: center;
+  padding: 2rem 0;
+  font-size: 0.8rem;
+  opacity: 0.4;
+  border-top: 1px solid var(--border);
+  margin-top: 3rem;
+}
+</style>
+
+</head>
+<body>
+<div class="container">
+
+    <a href="./" class="back-link">&larr; 返回目錄</a>
+    <div class="chapter-header">
+      <div class="book-title">深山食堂開飯了</div>
+      <h1>全村動員種靈菜</h1>
+      <div class="chapter-num">第15章</div>
+    </div>
+    <div class="chapter-body">
+      <p>蘇念荷算了一筆帳，越算越頭疼。</p>
+<p>食堂每天的客流量從最初的十來人，漲到了現在穩定的三四十人。週末和節假日更誇張，最多的一天來了六十三個人——她記得很清楚，因為那天她從早上五點站到晚上九點，中間只喝了兩口水，切菜切到虎口發麻，手腕差點廢掉。</p>
+<p>客人多了，食材消耗就成了問題。</p>
+<p>靈泉水不缺，後山那眼泉每天穩定地冒著清澈的水，取之不盡。但食材是實打實要消耗的——一天至少要用掉十斤米、五斤麵、八斤蔬菜、若干雞蛋和肉。蔬菜是最頭疼的，她一個人的菜園子根本種不出這麼多，只能從鎮上的菜市場買。</p>
+<p>鎮上的菜……怎麼說呢。</p>
+<p>蘇念荷做了一百五十年的食修，對食材的要求刻在了骨子裡。鎮上菜市場的蔬菜，番茄是催紅的，聞起來沒有番茄味；黃瓜是打了膨大劑的，粗得像棒球棍但一咬全是水，沒有脆勁兒；青菜是大棚裡速成的，葉子綠得不真實，像刷了一層油漆。</p>
+<p>這些菜用靈泉水煮，確實能把品質拉上來不少。但她心裡清楚，食材的底子在那裡擺著，靈泉水只能錦上添花，不能無中生有。</p>
+<p>她需要好食材。大量的好食材。</p>
+<p>念頭一轉，她想到了村裡那些閒著的地。</p>
+<p>雲嶺村的年輕人大多外出打工了，留下來的都是六七十歲的老人。他們的體力已經不足以像年輕時那樣大規模種地，很多田已經荒了好幾年，長滿了雜草。但這些地都是好地——山區的土壤富含礦物質，加上充沛的雨水和日照，底子比平原的農田還要好。</p>
+<p>就差一樣東西——水。</p>
+<p>山上的水源不算豐富，灌溉一直是雲嶺村農業的老大難問題。以前村裡有一口老井，但前幾年乾了。大家種地基本靠天吃飯，收成好壞全看老天爺心情。</p>
+<p>但蘇念荷有靈泉。</p>
+<p>她當然不能把靈泉水直接分給村民——別說解釋不清楚，光是靈泉的出水量也撐不住幾十畝地的灌溉。但她可以稀釋。</p>
+<p>當天晚上，蘇念荷做了一個實驗。</p>
+<p>她找了十個大塑膠桶，每個桶裝了五十升普通的山溪水，然後在每個桶裡加入不同量的靈泉水——從一升到十升，等差遞增。接著她從院子裡挖了十棵差不多大小的野菜苗，分別種在十個花盆裡，每天用不同比例的靈泉稀釋水澆灌。</p>
+<p>三天後，結果出來了。</p>
+<p>加一升靈泉水的那棵苗，長勢比普通野菜好了大約兩成，葉片更厚實，顏色更深。加三升的那棵，好了五成，已經很明顯了。加五升的那棵，葉片肥碩得有點離譜，而且散發出一股隱隱的清香——這是靈氣滲入植物細胞的表現。</p>
+<p>但加到八升以上，改善幅度就不大了。邊際效益遞減。</p>
+<p>蘇念荷心裡有了數：一比十的稀釋比例就夠了。一升靈泉水兌十升山溪水，做成「特製肥料」，足以讓普通蔬菜的品質遠超市面上最貴的有機蔬菜。</p>
+<p>第二天一早，蘇念荷提著兩桶調配好的「肥料」去找劉婆婆。</p>
+<p>「婆婆，我研究了一種特別的有機肥。」她說的是實話——從某種角度來說，靈泉水確實算是一種特別的有機物質。「您試試拿來澆菜，看看效果怎麼樣。」</p>
+<p>劉婆婆接過桶，聞了聞。</p>
+<p>「怎麼聞著有點甜？像是加了蜂蜜？」</p>
+<p>「呃……是加了一些特殊的礦物質水。」蘇念荷面不改色地瞎編，「我在網上查的配方，據說效果很好。」</p>
+<p>劉婆婆哪會在意這些。她種了一輩子的地，什麼新鮮肥料沒試過。她接過桶就去了自家的小菜園，稀裡嘩啦地把「肥料」澆在了番茄苗和黃瓜架上。</p>
+<p>五天後，劉婆婆風風火火地衝進了食堂。</p>
+<p>「念魚！念魚！你快來看！」</p>
+<p>蘇念荷放下手裡的鍋鏟跟著跑出去。</p>
+<p>劉婆婆的菜園在她家屋後的一小塊坡地上，不大，也就二三十平方米。但此刻，那塊小菜園完全變了一個樣——</p>
+<p>番茄架上掛滿了果實。每一顆番茄都圓滾滾、紅豔豔的，大的有拳頭大小，皮薄得能看見裡面的汁水，紅得像打了蠟的瑪瑙。陽光照上去，表皮反射出一層溫潤的光澤，彷彿每一顆都在微微發光。</p>
+<p>蘇念荷摘了一顆，在衣服上擦了擦，咬了一口。</p>
+<p>果皮「啵」的一聲破開，汁水瞬間灌滿了整個口腔。那種酸甜——不是超市番茄那種寡淡的甜，而是陽光和泥土交織出來的濃烈果味，酸得恰到好處地刺激味蕾，甜得像是收了一整個夏天的陽光。果肉綿密沙軟，帶著一股特有的番茄清香，從舌尖一路暖到胃裡。</p>
+<p>「好吃。」蘇念荷由衷地說。</p>
+<p>「何止好吃！」劉婆婆激動得雙手直比劃，「你看這黃瓜！」</p>
+<p>黃瓜架上的黃瓜也不遑多讓。碧綠的表皮上覆著一層細細的白霜，瓜身筆直修長，大小均勻得像是模具裡印出來的。劉婆婆摘了一根，掰成兩截——</p>
+<p>「啪！」</p>
+<p>清脆的斷裂聲在菜園裡迴盪。黃瓜的橫截面是鮮嫩的翠綠色，中間的籽粒晶瑩透亮，還能看到一層薄薄的汁液在斷面上滲出來。那股清新的瓜香隨著斷裂瞬間散開，聞著就讓人口舌生津。</p>
+<p>「我種了四十年的地，從來沒見過這麼好的菜！」劉婆婆的眼睛亮得像兩盞燈，「你那個肥料是什麼神仙配方？還有沒有？」</p>
+<p>「有的有的，您要多少我給您配多少。」</p>
+<p>消息在村裡傳開的速度比網路還快。</p>
+<p>第二天，王大爺就拎著桶上門了。然後是張嬸、陳叔、老趙家的、後山的李奶奶……不到三天，全村十幾戶人家都來找蘇念荷要「特製肥料」。</p>
+<p>蘇念荷來者不拒。她每天早上趁天沒亮，去後山的靈泉取水，回來按一比十的比例兌好，分裝在大塑膠桶裡，一家一家地送過去。</p>
+<p>阿亮也來幫忙了。少年每天幫她提水、兌水、送水，從村頭跑到村尾，瘦長的身影在田間地頭穿梭。他跑得很快，因為他終於不怕被人看見了——銀耳蓮子羹喝了快一個月，他手臂上的疤痕已經淡了一大圈，雖然還沒有完全消失，但已經不再那麼觸目驚心。他第一次在人前捲起了袖子，露出的手臂雖然還有痕跡，但他的表情是坦然的。</p>
+<p>「蘇姐，王大爺家的送到了！」阿亮氣喘吁吁地跑回來，黝黑的臉上全是汗，但眼睛亮亮的。</p>
+<p>「辛苦了，喝口水。」蘇念荷遞過去一杯涼茶。</p>
+<p>兩週後，雲嶺村的變化肉眼可見。</p>
+<p>劉婆婆的番茄紅得像寶石，王大爺的黃瓜脆得能聽見響，張嬸的茄子紫得發亮，陳叔的辣椒紅綠相間像掛了一串串小燈籠。老趙家的空心菜嫩得掐一下就出水，後山李奶奶的南瓜長到了十五斤還沒停下來的意思。</p>
+<p>最誇張的是劉婆婆家的那棵絲瓜。那棵絲瓜藤沿著竹架爬了足足三米高，藤上掛了二十多條絲瓜，最長的一條有半米，像一把綠色的大寶劍。劉婆婆每天站在絲瓜架下面仰頭看，覺得自己種出了什麼了不起的東西。</p>
+<p>蘇念荷開始按市場價加兩成向村民收購蔬菜。</p>
+<p>番茄五塊錢一斤、黃瓜三塊五、青菜兩塊——比鎮上菜市場的價格稍高，但考慮到品質的天差地別，這個價格已經非常良心了。蘇念荷按日結算，每天傍晚村民把菜送到食堂門口，她過秤、記帳、付錢，乾淨利落。</p>
+<p>第一個月結束的時候，劉婆婆算了算帳，嚇了一跳。</p>
+<p>「念魚，我這個月光賣菜就賺了一千二？」</p>
+<p>「對啊，您的番茄品質特別好，客人都點名要。」</p>
+<p>「老天爺……」劉婆婆摀住了嘴，「我種了一輩子地，一個月能賺到一千塊的時候都很少……」</p>
+<p>一千二百塊，在城裡可能只夠吃幾頓飯。但對雲嶺村的老人來說，這是一筆意義非凡的收入——它意味著他們不再是「只能等兒女寄錢回來」的空巢老人，而是能靠自己雙手賺錢的人。</p>
+<p>王大爺用第一個月的菜錢給自己買了一雙新膠鞋，舊的那雙補了三層還在漏水。張嬸終於捨得去鎮上配了一副老花眼鏡，以前她穿針引線全靠摸。陳叔往城裡兒子的帳戶上轉了五百塊錢，附了一句語音：「不要你的錢了，爸自己能賺。」</p>
+<p>那句語音蘇念荷沒聽到，但阿亮聽到了。少年回來的時候，眼眶有點紅。</p>
+<p>「陳叔哭了。」阿亮小聲說。</p>
+<p>蘇念荷假裝沒聽見，繼續切菜。但刀鋒落在砧板上的節奏莫名放緩了幾拍。</p>
+<p>消息越傳越遠。</p>
+<p>村子微信群裡——那個平時只有劉婆婆發早安圖和養生文章的群——忽然變得熱鬧起來。在外面打工的年輕人開始在群裡問東問西：</p>
+<p>「媽，聽說村裡現在種菜能賺錢了？真的假的？」<br>「爸你真的一個月賺了八百？你不是騙我回去吧？」<br>「我看劉婆婆發的番茄照片了，那也太好看了，超市裡賣的跟這個比就是垃圾。」<br>「有沒有搞頭啊？我在工廠裡每天加班十二個小時，一個月也就四千多……」</p>
+<p>蘇念荷不知道這些對話。她只知道，最近有兩個二十多歲的年輕人回了村——一個是王大爺的孫子王浩，在廣州電子廠幹了三年，說是「回來看看」；另一個是張嬸的外甥女小敏，在省城做服務員，辭了職回來幫張嬸種菜。</p>
+<p>王浩到村裡的第一天就來了食堂，吃了一碗蘇念荷的番茄牛腩麵。番茄是他爺爺種的，紅得透亮，燉成醬後酸甜濃郁；牛腩是慢燉了三小時的，一碰就散，浸透了靈泉骨湯的鮮味。麵條是手擀的，寬寬的，掛著濃稠的醬汁，滑進嘴裡帶著一股結實的麥香。</p>
+<p>王浩吃完一碗，沉默了很久。</p>
+<p>「我在廣州三年，吃了三年的盒飯和泡麵，」他放下筷子，看著空碗出神，「我都忘了，原來吃飯是這種感覺。」</p>
+<p>蘇念荷在吧檯後面擦杯子，聽見這話，輕輕笑了一下。</p>
+<p>她想起修仙界那些為了搶奪靈脈資源而拼得頭破血流的宗門——那些強大的修士以為靈脈的價值在於修煉速度、在於煉丹品質、在於無窮無盡的靈力供給。</p>
+<p>但其實，靈脈最大的價值，是讓這片土地上的每一粒種子都能長成最好的自己。</p>
+<p>一棵好的番茄，能讓一個七十歲的老人挺直腰桿。<br>一碗好的麵，能讓一個漂泊三年的年輕人想起回家的路。</p>
+<p>這不比什麼「靈力加持三重天」強多了？</p>
+<p>傍晚收攤的時候，阿亮幫蘇念荷把最後一批菜搬進了儲藏室。劉婆婆的番茄、王大爺的黃瓜、張嬸的茄子、陳叔的辣椒——紅的黃的綠的紫的，擺在木架上，像一幅色彩斑斕的畫。</p>
+<p>蘇念荷站在儲藏室門口看了一會兒，深深地吸了一口氣。</p>
+<p>空氣裡全是蔬菜的清香——番茄的微酸、黃瓜的清甜、茄子的淡雅、辣椒的辛烈——混合在一起，比任何香水都好聞。</p>
+<p>阿橘也溜進了儲藏室，在菜架之間巡視了一圈。牠聞了聞番茄（皺了皺鼻子），拍了拍黃瓜（滾走了一根），然後跳上最高層的架子，居高臨下地俯瞰著這些食材。</p>
+<p>尾巴緩緩搖了兩下。</p>
+<p>翻譯：原料合格，可以開工了。</p>
+<p>蘇念荷笑了笑，隨手拿起一顆番茄擦了擦，咬了一口。</p>
+<p>汁水在嘴裡炸開，酸甜的味道充盈了整個口腔。</p>
+<p>窗外的夕陽把雲嶺山染成了金色。遠處的梯田裡，幾個老人的身影在夕光中慢慢移動，有人在澆水，有人在除草，有人站在自家田邊，看著地裡綠油油的菜苗，笑得皺紋都擠在了一起。</p>
+<p>蘇念荷忽然覺得，這個畫面比修仙界任何一座仙山的風景都好看。</p>
+<p>也許這就是她回到凡間的意義——不是去建什麼修仙大業，不是要恢復前世的修為，而是讓這座快要被遺忘的小山村重新活過來。</p>
+<p>讓每一塊田都有人種，每一棵菜都長得好，每一個老人都有事做，每一頓飯都值得期待。</p>
+<p>這些事情，聽起來小得不能再小了。</p>
+<p>但蘇念荷知道，這就是廚道的真諦。</p>
+<p>在修仙界鑽研了一百五十年，渡劫失敗，靈力盡散，兜兜轉轉回到凡間——她竟然是在這座深山裡的小菜園旁邊，才真正悟到了這個道理。</p>
+<p>大概天道也沒有那麼壞吧。</p>
+<p>只是幽默感依然過剩而已。</p>
+    </div>
+    <div class="chapter-nav">
+      <a href="ch014.html">&larr; 上一章</a>
+      <a href="ch016.html">下一章 &rarr;</a>
+    </div>
+</div>
+<footer><p>小說閱讀站</p></footer>
+</body>
+</html>

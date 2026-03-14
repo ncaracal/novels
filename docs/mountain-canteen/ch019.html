@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>陳醫生的選擇 - 深山食堂開飯了</title>
+<style>
+:root {
+  --bg: #faf8f5;
+  --text: #2c2c2c;
+  --accent: #8b6914;
+  --card-bg: #fff;
+  --border: #e8e0d4;
+  --shadow: rgba(0,0,0,0.06);
+  --code-bg: #f5f0e8;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #1a1a1a;
+    --text: #e0dcd6;
+    --accent: #d4a530;
+    --card-bg: #252525;
+    --border: #3a3a3a;
+    --shadow: rgba(0,0,0,0.3);
+    --code-bg: #2a2520;
+  }
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: "Noto Serif TC", "Source Han Serif TC", "PMingLiU", serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.9;
+  min-height: 100vh;
+}
+
+.container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 2rem 1.5rem;
+}
+
+header {
+  text-align: center;
+  padding: 3rem 0 2rem;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 2rem;
+}
+
+header h1 {
+  font-size: 2.2rem;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  color: var(--accent);
+}
+
+header p {
+  margin-top: 0.5rem;
+  font-size: 0.95rem;
+  opacity: 0.7;
+}
+
+.book-card {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 1.8rem;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 2px 8px var(--shadow);
+  transition: transform 0.2s;
+}
+
+.book-card:hover {
+  transform: translateY(-2px);
+}
+
+.book-card h2 {
+  font-size: 1.5rem;
+  margin-bottom: 0.3rem;
+}
+
+.book-card h2 a {
+  color: var(--text);
+  text-decoration: none;
+}
+
+.book-card h2 a:hover {
+  color: var(--accent);
+}
+
+.book-card .meta {
+  font-size: 0.85rem;
+  opacity: 0.6;
+  margin-bottom: 1rem;
+}
+
+.book-card .abstract-preview {
+  font-size: 0.95rem;
+  line-height: 1.8;
+}
+
+/* Book page */
+.book-header {
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.book-header h1 {
+  font-size: 2rem;
+  color: var(--accent);
+}
+
+.book-header .author-name {
+  font-size: 1rem;
+  opacity: 0.7;
+  margin-top: 0.3rem;
+}
+
+.section {
+  margin-bottom: 2.5rem;
+}
+
+.section h2 {
+  font-size: 1.3rem;
+  color: var(--accent);
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.toc-list {
+  list-style: none;
+  counter-reset: chapter;
+}
+
+.toc-list li {
+  counter-increment: chapter;
+  margin-bottom: 0.5rem;
+}
+
+.toc-list li a {
+  color: var(--text);
+  text-decoration: none;
+  display: flex;
+  align-items: baseline;
+  gap: 0.8rem;
+  padding: 0.5rem 0.8rem;
+  border-radius: 4px;
+  transition: background 0.15s;
+}
+
+.toc-list li a:hover {
+  background: var(--code-bg);
+  color: var(--accent);
+}
+
+.toc-list li a::before {
+  content: "第" counter(chapter, cjk-ideographic) "章";
+  font-size: 0.85rem;
+  opacity: 0.5;
+  flex-shrink: 0;
+}
+
+/* Chapter page */
+.chapter-header {
+  text-align: center;
+  padding: 2rem 0;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 2rem;
+}
+
+.chapter-header .book-title {
+  font-size: 0.9rem;
+  opacity: 0.5;
+}
+
+.chapter-header h1 {
+  font-size: 1.8rem;
+  margin-top: 0.5rem;
+}
+
+.chapter-header .chapter-num {
+  font-size: 0.85rem;
+  color: var(--accent);
+  margin-top: 0.3rem;
+}
+
+.chapter-body {
+  font-size: 1.05rem;
+  text-align: justify;
+}
+
+.chapter-body p {
+  margin-bottom: 1.2rem;
+  text-indent: 2em;
+}
+
+.chapter-body p:first-child {
+  text-indent: 0;
+}
+
+.chapter-nav {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 3rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--border);
+}
+
+.chapter-nav a {
+  color: var(--accent);
+  text-decoration: none;
+  font-size: 0.95rem;
+}
+
+.chapter-nav a:hover {
+  text-decoration: underline;
+}
+
+.back-link {
+  display: inline-block;
+  margin-bottom: 1.5rem;
+  color: var(--accent);
+  text-decoration: none;
+  font-size: 0.9rem;
+}
+
+.back-link:hover {
+  text-decoration: underline;
+}
+
+.author-section {
+  background: var(--code-bg);
+  border-radius: 8px;
+  padding: 1.5rem;
+}
+
+.author-section h1, .author-section h2, .author-section h3 {
+  font-size: 1.1rem;
+  margin-bottom: 0.8rem;
+}
+
+.author-section ul {
+  list-style: none;
+  padding-left: 0;
+}
+
+.author-section li {
+  margin-bottom: 0.4rem;
+  padding-left: 0;
+}
+
+footer {
+  text-align: center;
+  padding: 2rem 0;
+  font-size: 0.8rem;
+  opacity: 0.4;
+  border-top: 1px solid var(--border);
+  margin-top: 3rem;
+}
+</style>
+
+</head>
+<body>
+<div class="container">
+
+    <a href="./" class="back-link">&larr; 返回目錄</a>
+    <div class="chapter-header">
+      <div class="book-title">深山食堂開飯了</div>
+      <h1>陳醫生的選擇</h1>
+      <div class="chapter-num">第19章</div>
+    </div>
+    <div class="chapter-body">
+      <p>陳時予站在雲嶺食堂的門口，手裡攥著一張回程的車票。</p>
+<p>車票被他捏得皺巴巴的，紙面上的墨字都暈開了。明天下午兩點的大巴，雲嶺村到省城，五個半小時。然後轉地鐵到醫院，換上白大褂，掛上工牌，重新變成省立醫院急診科的陳時予醫生。</p>
+<p>他在門口站了很久。久到日頭從頭頂移到了西邊的山尖上，久到門口那盆薄荷的影子從圓的變成長的。</p>
+<p>門口的月季開得正盛，大紅色的花瓣邊緣微微捲曲，像害羞的嘴唇。一隻蜜蜂從花蕊裡鑽出來，滿身金粉，嗡嗡嗡地在他耳邊轉了一圈，然後飛走了。</p>
+<p>陳時予三十二歲，從醫九年，急診科五年。</p>
+<p>五年急診，一千八百多個日夜，他已經記不清自己搶救過多少人了。車禍的、墜樓的、心梗的、藥物過量的、打架捅了刀子的。血的味道、消毒水的味道、家屬崩潰的哭聲、心電監護儀報警的嗶嗶聲——這些東西像蛀蟲一樣鑽進了他的腦子裡，白天趕不走，晚上更猖狂。</p>
+<p>他開始失眠是三年前。</p>
+<p>起因是一個八歲的女孩。車禍送來的，整個人像一個被揉皺了的紙團。他搶救了四十七分鐘，心電圖從波浪變成直線。女孩的母親跪在搶救室門口，哭得聲音都劈了，那個聲音穿透了兩道門、三面牆，精準無誤地扎進了他的耳朵裡。</p>
+<p>從那天晚上開始，他就再也沒能好好睡過一覺。</p>
+<p>安眠藥從一片加到兩片，再加到三片。效果越來越差，副作用越來越大。白天昏昏沉沉的，注意力渙散，手指有時候會不受控制地發抖。對於一個急診科醫生來說，手抖意味著什麼，不需要多解釋。</p>
+<p>他的前妻在一年半前提出了離婚。理由是「你已經不像一個活人了」。</p>
+<p>他沒有反駁。因為她說得對。</p>
+<p>後來聽朋友說雲嶺村有個食堂很神奇，能治各種奇怪的病。他本來不信，但失眠到第三年的人什麼都願意試試。他請了年假，帶著半信半疑的心態來了。</p>
+<p>然後蘇念荷給他盛了一碗粥。</p>
+<p>就是一碗白粥，加了幾顆紅棗和蓮子。但那碗粥喝下去之後，他回到劉婆婆幫他安排的客房裡，躺在那張吱呀作響的木板床上，在窗外的蟲鳴聲中——</p>
+<p>睡著了。</p>
+<p>一覺到天亮。</p>
+<p>他是被鳥叫聲吵醒的。睜開眼的那一刻，陽光從窗簾的縫隙裡照進來，照在他臉上，溫溫的。他的腦子清清爽爽，手指穩穩當當，心跳平平靜靜。</p>
+<p>他在天花板上看了三分鐘，然後哭了。</p>
+<p>不是委屈的哭，是那種憋了三年的東西終於找到出口的、痛快的哭。</p>
+<p>從那天起，他就成了雲嶺食堂的常客。</p>
+<p>年假用完了請事假，事假用完了請病假。科室主任打電話來罵他，他嗯嗯啊啊地應著，掛了電話繼續喝湯。</p>
+<p>但假期終究是有限的。</p>
+<p>今天是最後一天了。</p>
+<p>「要進來嗎？」</p>
+<p>蘇念荷不知道什麼時候站在了門口，手裡端著一碗粥。</p>
+<p>還是那種白粥，紅棗蓮子，熱騰騰的蒸氣在午後的陽光裡裊裊上升。</p>
+<p>陳時予接過碗，在門口的竹椅上坐下來。粥很燙，他吹了吹，小口小口地喝。</p>
+<p>蘇念荷搬了另一把竹椅坐在旁邊，什麼都沒問。</p>
+<p>她只是坐在那裡，看著院子裡的棗樹。棗花還沒開，但枝葉已經很茂密了，在地上投下一大片篩子般的碎影。阿橘趴在棗樹下的陰涼處打盹，圓滾滾的身體隨著呼吸一起一伏，像一個橘色的小氣球。</p>
+<p>安靜了很久。</p>
+<p>「蘇老闆。」陳時予開口了，聲音有點悶，像是從胸腔最深處擠出來的。</p>
+<p>「嗯。」</p>
+<p>「我不想回去了。」</p>
+<p>蘇念荷沒有表現出驚訝，依然看著棗樹：「不想回去做醫生？」</p>
+<p>「不是不想做醫生。」陳時予把粥碗放在膝蓋上，兩手捧著，感受著碗壁傳來的溫度，「是不想回去做那種醫生了。」</p>
+<p>他頓了一下，像是在組織語言。</p>
+<p>「省立醫院急診科，平均每天接診三百個病人。三百個。每個病人分到的時間不到五分鐘。我連他們的臉都記不住，他們也記不住我的臉。我就像一臺機器，病人就像流水線上的零件，進來、處理、出去。救回來的，下次還會來；救不回來的，家屬簽字，推走，下一個。」</p>
+<p>他的聲音越來越輕。</p>
+<p>「我以前覺得這沒什麼，做醫生嘛，職業倦怠很正常。但來了這裡之後……」</p>
+<p>他看了一眼食堂的木門，門上的漆已經斑駁了，但「雲嶺食堂」四個字還是清清楚楚的。</p>
+<p>「我在這裡看到你做飯，每道菜都做得很認真。一碗粥，你能熬兩個小時。一盤小菜，你能把蘿蔔花刻得像真的一樣。那個燒傷的少年、那個不說話的女孩——你不著急，不催他們，就那麼慢慢地、一點一點地對他們好。」</p>
+<p>他低頭喝了一口粥。</p>
+<p>「我想起我當初為什麼要學醫。不是為了當急診科的流水線工人。是因為小時候生病，鎮上的老大夫背著藥箱走了兩個小時的山路來我家，給我看完病還留下來陪我下了一盤棋。」</p>
+<p>他笑了一下，笑容裡帶著一點苦澀。</p>
+<p>「我想做那種醫生。記得住病人的臉，知道他們叫什麼名字，了解他們的身體，陪他們慢慢好起來。不是五分鐘一個的那種。」</p>
+<p>蘇念荷靜靜地聽完了，沒有打斷。</p>
+<p>然後她問了一個很實際的問題：「這個村子沒有診所，老人家們看病要坐兩個小時的車去鎮上。你要是留下來，做什麼？」</p>
+<p>陳時予愣了一下，然後笑了。</p>
+<p>這次是真正的笑，沒有苦澀，眼睛裡有光。</p>
+<p>「我想在村裡開一間小診所。不大，不需要什麼高級設備。能看感冒發燒、量血壓測血糖、處理個小傷口就行。村裡老人多，高血壓糖尿病是常態，有個人在旁邊盯著按時吃藥就能少很多麻煩。」</p>
+<p>他捏了捏手裡皺成一團的車票。</p>
+<p>「就是不知道……行不行。」</p>
+<p>蘇念荷站起來，拍了拍身上的灰。</p>
+<p>「村口劉婆婆家旁邊有間空房，以前是村委會的辦公室，後來村委會搬走了就空著。你要是想用，我幫你問。」</p>
+<p>陳時予抬起頭看著她。</p>
+<p>這個二十四歲的姑娘站在午後的陽光裡，表情很平靜，像是在說一件很普通的事——就像「今天有番茄蛋花湯」或者「桂花糕蒸好了」一樣普通。</p>
+<p>不是那種「你做了一個很勇敢的決定我支持你」的煽情鼓勵。</p>
+<p>只是：這裡有間房子，你需要嗎？</p>
+<p>有的時候人需要的不是被理解、被鼓勵、被分析，而是有人在你做了決定之後，輕描淡寫地幫你把路上的第一塊石頭搬開。</p>
+<p>「好。」陳時予把那張車票揉成一個小紙球，精準地投進了兩米外的垃圾桶裡。</p>
+<p>急診科出身的手感，這方面倒是沒退化。</p>
+<p>「謝了，蘇老闆。」</p>
+<p>「別叫我蘇老闆，聽著像催債的。」蘇念荷端起空碗轉身往廚房走，「叫我念魚就行。」</p>
+<p>「那你也別叫我陳醫生了。叫時予。」</p>
+<p>「嗯，時予。」蘇念荷走了兩步，忽然回頭，「對了，劉婆婆有高血壓，她偷偷吃鹹鴨蛋以為我不知道。你開了診所之後，先管管她。」</p>
+<p>陳時予笑出了聲。</p>
+<p>棗樹下的阿橘被笑聲吵醒了，不滿地翻了個身，露出毛茸茸的肚皮，用後腿踹了一下空氣，繼續睡。</p>
+<p>陳時予看著那隻肥貓，忽然覺得這個決定輕鬆得不可思議。</p>
+<p>辭了省立醫院的工作，放棄了急診科主治醫師的前途，留在一個連外賣都送不到的深山小村子裡開診所。</p>
+<p>聽起來像瘋了。</p>
+<p>但這是他三年來第一個不需要掙扎的決定。</p>
+<p>不需要在凌晨三點翻來覆去地想利弊，不需要列一張Excel表格比較各選項的優劣，不需要打電話問十個人的意見然後每個意見都聽不進去。</p>
+<p>他只是坐在一家深山食堂的門口，喝了一碗白粥，看了一眼棗樹下的肥貓。</p>
+<p>然後就決定了。</p>
+<p>晚上，蘇念荷給他加了一個菜：清蒸鱸魚。</p>
+<p>後山溪裡撈的野生鱸魚，用靈泉水養了一天，蒸的時候只放了薑絲和蔥白，起鍋前淋一線滾燙的芝麻油。魚肉白嫩如玉，一筷子下去，整塊魚肉順著紋理裂開，露出裡面層層疊疊的細膩紋路，蒸氣裹著鮮香撲面而來。</p>
+<p>「慶祝一下。」蘇念荷放下盤子。</p>
+<p>「慶祝什麼？」</p>
+<p>「慶祝雲嶺村有醫生了。」</p>
+<p>陳時予夾了一口魚肉放進嘴裡，鮮得眉毛都要飛起來了。他的眼角有點濕，但他假裝是被蒸氣薰的。</p>
+<p>「念魚。」</p>
+<p>「嗯？」</p>
+<p>「你這做飯的手藝到底跟誰學的？我每次吃都覺得不是凡人做得出來的味道。」</p>
+<p>蘇念荷笑了笑：「跟我師父學的。學了很久。」</p>
+<p>「你師父是誰？」</p>
+<p>「一個很厲害的廚師。已經不在了。」</p>
+<p>陳時予沒有再問。有些話聽得出不想多說，就不要再問了。這是做了五年急診科之後他學會的為數不多的人際技能之一。</p>
+<p>他安靜地吃完了那條魚，魚骨乾淨得像標本。</p>
+<p>門口，夜色已經漫上來了。山裡的夜來得早，太陽一落山，黑暗就像潮水一樣湧進村子。但食堂裡的燈很亮，暖黃色的光從窗戶裡流出去，照亮了門口的一小片石板路。</p>
+<p>一隻飛蛾繞著門口的燈轉，翅膀在光裡薄如蟬翼。</p>
+<p>陳時予忽然想，人有時候就像這隻飛蛾，在黑暗裡飛了很久，只要找到一盞燈，就不想走了。</p>
+<p>不是什麼了不起的燈。</p>
+<p>就是一間老房子裡，有人在做飯，有貓在打盹，門口種著月季花。</p>
+<p>但這盞燈足夠亮了。</p>
+    </div>
+    <div class="chapter-nav">
+      <a href="ch018.html">&larr; 上一章</a>
+      <a href="ch020.html">下一章 &rarr;</a>
+    </div>
+</div>
+<footer><p>小說閱讀站</p></footer>
+</body>
+</html>

@@ -7,9 +7,6 @@ novels/
 ├── CLAUDE.md
 ├── build.js                  # 靜態網站產生器
 ├── docs/                     # GitHub Pages 輸出目錄
-├── agents/                   # 讀者 Agent 設定
-│   ├── reader_a.md
-│   └── reader_b.md
 └── books/                    # 小說資料
     └── <novel-name>/
         ├── author.md         # 作者屬性
@@ -31,7 +28,7 @@ novels/
 
 ## Agent 使用
 
-- `agents/reader_a.md` 和 `agents/reader_b.md` 定義了兩位資深讀者的偏好
+- `.claude/agents/reader_a.md` 和 `.claude/agents/reader_b.md` 定義了兩位資深讀者的偏好
 - 使用這些 Agent 來審稿、評論、推薦小說時，應依據各自的偏好給出不同觀點
 
 ## 常用指令

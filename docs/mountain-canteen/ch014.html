@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>開發商來了 - 深山食堂開飯了</title>
+<style>
+:root {
+  --bg: #faf8f5;
+  --text: #2c2c2c;
+  --accent: #8b6914;
+  --card-bg: #fff;
+  --border: #e8e0d4;
+  --shadow: rgba(0,0,0,0.06);
+  --code-bg: #f5f0e8;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #1a1a1a;
+    --text: #e0dcd6;
+    --accent: #d4a530;
+    --card-bg: #252525;
+    --border: #3a3a3a;
+    --shadow: rgba(0,0,0,0.3);
+    --code-bg: #2a2520;
+  }
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: "Noto Serif TC", "Source Han Serif TC", "PMingLiU", serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.9;
+  min-height: 100vh;
+}
+
+.container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 2rem 1.5rem;
+}
+
+header {
+  text-align: center;
+  padding: 3rem 0 2rem;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 2rem;
+}
+
+header h1 {
+  font-size: 2.2rem;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  color: var(--accent);
+}
+
+header p {
+  margin-top: 0.5rem;
+  font-size: 0.95rem;
+  opacity: 0.7;
+}
+
+.book-card {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 1.8rem;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 2px 8px var(--shadow);
+  transition: transform 0.2s;
+}
+
+.book-card:hover {
+  transform: translateY(-2px);
+}
+
+.book-card h2 {
+  font-size: 1.5rem;
+  margin-bottom: 0.3rem;
+}
+
+.book-card h2 a {
+  color: var(--text);
+  text-decoration: none;
+}
+
+.book-card h2 a:hover {
+  color: var(--accent);
+}
+
+.book-card .meta {
+  font-size: 0.85rem;
+  opacity: 0.6;
+  margin-bottom: 1rem;
+}
+
+.book-card .abstract-preview {
+  font-size: 0.95rem;
+  line-height: 1.8;
+}
+
+/* Book page */
+.book-header {
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.book-header h1 {
+  font-size: 2rem;
+  color: var(--accent);
+}
+
+.book-header .author-name {
+  font-size: 1rem;
+  opacity: 0.7;
+  margin-top: 0.3rem;
+}
+
+.section {
+  margin-bottom: 2.5rem;
+}
+
+.section h2 {
+  font-size: 1.3rem;
+  color: var(--accent);
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.toc-list {
+  list-style: none;
+  counter-reset: chapter;
+}
+
+.toc-list li {
+  counter-increment: chapter;
+  margin-bottom: 0.5rem;
+}
+
+.toc-list li a {
+  color: var(--text);
+  text-decoration: none;
+  display: flex;
+  align-items: baseline;
+  gap: 0.8rem;
+  padding: 0.5rem 0.8rem;
+  border-radius: 4px;
+  transition: background 0.15s;
+}
+
+.toc-list li a:hover {
+  background: var(--code-bg);
+  color: var(--accent);
+}
+
+.toc-list li a::before {
+  content: "第" counter(chapter, cjk-ideographic) "章";
+  font-size: 0.85rem;
+  opacity: 0.5;
+  flex-shrink: 0;
+}
+
+/* Chapter page */
+.chapter-header {
+  text-align: center;
+  padding: 2rem 0;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 2rem;
+}
+
+.chapter-header .book-title {
+  font-size: 0.9rem;
+  opacity: 0.5;
+}
+
+.chapter-header h1 {
+  font-size: 1.8rem;
+  margin-top: 0.5rem;
+}
+
+.chapter-header .chapter-num {
+  font-size: 0.85rem;
+  color: var(--accent);
+  margin-top: 0.3rem;
+}
+
+.chapter-body {
+  font-size: 1.05rem;
+  text-align: justify;
+}
+
+.chapter-body p {
+  margin-bottom: 1.2rem;
+  text-indent: 2em;
+}
+
+.chapter-body p:first-child {
+  text-indent: 0;
+}
+
+.chapter-nav {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 3rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--border);
+}
+
+.chapter-nav a {
+  color: var(--accent);
+  text-decoration: none;
+  font-size: 0.95rem;
+}
+
+.chapter-nav a:hover {
+  text-decoration: underline;
+}
+
+.back-link {
+  display: inline-block;
+  margin-bottom: 1.5rem;
+  color: var(--accent);
+  text-decoration: none;
+  font-size: 0.9rem;
+}
+
+.back-link:hover {
+  text-decoration: underline;
+}
+
+.author-section {
+  background: var(--code-bg);
+  border-radius: 8px;
+  padding: 1.5rem;
+}
+
+.author-section h1, .author-section h2, .author-section h3 {
+  font-size: 1.1rem;
+  margin-bottom: 0.8rem;
+}
+
+.author-section ul {
+  list-style: none;
+  padding-left: 0;
+}
+
+.author-section li {
+  margin-bottom: 0.4rem;
+  padding-left: 0;
+}
+
+footer {
+  text-align: center;
+  padding: 2rem 0;
+  font-size: 0.8rem;
+  opacity: 0.4;
+  border-top: 1px solid var(--border);
+  margin-top: 3rem;
+}
+</style>
+
+</head>
+<body>
+<div class="container">
+
+    <a href="./" class="back-link">&larr; 返回目錄</a>
+    <div class="chapter-header">
+      <div class="book-title">深山食堂開飯了</div>
+      <h1>開發商來了</h1>
+      <div class="chapter-num">第14章</div>
+    </div>
+    <div class="chapter-body">
+      <p>那輛黑色的賓士SUV出現在雲嶺村口的時候，整個村子都轟動了。</p>
+<p>也不怪大家大驚小怪——雲嶺村的路本來就窄，最寬的地方也就勉強過一輛農用三輪車。這輛鋥亮的豪車碾過坑坑窪窪的泥土路，底盤被石頭刮得嘎吱作響，車身上濺了一路的黃泥點子，看得路邊曬穀子的王大爺直抽涼氣——這車刮一下漆得多少錢啊。</p>
+<p>車在食堂門口停了下來。</p>
+<p>駕駛座的門打開，先下來一個穿灰色西裝的年輕男人，大概是助理之類的角色。他快步走到後座拉開車門，裡面走出一個四十多歲的中年男人。</p>
+<p>男人身材不高，但穿著一身剪裁考究的深藍色西裝，皮鞋鋥亮，頭髮用髮膠梳得一絲不苟，手腕上戴著一塊亮閃閃的金錶——蘇念荷不懂手錶，但在修仙界待了一百五十年的她認得出來，那塊錶散發著的氣息和高階靈石差不多：值錢，但俗氣。</p>
+<p>「周總，到了。」助理畢恭畢敬地說。</p>
+<p>男人站在食堂門口，環顧了一圈。</p>
+<p>雲嶺食堂的門面不大，木頭招牌是蘇念荷自己用毛筆寫的，字跡端正但說不上多漂亮。門口擺著兩張竹凳，牆角種了幾盆不知名的野花。院子裡那棵歪脖子棗樹的影子落在地上，斑斑駁駁的。</p>
+<p>男人笑了笑。那種笑容蘇念荷很熟悉——修仙界的世家子弟去坊市收購小攤販的鋪面時，也是這種笑法。禮貌，從容，帶著一點不自覺的居高臨下。</p>
+<p>「你好，請問蘇老闆在嗎？」</p>
+<p>蘇念荷正在廚房裡切菜。她放下刀，擦了擦手，走了出來。</p>
+<p>「我就是。」</p>
+<p>男人上下打量了她一眼，微微挑了挑眉——大概沒想到網上那麼火的食堂老闆是個看起來才二十出頭的年輕女孩，穿著素色棉布衫，頭髮隨便紮了個丸子頭，腳上一雙布鞋，怎麼看都不像個生意人。</p>
+<p>「自我介紹一下，我叫周開元，盛恆地產的負責人。」他從口袋裡掏出一張名片，雙手遞過來，姿態無可挑剔。</p>
+<p>蘇念荷接過名片看了看。燙金的字，硬挺的卡紙，角上印著一個花裡胡哨的公司logo。</p>
+<p>「周先生，請坐。」她把人讓到食堂裡面，倒了一杯茶。</p>
+<p>周開元坐下來，端起茶杯抿了一口。</p>
+<p>他的眼神在那一瞬間變了——靈泉水泡的山茶，入口清冽甘甜，回味裡有一股幽幽的蘭香。在這個什麼都講究品質的年代，這杯茶的水準足以讓任何茶藝師汗顏。</p>
+<p>但他只是「嗯」了一聲，放下杯子，沒有表現出太多的驚訝。</p>
+<p>「蘇老闆，我開門見山了。」他從助理手裡接過一個文件夾，翻開來，裡面是一疊列印得整整齊齊的文件，還配了幾張效果圖。</p>
+<p>效果圖上是一個高端山間度假村的規劃圖：玻璃幕牆的酒店、無邊泳池、高爾夫練習場、觀景纜車、精品商業街——畫面上的建築現代得像從科幻片裡搬出來的，和眼前這個石頭牆泥巴路的小山村格格不入。</p>
+<p>「我們計畫在雲嶺山開發一個高端生態度假村項目——『雲嶺山居』。」周開元的語氣平穩而自信，像是在做一場準備充分的商業演示，「目前規劃用地涉及山腳到半山腰的區域，包括您這邊的幾處房產和周邊的農地。」</p>
+<p>他頓了頓，看著蘇念荷的表情。蘇念荷的表情什麼都沒有，平靜得像一面湖。</p>
+<p>「我們給出的收購價格是市場價的三倍。」他伸出三根手指，「您這處房產連帶院子和後面的地，我們的報價是一百二十萬。另外，如果整個村子的住戶都同意搬遷，我們會統一安排到鎮上的新社區——三室一廳的新房，拎包入住。」</p>
+<p>一百二十萬。對雲嶺村的老房子來說，這個價格確實誇張。村裡的房子大多是石頭壘的老屋，年久失修，就算在鎮上的地產中介掛著，十萬塊錢都不一定有人要。</p>
+<p>周開元顯然對這個數字的衝擊力很有信心。他身子微微往後靠，等待蘇念荷的反應。</p>
+<p>蘇念荷低頭看了看那張規劃效果圖。</p>
+<p>玻璃幕牆會反射陽光，驚擾山裡的鳥。無邊泳池的氯水會流進地下水系統。高爾夫球場需要大面積砍伐山林。觀景纜車的鋼柱會打進山體最深處——靈泉就在那裡。</p>
+<p>她把文件夾合上，推了回去。</p>
+<p>「謝謝周先生，不賣。」</p>
+<p>語氣平靜，沒有猶豫，沒有商量的餘地。就像她在修仙界拒絕那些想要收購她洞府的世家一樣——客氣，但乾脆。</p>
+<p>周開元的表情沒有變，甚至笑容都還掛在臉上。顯然他對這個回答有預期。</p>
+<p>「蘇老闆，不急。」他站起來，理了理西裝的下擺，「這是一個大決定，慢慢考慮。我留個名片在這裡，您什麼時候想通了，隨時聯繫我。」</p>
+<p>他頓了頓，又加了一句：「您的食堂做得很好，在網上很火。但您也知道，流量這個東西來得快去得也快。一陣風過了，到時候這山裡就又是以前那個樣子了。而我們的項目，能給這個村子帶來持久的經濟價值。」</p>
+<p>這番話說得滴水不漏——沒有威脅，沒有施壓，但字裡行間的意思很明白：你一個小食堂能撐多久？</p>
+<p>蘇念荷站起來送客，臉上依然掛著禮貌的微笑。</p>
+<p>「周先生說得有道理。不過我覺得，一個地方的價值不是用錢衡量的。雲嶺山在這裡待了上萬年，它不需要被開發，它需要的是被好好對待。」</p>
+<p>周開元看了她一眼，眼裡閃過一絲意外——這番話不像是一個二十四歲的小姑娘說得出來的。但他很快恢復了商業微笑，點了點頭。</p>
+<p>「年輕人有情懷是好事。」他轉身往外走，助理急忙跟上，「想清楚了隨時找我。」</p>
+<p>就在周開元走到門口，準備邁出門檻的時候——</p>
+<p>「嘶——！」</p>
+<p>一道橘色的閃電從收銀臺上彈射而出。</p>
+<p>阿橘不知道什麼時候醒了，牠弓著背站在門檻上，渾身的毛全部炸開，像一個橘色的刺蝟。尾巴膨成了一根粗壯的瓶刷子，脊背上的毛根根直立，喉嚨裡發出一連串低沉的威嚇聲——不是平時那種撒嬌式的「哈」，而是一種從胸腔深處擠出來的、帶著原始野性的嘶吼。</p>
+<p>金黃色的眼睛死死盯著周開元，瞳孔縮成了兩條細線。</p>
+<p>周開元被嚇了一跳，下意識地後退了一步。</p>
+<p>就這一步的功夫，阿橘的爪子已經在他鋥亮的黑色皮鞋上留下了一道清晰的劃痕——從鞋面斜著劃到鞋側，皮革翻起一條細細的白邊。</p>
+<p>「這——」助理臉色一變，上前一步想把貓趕開。</p>
+<p>「不用。」周開元制止了助理。他低頭看了看被劃傷的皮鞋，又看了看炸毛的阿橘，臉上的笑容終於消失了。他面無表情地整理了一下袖口，大步走出了食堂。</p>
+<p>黑色賓士的引擎聲轟地響了一下，車子調了頭，碾著泥路開走了。</p>
+<p>蘇念荷蹲下來，把還在低聲嘶吼的阿橘抱起來。阿橘的毛慢慢地落下去了，但心跳還是很快——她能感覺到那團溫暖的毛球在懷裡砰砰砰地震動。</p>
+<p>「怎麼了？」她輕聲問。</p>
+<p>阿橘轉過頭，用額頭頂了頂她的下巴。這個動作很少見——在牠們的日常相處中，阿橘幾乎不會主動親近人。蹭腿已經是極限，頂額頭是更深層的信任和——</p>
+<p>不安。</p>
+<p>蘇念荷的心沉了下來。</p>
+<p>阿橘是山靈。牠和雲嶺山的山脈、水脈、草木鳥獸之間有著凡人無法理解的聯結。如果牠對一個人表現出這種程度的敵意，那不只是「不喜歡」那麼簡單。</p>
+<p>那個叫周開元的人，對這座山有惡意。</p>
+<p>不是表面上那種「我出高價買你的地」的商業行為。阿橘感知到的，是更深層的東西——那個人看著雲嶺山的眼神，和看著一塊待宰的肥肉沒有區別。在他的規劃裡，山是可以被推平的，水是可以被改道的，樹是可以被連根拔起的。</p>
+<p>這座山上萬年的呼吸和脈動，在那個人眼裡，只是一組可以被標價的數字。</p>
+<p>蘇念荷把阿橘放回了收銀臺，摸了摸牠的耳朵。</p>
+<p>「放心，」她說，語氣很輕，但每個字都穩穩的，「我不會讓任何人動這座山的。」</p>
+<p>阿橘看了她一眼，尾巴輕輕搖了一下——</p>
+<p>翻譯：你說的。本座記住了。</p>
+<p>——</p>
+<p>那天晚上，蘇念荷坐在院子裡的竹椅上，很久沒有動。</p>
+<p>頭頂是滿天的星星——在沒有光害的雲嶺山上，銀河像一條真正的河流橫貫天際，星星密得像撒了一把碎鑽。夜風從山上吹下來，帶著松脂和野花的氣息，涼涼的，軟軟的。</p>
+<p>她想起修仙界的那些山——靈山、道山、劍嶺、藥谷——每一座山都有山靈守護，有的是千年老樹成精，有的是石頭裡蹦出來的精怪，有的是溪流裡修行的魚妖。它們守著自己的山，幾千年幾萬年，不求回報，只因為那座山是牠們的家。</p>
+<p>阿橘也是這樣。</p>
+<p>雲嶺山是牠的家。每一棵樹，每一塊石頭，每一滴泉水，都和牠的生命連在一起。有人要在牠家裡蓋高樓、修公路、建泳池，牠當然會炸毛。</p>
+<p>蘇念荷嘆了口氣。</p>
+<p>商人的手段她見過太多了。修仙界那些世家大族為了搶奪靈脈資源，什麼事都做得出來。和那些手段比起來，周開元今天的表現還算客氣。</p>
+<p>但客氣不代表會善罷甘休。</p>
+<p>一百二十萬的出價，對村裡的老人們來說是天文數字。她注意到周開元離開時，有幾個在路邊看熱鬧的村民眼睛裡閃過了光——不是惡意的光，是最樸素的、對金錢的渴望。他們在這座山裡種了一輩子的地，年收入可能不到兩萬塊。一百二十萬，足夠他們在鎮上過完下半輩子了。</p>
+<p>她不能怪他們心動。</p>
+<p>但她會守住這座山。</p>
+<p>不只是為了靈泉，不只是為了食堂，而是為了阿橘，為了這座山上萬年的生命。</p>
+<p>院子角落裡傳來「喵」的一聲。阿橘不知道什麼時候跳上了牆頭，蹲在那裡看著山的方向。月光灑在牠圓滾滾的身上，橘色的毛泛著一層淡淡的銀光。</p>
+<p>在那一瞬間，蘇念荷恍惚覺得，阿橘的身影好像變大了一些——不是肥胖的那種大，而是一種更古老、更深沉的存在感。像是這座山的一部分，像是長在這裡的一棵樹、一塊石頭。</p>
+<p>然後阿橘打了個哈欠，從牆上跳下來，慢悠悠地走回了後廚。</p>
+<p>橘色的背影搖搖晃晃的，肚子幾乎要蹭到地面。</p>
+<p>蘇念荷被自己剛才的莊嚴感逗笑了。</p>
+<p>算了。不管多大的事，先把明天的食材準備好再說吧。</p>
+<p>她站起來，拍了拍身上的灰，走進了廚房。</p>
+    </div>
+    <div class="chapter-nav">
+      <a href="ch013.html">&larr; 上一章</a>
+      <a href="ch015.html">下一章 &rarr;</a>
+    </div>
+</div>
+<footer><p>小說閱讀站</p></footer>
+</body>
+</html>

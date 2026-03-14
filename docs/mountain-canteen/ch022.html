@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>靈泉保衛戰 - 深山食堂開飯了</title>
+<style>
+:root {
+  --bg: #faf8f5;
+  --text: #2c2c2c;
+  --accent: #8b6914;
+  --card-bg: #fff;
+  --border: #e8e0d4;
+  --shadow: rgba(0,0,0,0.06);
+  --code-bg: #f5f0e8;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #1a1a1a;
+    --text: #e0dcd6;
+    --accent: #d4a530;
+    --card-bg: #252525;
+    --border: #3a3a3a;
+    --shadow: rgba(0,0,0,0.3);
+    --code-bg: #2a2520;
+  }
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: "Noto Serif TC", "Source Han Serif TC", "PMingLiU", serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.9;
+  min-height: 100vh;
+}
+
+.container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 2rem 1.5rem;
+}
+
+header {
+  text-align: center;
+  padding: 3rem 0 2rem;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 2rem;
+}
+
+header h1 {
+  font-size: 2.2rem;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  color: var(--accent);
+}
+
+header p {
+  margin-top: 0.5rem;
+  font-size: 0.95rem;
+  opacity: 0.7;
+}
+
+.book-card {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 1.8rem;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 2px 8px var(--shadow);
+  transition: transform 0.2s;
+}
+
+.book-card:hover {
+  transform: translateY(-2px);
+}
+
+.book-card h2 {
+  font-size: 1.5rem;
+  margin-bottom: 0.3rem;
+}
+
+.book-card h2 a {
+  color: var(--text);
+  text-decoration: none;
+}
+
+.book-card h2 a:hover {
+  color: var(--accent);
+}
+
+.book-card .meta {
+  font-size: 0.85rem;
+  opacity: 0.6;
+  margin-bottom: 1rem;
+}
+
+.book-card .abstract-preview {
+  font-size: 0.95rem;
+  line-height: 1.8;
+}
+
+/* Book page */
+.book-header {
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.book-header h1 {
+  font-size: 2rem;
+  color: var(--accent);
+}
+
+.book-header .author-name {
+  font-size: 1rem;
+  opacity: 0.7;
+  margin-top: 0.3rem;
+}
+
+.section {
+  margin-bottom: 2.5rem;
+}
+
+.section h2 {
+  font-size: 1.3rem;
+  color: var(--accent);
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.toc-list {
+  list-style: none;
+  counter-reset: chapter;
+}
+
+.toc-list li {
+  counter-increment: chapter;
+  margin-bottom: 0.5rem;
+}
+
+.toc-list li a {
+  color: var(--text);
+  text-decoration: none;
+  display: flex;
+  align-items: baseline;
+  gap: 0.8rem;
+  padding: 0.5rem 0.8rem;
+  border-radius: 4px;
+  transition: background 0.15s;
+}
+
+.toc-list li a:hover {
+  background: var(--code-bg);
+  color: var(--accent);
+}
+
+.toc-list li a::before {
+  content: "第" counter(chapter, cjk-ideographic) "章";
+  font-size: 0.85rem;
+  opacity: 0.5;
+  flex-shrink: 0;
+}
+
+/* Chapter page */
+.chapter-header {
+  text-align: center;
+  padding: 2rem 0;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 2rem;
+}
+
+.chapter-header .book-title {
+  font-size: 0.9rem;
+  opacity: 0.5;
+}
+
+.chapter-header h1 {
+  font-size: 1.8rem;
+  margin-top: 0.5rem;
+}
+
+.chapter-header .chapter-num {
+  font-size: 0.85rem;
+  color: var(--accent);
+  margin-top: 0.3rem;
+}
+
+.chapter-body {
+  font-size: 1.05rem;
+  text-align: justify;
+}
+
+.chapter-body p {
+  margin-bottom: 1.2rem;
+  text-indent: 2em;
+}
+
+.chapter-body p:first-child {
+  text-indent: 0;
+}
+
+.chapter-nav {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 3rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--border);
+}
+
+.chapter-nav a {
+  color: var(--accent);
+  text-decoration: none;
+  font-size: 0.95rem;
+}
+
+.chapter-nav a:hover {
+  text-decoration: underline;
+}
+
+.back-link {
+  display: inline-block;
+  margin-bottom: 1.5rem;
+  color: var(--accent);
+  text-decoration: none;
+  font-size: 0.9rem;
+}
+
+.back-link:hover {
+  text-decoration: underline;
+}
+
+.author-section {
+  background: var(--code-bg);
+  border-radius: 8px;
+  padding: 1.5rem;
+}
+
+.author-section h1, .author-section h2, .author-section h3 {
+  font-size: 1.1rem;
+  margin-bottom: 0.8rem;
+}
+
+.author-section ul {
+  list-style: none;
+  padding-left: 0;
+}
+
+.author-section li {
+  margin-bottom: 0.4rem;
+  padding-left: 0;
+}
+
+footer {
+  text-align: center;
+  padding: 2rem 0;
+  font-size: 0.8rem;
+  opacity: 0.4;
+  border-top: 1px solid var(--border);
+  margin-top: 3rem;
+}
+</style>
+
+</head>
+<body>
+<div class="container">
+
+    <a href="./" class="back-link">&larr; 返回目錄</a>
+    <div class="chapter-header">
+      <div class="book-title">深山食堂開飯了</div>
+      <h1>靈泉保衛戰</h1>
+      <div class="chapter-num">第22章</div>
+    </div>
+    <div class="chapter-body">
+      <p>凌晨三點，蘇念荷被一陣異樣的感覺驚醒。</p>
+<p>不是聲音，也不是光線。是靈識——那根殘存在她丹田裡的、細如游絲的靈識忽然劇烈震顫了一下，像平靜水面上被人投了一塊石頭。</p>
+<p>後山。有陌生人。</p>
+<p>她翻身坐起來，赤腳踩在冰涼的地板上。秋夜的山風從窗縫裡鑽進來，帶著一股不對勁的氣息——泥土被翻動過的生腥味、柴油機的刺鼻油氣，還有一種屬於金屬和工業的冷硬味道。</p>
+<p>這些味道不屬於雲嶺山。</p>
+<p>阿橘已經不在屋裡了。窗臺上牠慣常趴著的軟墊還留著圓滾滾的壓痕，旁邊放著牠睡前咬了一半就嫌棄甩掉的小魚乾。</p>
+<p>蘇念荷來不及多想，套上外套就往後山跑。</p>
+<p>夜色濃稠得像墨。雲嶺山的後山不通人跡，只有蘇念荷踏出的一條隱約小徑，兩側是密匝匝的灌木和野草，露水打溼了她的褲腳。她循著靈識的牽引往山裡走，腳步又輕又快——一百五十年的食修雖然靈力散盡，但身體的本能還在，她在修仙界的深山老林裡採過無數靈藥，閉著眼睛也能在山路上如履平地。</p>
+<p>走了大約二十分鐘，她聽見了聲音。</p>
+<p>是機器運轉的嗡嗡聲，低沉而持續，像一頭潛伏在暗處的野獸在喘息。</p>
+<p>蘇念荷撥開最後一叢灌木，眼前的景象讓她的瞳孔猛然收縮。</p>
+<p>靈泉。</p>
+<p>那眼藏在巨石下的靈泉，此刻被兩盞強光探照燈照得雪白。兩個穿著工裝服的男人正在泉邊架設備——一臺小型抽水泵，連著塑膠管道，管道的另一端接著一個金屬採樣箱。旁邊還丟著幾根標記用的測量桿和一捆紅白相間的警示帶。</p>
+<p>他們不只是在勘探。他們在取水樣、測流量，為接下來的截斷或引流做準備。</p>
+<p>蘇念荷的手攥緊了。</p>
+<p>這眼靈泉，是雲嶺山數百年靈氣匯聚而成的。泉脈連著山脈，山脈連著地氣，如果被外力截斷或污染，整座山的靈氣循環都會崩潰。那些靈菜、靈食、村民們漸漸好起來的身體——一切都會像被拔掉根的草，枯萎下去。</p>
+<p>「你們在做什麼？」</p>
+<p>蘇念荷的聲音不大，但在寂靜的深夜山林裡清晰得像石子落入深潭。</p>
+<p>兩個工人嚇了一跳。其中一個年輕些的往後退了一步，差點絆在管道上；另一個年紀大些的穩了穩，反而板起臉：「我們是勘探公司的，接了委託做水源勘測，有合同的。你是什麼人？」</p>
+<p>「這座山是村裡的集體林地，你們有林業部門的審批手續嗎？有入山許可嗎？」</p>
+<p>年紀大的工人臉色一僵。</p>
+<p>蘇念荷掏出手機：「我現在報警，你們可以等著和警察解釋。」</p>
+<p>就在她撥出電話的同時，山林裡忽然發生了一連串奇怪的事情。</p>
+<p>先是霧。</p>
+<p>不知道從哪裡湧出來的濃霧，像牛奶倒進水裡一樣迅速蔓延，幾秒鐘之內就把探照燈的光線吞成了兩團模糊的暈。能見度驟降到不足三步，連蘇念荷都看不清兩個工人的臉了。</p>
+<p>然後是聲音。</p>
+<p>樹枝折斷的脆響，草叢中窸窸窣窣的摩擦聲，頭頂傳來什麼東西掠過樹冠的「嗖嗖」聲。不是風，因為風不會從四面八方同時吹來。也不是動物，因為動物不會發出這種帶著壓迫感的、像呼吸一樣規律的聲響。</p>
+<p>年輕的工人已經開始發抖了：「老……老哥，這啥情況？」</p>
+<p>「別慌！」年紀大的工人強撐著鎮定，伸手去拿探照燈——他的手剛碰到燈座，整個人腳下一滑，仰面摔了個四腳朝天。地面不知何時變得濕滑無比，像被人抹了一層看不見的油。</p>
+<p>他爬起來，再走一步，又滑倒。</p>
+<p>年輕的工人轉身想跑，一根橫伸出來的樹枝精準地勾住了他的工裝後領，他掙了半天才掙脫，褲子卻又被地上不知從哪裡冒出來的藤蔓纏住了腳踝。</p>
+<p>「有鬼啊！！！」</p>
+<p>年輕工人的慘叫在山谷裡迴盪，兩個大男人連滾帶爬，完全顧不上什麼設備和合同了，只想逃出這座見了鬼的山。霧越來越濃，他們在林子裡轉了三個圈都找不到來時的路，每一條看似通暢的小徑走到一半就會被倒下的枯木或突然出現的岩石擋住。</p>
+<p>蘇念荷站在靈泉邊，看著濃霧中隱約可見的兩個人影撞東撞西，嘴角微微揚起。</p>
+<p>她抬頭往上看。</p>
+<p>濃霧之上，一雙圓溜溜的貓眼在黑暗中閃著幽幽的光。阿橘蹲在靈泉上方的大石頭頂端，整隻貓周身籠罩著一層極淡的銀色光暈。牠的毛豎立著，尾巴高高翹起，十五斤的肥肉在這一刻看起來竟有幾分威風凜凜的氣勢。</p>
+<p>山靈發怒了。</p>
+<p>蘇念荷心裡既感動又擔心。阿橘為了驅趕這兩個人動用了不少靈力——起霧、操控植物、改變地形，這些都不是小手筆。以牠現在的修為，這樣消耗是很傷的。</p>
+<p>但眼下不是心疼的時候。</p>
+<p>四十分鐘後，警察到了。是鎮上派出所的老王帶著一個年輕民警，開著警車一路顛上來的。兩個工人在山口被村民們攔住了——他們渾身泥巴、臉上全是樹枝刮出的劃痕，衣服也被藤蔓扯得七零八落，狼狽得像剛從戰場上爬出來。</p>
+<p>「報警的是蘇念荷？」老王問。</p>
+<p>「是我。有人未經許可進入村集體林地，在水源地安裝設備，疑似破壞水源。」</p>
+<p>老王看了看那些設備，又看了看兩個瑟瑟發抖的工人，臉色沉了下來。</p>
+<p>「哪個公司派你們來的？」</p>
+<p>年紀大的工人支支吾吾：「一個……一個姓周的老闆……」</p>
+<p>老王和蘇念荷對視了一眼。</p>
+<p>消息傳開的時候，天剛矇矇亮。</p>
+<p>雲嶺村的村民們像炸了鍋一樣。</p>
+<p>劉婆婆第一個衝出來，手裡拎著一把竹掃帚，花白的頭髮都沒來得及梳，拖鞋「啪嗒啪嗒」跑到山口：「在哪呢？壞人在哪呢？讓我掃！一個個掃出去！」</p>
+<p>「婆婆，人已經被帶走了。」蘇念荷哭笑不得。</p>
+<p>「帶走了也不行！」劉婆婆氣得掃帚杵地，「這是我們村的山，我們村的水！他周什麼元算老幾？上次來村裡油嘴滑舌地說要合作開發，被我們拒了就搞這些下三濫的——」</p>
+<p>老太太一口氣罵了二十分鐘，中間不帶重複的。</p>
+<p>村裡的其他人也陸續到了。種靈菜的張大叔扛著鋤頭，養雞的趙嬸拿著鐵鍬，連平時最不愛湊熱鬧的啞巴李伯都搬了把椅子坐到山口，擺出一副「你們要從我屍體上踏過去」的架勢。</p>
+<p>那一天，全村人自發地在山口輪流值守。白天每三小時換一班，晚上每兩小時。劉婆婆負責排班，比工廠的考勤表還嚴格。</p>
+<p>「上夜班的帶件厚衣裳！我熬了薑湯，每班交接的時候來拿！」她站在路口指揮，活像一個戰時的後勤總司令。</p>
+<p>蘇念荷熬了一大鍋蓮藕排骨湯，挑到山口給值班的人喝。湯裡加了一點靈泉水，喝下去從胃暖到腳底，連秋夜的寒氣都鑽不進骨頭縫裡。</p>
+<p>阿亮守了一整夜，蘇念荷讓他回去休息，他搖頭：「姐，我不累。」他捲起袖子擦了擦汗，胳膊上的疤痕在月光下已經淡得像一層薄薄的銀紗。</p>
+<p>接下來的幾天，事情的走向比蘇念荷預想的更快。</p>
+<p>老王警官辦事利落，順著那兩個工人的供述往上查，很快就查到了周開元。而這一查不打緊，直接牽出了一條令人咋舌的鏈條——</p>
+<p>周開元所謂的「雲嶺山度假村開發計畫」，從頭到尾就是個違規項目。沒有環評報告，沒有林地使用審批，建設用地的手續是偽造的，甚至連那個做水源勘測的「勘探公司」也是個空殼。他計畫先控制水源，再以水資源開發的名義倒逼村民出讓土地，整個流程就是一套精心設計的陷阱。</p>
+<p>這件事上了本地新聞，也上了網。</p>
+<p>【好傢伙，原來之前造謠的也是這個周開元？一條龍服務是吧】<br>【笑死，兩個工人被嚇出山的經過能不能拍成恐怖片？說什麼山裡起大霧、樹枝會動、地面自己打滑？？兄弟你確定不是自己腿軟踩空了？】<br>【雲嶺山本來就有山神傳說，不信的人可以自己半夜去試試】<br>【保護雲嶺山！保護蘇姐姐的食堂！】<br>【這個村子也太團結了吧，全村人拿著鋤頭鐵鍬守山口，淚目了】</p>
+<p>周開元被處以高額罰款，相關責任人被追究法律責任。那個所謂的度假村計畫，像一個吹大了的肥皂泡，在陽光下無聲無息地碎了。</p>
+<p>事情塵埃落定的那天傍晚，蘇念荷一個人去了後山。</p>
+<p>靈泉還在那裡，安安靜靜地從巨石下流出來，水面映著天光，像一面碎銀子鋪成的鏡子。那些工人留下的設備已經被清走了，泉邊被踩踏過的泥土上，不知何時冒出了幾株嫩綠的草芽。</p>
+<p>蘇念荷蹲下來，掬了一捧泉水。</p>
+<p>冰涼的水從指縫間流過，帶著山石的清冽和草木的甘甜。她的靈識感應到泉底深處，靈氣的脈動平穩而有力，像一顆沉睡的心臟在安寧地跳動。</p>
+<p>沒事了。</p>
+<p>她長長地呼出一口氣，抬頭看天。</p>
+<p>暮色裡的雲嶺山安靜得像一幅畫。遠處的山脊線被夕陽描上了一道金邊，幾隻歸巢的鳥從晚霞裡掠過，翅膀切開了玫瑰色的雲層。風從山谷裡升起來，帶著松脂和泥土的味道，把她額前的碎髮輕輕吹起。</p>
+<p>「喵。」</p>
+<p>阿橘不知何時出現在她身邊，蹲在泉邊的石頭上，歪著頭看她。牠的毛色在夕陽裡像燃燒的火焰，但精神明顯不如平時——眼皮半耷拉著，連尾巴都只是有氣無力地垂著，擺不動了。</p>
+<p>蘇念荷的心揪了一下。</p>
+<p>「累壞了吧？」她伸手摸了摸阿橘的頭，手掌感受到牠微微發燙的體溫。</p>
+<p>阿橘撐著最後的倔強，偏了偏頭，似乎想躲開她的手——但只動了半寸就放棄了，整隻貓往她手心裡一歪，悶悶地哼了一聲。</p>
+<p>「⋯⋯值得。」</p>
+<p>蘇念荷把阿橘連同那十五斤的肥肉一起抱了起來，往山下走去。阿橘在她懷裡半瞇著眼，一聲不吭，只是前爪搭在她的手臂上，搭得很穩。</p>
+<p>回家的路上，晚風送來食堂方向飄出的香氣——是阿亮在灶上燉的紅豆沙，糯糯甜甜的，混著桂花的幽香。</p>
+<p>蘇念荷低頭看了看懷裡的貓，輕聲說：「回家了。」</p>
+<p>阿橘的耳朵動了動。</p>
+<p>「嗯。」</p>
+    </div>
+    <div class="chapter-nav">
+      <a href="ch021.html">&larr; 上一章</a>
+      <a href="ch023.html">下一章 &rarr;</a>
+    </div>
+</div>
+<footer><p>小說閱讀站</p></footer>
+</body>
+</html>

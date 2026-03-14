@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>奶奶的老灶臺 - 深山食堂開飯了</title>
+<style>
+:root {
+  --bg: #faf8f5;
+  --text: #2c2c2c;
+  --accent: #8b6914;
+  --card-bg: #fff;
+  --border: #e8e0d4;
+  --shadow: rgba(0,0,0,0.06);
+  --code-bg: #f5f0e8;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #1a1a1a;
+    --text: #e0dcd6;
+    --accent: #d4a530;
+    --card-bg: #252525;
+    --border: #3a3a3a;
+    --shadow: rgba(0,0,0,0.3);
+    --code-bg: #2a2520;
+  }
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: "Noto Serif TC", "Source Han Serif TC", "PMingLiU", serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.9;
+  min-height: 100vh;
+}
+
+.container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 2rem 1.5rem;
+}
+
+header {
+  text-align: center;
+  padding: 3rem 0 2rem;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 2rem;
+}
+
+header h1 {
+  font-size: 2.2rem;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  color: var(--accent);
+}
+
+header p {
+  margin-top: 0.5rem;
+  font-size: 0.95rem;
+  opacity: 0.7;
+}
+
+.book-card {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 1.8rem;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 2px 8px var(--shadow);
+  transition: transform 0.2s;
+}
+
+.book-card:hover {
+  transform: translateY(-2px);
+}
+
+.book-card h2 {
+  font-size: 1.5rem;
+  margin-bottom: 0.3rem;
+}
+
+.book-card h2 a {
+  color: var(--text);
+  text-decoration: none;
+}
+
+.book-card h2 a:hover {
+  color: var(--accent);
+}
+
+.book-card .meta {
+  font-size: 0.85rem;
+  opacity: 0.6;
+  margin-bottom: 1rem;
+}
+
+.book-card .abstract-preview {
+  font-size: 0.95rem;
+  line-height: 1.8;
+}
+
+/* Book page */
+.book-header {
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.book-header h1 {
+  font-size: 2rem;
+  color: var(--accent);
+}
+
+.book-header .author-name {
+  font-size: 1rem;
+  opacity: 0.7;
+  margin-top: 0.3rem;
+}
+
+.section {
+  margin-bottom: 2.5rem;
+}
+
+.section h2 {
+  font-size: 1.3rem;
+  color: var(--accent);
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.toc-list {
+  list-style: none;
+  counter-reset: chapter;
+}
+
+.toc-list li {
+  counter-increment: chapter;
+  margin-bottom: 0.5rem;
+}
+
+.toc-list li a {
+  color: var(--text);
+  text-decoration: none;
+  display: flex;
+  align-items: baseline;
+  gap: 0.8rem;
+  padding: 0.5rem 0.8rem;
+  border-radius: 4px;
+  transition: background 0.15s;
+}
+
+.toc-list li a:hover {
+  background: var(--code-bg);
+  color: var(--accent);
+}
+
+.toc-list li a::before {
+  content: "第" counter(chapter, cjk-ideographic) "章";
+  font-size: 0.85rem;
+  opacity: 0.5;
+  flex-shrink: 0;
+}
+
+/* Chapter page */
+.chapter-header {
+  text-align: center;
+  padding: 2rem 0;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 2rem;
+}
+
+.chapter-header .book-title {
+  font-size: 0.9rem;
+  opacity: 0.5;
+}
+
+.chapter-header h1 {
+  font-size: 1.8rem;
+  margin-top: 0.5rem;
+}
+
+.chapter-header .chapter-num {
+  font-size: 0.85rem;
+  color: var(--accent);
+  margin-top: 0.3rem;
+}
+
+.chapter-body {
+  font-size: 1.05rem;
+  text-align: justify;
+}
+
+.chapter-body p {
+  margin-bottom: 1.2rem;
+  text-indent: 2em;
+}
+
+.chapter-body p:first-child {
+  text-indent: 0;
+}
+
+.chapter-nav {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 3rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--border);
+}
+
+.chapter-nav a {
+  color: var(--accent);
+  text-decoration: none;
+  font-size: 0.95rem;
+}
+
+.chapter-nav a:hover {
+  text-decoration: underline;
+}
+
+.back-link {
+  display: inline-block;
+  margin-bottom: 1.5rem;
+  color: var(--accent);
+  text-decoration: none;
+  font-size: 0.9rem;
+}
+
+.back-link:hover {
+  text-decoration: underline;
+}
+
+.author-section {
+  background: var(--code-bg);
+  border-radius: 8px;
+  padding: 1.5rem;
+}
+
+.author-section h1, .author-section h2, .author-section h3 {
+  font-size: 1.1rem;
+  margin-bottom: 0.8rem;
+}
+
+.author-section ul {
+  list-style: none;
+  padding-left: 0;
+}
+
+.author-section li {
+  margin-bottom: 0.4rem;
+  padding-left: 0;
+}
+
+footer {
+  text-align: center;
+  padding: 2rem 0;
+  font-size: 0.8rem;
+  opacity: 0.4;
+  border-top: 1px solid var(--border);
+  margin-top: 3rem;
+}
+</style>
+
+</head>
+<body>
+<div class="container">
+
+    <a href="./" class="back-link">&larr; 返回目錄</a>
+    <div class="chapter-header">
+      <div class="book-title">深山食堂開飯了</div>
+      <h1>奶奶的老灶臺</h1>
+      <div class="chapter-num">第2章</div>
+    </div>
+    <div class="chapter-body">
+      <p>蘇念荷用了三天時間，才把奶奶的房子和麵館大致收拾出了個樣子。</p>
+<p>說是「收拾」，其實更像是一場考古發掘。</p>
+<p>她從廚房裡翻出了七個搪瓷盆、三把菜刀（只有一把還能用）、一個缺了蓋的高壓鍋、半箱子落灰的調料瓶，以及一本用牛皮紙包著的、沾滿油漬的手寫食譜。</p>
+<p>食譜的扉頁上寫著四個歪歪扭扭的大字——</p>
+<p>「蘇記秘方」</p>
+<p>蘇念荷翻開第一頁，看到奶奶用圓珠筆寫的字：「手擀麵：麵粉三斤，水一斤二兩，鹽一小撮。揉到手光、盆光、面光。醒半個鐘頭。擀薄了切，寬的拌著吃，細的下湯。」</p>
+<p>字跡有些潦草，但一筆一劃都帶著力道，像是被無數次油膩的手指翻過，紙頁邊緣都卷了毛邊。</p>
+<p>蘇念荷在修仙界煉製過「九轉靈麵」，用的是萬年寒冰蠶吐的仙蠶絲粉，配合七星泉水和鳳髓，經過九次揉壓、九次醒發、九次拉伸，一碗麵下去能讓金丹期修士直接突破一個小境界。</p>
+<p>可她看著奶奶這本滿是油漬的食譜，忽然覺得那「手光、盆光、面光」六個字，和她修煉了一百五十年才領悟的食道至理，竟有異曲同工之妙。</p>
+<p>做飯這件事，不管在哪個世界，到了最後都是一樣的——用心。</p>
+<p>她把食譜小心翼翼地擦乾淨，放進了床頭的抽屜裡。</p>
+<p>第四天早上，蘇念荷開始清理灶臺。</p>
+<p>這座灶臺是用紅磚砌的，上面架著一口直徑足有半米的大鐵鍋。灶膛裡堆滿了草木灰，煙道被堵了大半，灶面上結了一層厚厚的油垢。</p>
+<p>蘇念荷先用鏟子把灶膛裡的灰清出來，又找了根長竹竿通了煙道。她把大鐵鍋搬下來放到院子裡，用鋼絲球一點一點地刷。</p>
+<p>鐵鍋很重，足有十幾斤。鍋壁上的鐵鏽和油垢混在一起，硬得像石頭。蘇念荷前世能單手舉起千斤巨鼎，現在刷個鍋都累得手臂發酸。</p>
+<p>但她刷得很耐心。</p>
+<p>隨著鐵鏽和油垢一層層被刷掉，鍋壁露出了暗沉的鐵色，帶著一種時光打磨過的厚重質感。這口鍋少說用了二三十年，鐵質已經被火焰和油煙養得非常細密，敲上去發出沉悶的嗡嗡聲。</p>
+<p>好鍋。</p>
+<p>蘇念荷在心裡默默評價。修仙界的靈器灶具動輒上萬年份，但一口被人認真用了幾十年的鐵鍋，自有一種器物的靈性在裡面。</p>
+<p>她把鍋刷乾淨，重新架上灶臺，又往灶膛裡塞了些乾柴，試著點了一把火。</p>
+<p>火苗舔上灶壁，煙道裡傳來呼呼的風聲。鐵鍋開始慢慢變熱，發出細微的噼啪聲——那是鐵質在高溫下重新舒展的聲音。</p>
+<p>蘇念荷往鍋裡倒了一勺菜籽油，油沿著鍋壁流下去，被熱力化開，均勻地鋪滿了整個鍋面。油煙升起來，帶著一股熟悉的、讓人安心的味道。</p>
+<p>她正專注地養著鍋，院門口傳來劉婆婆爽朗的聲音。</p>
+<p>「念魚！來接菜！」</p>
+<p>劉婆婆一手提著一個竹籃，一手拄著柺杖，笑呵呵地走進院子。竹籃裡滿滿當當的，鋪著一層大葉子，上面碼著嫩綠的小白菜、水靈靈的蘿蔔、幾根頂花帶刺的黃瓜，還有一小把紫紅色的莧菜。</p>
+<p>「自家地裡種的，今早剛摘的，新鮮得很。」劉婆婆把竹籃往蘇念荷手裡一塞，「你一個人住這兒，也不去買菜，吃什麼呀？」</p>
+<p>「婆婆，這太多了——」</p>
+<p>「多什麼多！你奶奶在的時候，我家吃不完的菜都往她這兒送，她做的麵也總給我留一碗。」劉婆婆說著，目光落在灶臺上，愣了一下，「喲，你把灶臺收拾出來了？」</p>
+<p>「嗯，試試還能不能用。」</p>
+<p>劉婆婆走到灶臺邊，伸手摸了摸鍋沿，眼裡閃過一絲濕意。「這口鍋，你奶奶用了快三十年了。我跟她說換個新的，她不肯，說老鍋做出來的菜才有味道。」</p>
+<p>「她說得對。」蘇念荷認真點頭。</p>
+<p>劉婆婆看了她一眼，笑了：「你這丫頭，跟你奶奶年輕時候一個樣，倔。——對了，你媽打電話來了嗎？」</p>
+<p>蘇念荷頓了一下。原身的記憶裡，媽媽在她很小的時候就跟爸爸離了婚，後來再婚搬去了城裡，逢年過節會打個電話，但很少回來。奶奶去世的時候，媽媽來了一趟，待了兩天就走了，走之前塞給她一張銀行卡，說「有什麼事打電話」。</p>
+<p>車禍之後，媽媽又來過一次，在衛生院守了一夜，被新家那邊的丈夫催著回去了。之後每天打一個電話，劉婆婆接的，每次都問「醒了沒有」。</p>
+<p>「昨天打了。」蘇念荷說，「我跟她說醒了，她要過來，我讓她別來了，路太遠。」</p>
+<p>這倒不全是客套。山路十八彎，最近的高速出口離村子還有兩個小時的盤山路，來一趟確實折騰。</p>
+<p>但更深層的原因是——蘇念荷還需要時間消化這副身體原主人的記憶和情感。那些關於母親的記憶裡，夾雜著太多複雜的情緒：思念、委屈、理解、心疼。她暫時還分不清哪些是原身的感受，哪些是自己的。</p>
+<p>劉婆婆嘆了口氣，沒再多說。</p>
+<p>她在灶臺邊的小凳子上坐下來，看著蘇念荷把菜一棵棵洗乾淨碼在竹簾上晾水，忽然說：「你奶奶這個麵館，以前在村裡可紅了。」</p>
+<p>「是嗎？」</p>
+<p>「那當然！以前村裡人多的時候，上山幹活的、趕集回來的，都要在你奶奶這兒吃碗麵再走。她的手擀麵，那個勁道啊——」劉婆婆吧嗒了一下嘴，彷彿在回味，「咬下去滑溜溜的，但又有嚼頭，湯是用大骨熬的，上面飄著一層油花，再放點蔥花香菜，冬天吃一碗，從胃暖到腳底板。」</p>
+<p>蘇念荷聽著，嘴角微微彎起來。劉婆婆描述食物的方式雖然樸素，卻帶著一種真摯的饞意，這是對一碗好麵最高的讚美。</p>
+<p>「後來年輕人都出去打工了，村裡就剩下我們這些老骨頭，你奶奶也不怎麼開了。」劉婆婆的聲音低下去，「她身體不好那兩年，我勸她去城裡跟你媽住，她說不去。她說這房子是你爺爺留下的，灶臺是她親手砌的，她哪兒都不去。」</p>
+<p>院子裡安靜了一會兒。棗樹上有鳥在叫，風把曬在繩子上的毛巾吹得輕輕晃動。</p>
+<p>蘇念荷把最後一棵小白菜洗好放上竹簾，站起來擦了擦手。</p>
+<p>「婆婆，」她說，「我想把這個麵館重新開起來。」</p>
+<p>劉婆婆愣了一下：「開麵館？在這兒？」</p>
+<p>「嗯。」</p>
+<p>「可是……村裡就剩十來戶人了，都是老頭老太太，誰來吃呀？」</p>
+<p>「總會有人來吃的。」蘇念荷看著那口養好了的大鐵鍋，鍋面泛著溫潤的油光，像一面沉默的黑色鏡子。</p>
+<p>她不知道自己為什麼要開這個麵館。也許是因為原身記憶裡那些溫暖的畫面，也許是因為一個食修宗師不做飯就渾身難受的職業病。</p>
+<p>又或者，只是因為——灶臺在這裡，鍋在這裡，奶奶的食譜在這裡。</p>
+<p>那就做飯吧。</p>
+<p>做飯是她最擅長的事，不管是在修仙界還是在凡間。</p>
+<p>劉婆婆看著蘇念荷認真的眼神，張了張嘴，最後把到嘴邊的勸阻嚥了回去，改成了一句：「那行吧，反正你年輕，折騰折騰也好。需要什麼跟婆婆說，我家裡還有幾袋米，明天給你扛過來。」</p>
+<p>蘇念荷笑了。</p>
+<p>她站在灶臺邊，伸手按在溫熱的鐵鍋邊沿上，感受著鐵器在指尖下傳來的微微震動。</p>
+<p>一百五十年前，她第一次踏入食修宗的廚房時，師父對她說的第一句話是：「竈前無大小，鍋裡無尊卑。你做的每一道菜，都要對得起吃它的人。」</p>
+<p>一百五十年後，她站在一座凡間的老灶臺前，忽然覺得這句話從來沒有像現在這樣清晰。</p>
+<p>日頭漸漸西斜，把院子裡的棗樹影子拉得老長。劉婆婆拎著空竹籃走了，走到門口又回頭喊了一句：「念魚啊，晚上來婆婆家吃飯！我燉了排骨！」</p>
+<p>「好。」蘇念荷應了一聲，目送老人的背影消失在院門外。</p>
+<p>她轉身回到廚房，從抽屜裡取出奶奶的手寫食譜，翻到第一頁，借著窗外最後一點日光，一個字一個字地重新讀了一遍。</p>
+<p>手擀麵：麵粉三斤，水一斤二兩，鹽一小撮。</p>
+<p>揉到手光、盆光、面光。</p>
+<p>醒半個鐘頭。</p>
+<p>她把食譜合上，抱在胸前。</p>
+<p>「奶奶，」她輕聲說，「我回來了。」</p>
+<p>這句話，既是替原身說的，也是替自己說的。</p>
+<p>不管前世修了多少年、煉了多少靈膳，最終還是要回到一座最普通的灶臺前，從一碗最簡單的手擀麵開始。</p>
+<p>大道至簡，原來如此。</p>
+<p>蘇念荷把食譜放好，拿起掃帚，繼續打掃那間落灰的小麵館。</p>
+<p>掃帚劃過水泥地面，發出沙沙的聲響，像一首古老而安靜的歌。</p>
+    </div>
+    <div class="chapter-nav">
+      <a href="ch001.html">&larr; 上一章</a>
+      <a href="ch003.html">下一章 &rarr;</a>
+    </div>
+</div>
+<footer><p>小說閱讀站</p></footer>
+</body>
+</html>
