@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>第九月臺 - 午夜列車</title>
+<style>
+:root {
+  --bg: #faf8f5;
+  --text: #2c2c2c;
+  --accent: #8b6914;
+  --card-bg: #fff;
+  --border: #e8e0d4;
+  --shadow: rgba(0,0,0,0.06);
+  --code-bg: #f5f0e8;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #1a1a1a;
+    --text: #e0dcd6;
+    --accent: #d4a530;
+    --card-bg: #252525;
+    --border: #3a3a3a;
+    --shadow: rgba(0,0,0,0.3);
+    --code-bg: #2a2520;
+  }
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: "Noto Serif TC", "Source Han Serif TC", "PMingLiU", serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.9;
+  min-height: 100vh;
+}
+
+.container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 2rem 1.5rem;
+}
+
+header {
+  text-align: center;
+  padding: 3rem 0 2rem;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 2rem;
+}
+
+header h1 {
+  font-size: 2.2rem;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  color: var(--accent);
+}
+
+header p {
+  margin-top: 0.5rem;
+  font-size: 0.95rem;
+  opacity: 0.7;
+}
+
+.book-card {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 1.8rem;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 2px 8px var(--shadow);
+  transition: transform 0.2s;
+}
+
+.book-card:hover {
+  transform: translateY(-2px);
+}
+
+.book-card h2 {
+  font-size: 1.5rem;
+  margin-bottom: 0.3rem;
+}
+
+.book-card h2 a {
+  color: var(--text);
+  text-decoration: none;
+}
+
+.book-card h2 a:hover {
+  color: var(--accent);
+}
+
+.book-card .meta {
+  font-size: 0.85rem;
+  opacity: 0.6;
+  margin-bottom: 1rem;
+}
+
+.book-card .abstract-preview {
+  font-size: 0.95rem;
+  line-height: 1.8;
+}
+
+/* Book page */
+.book-header {
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.book-header h1 {
+  font-size: 2rem;
+  color: var(--accent);
+}
+
+.book-header .author-name {
+  font-size: 1rem;
+  opacity: 0.7;
+  margin-top: 0.3rem;
+}
+
+.section {
+  margin-bottom: 2.5rem;
+}
+
+.section h2 {
+  font-size: 1.3rem;
+  color: var(--accent);
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.toc-list {
+  list-style: none;
+  counter-reset: chapter;
+}
+
+.toc-list li {
+  counter-increment: chapter;
+  margin-bottom: 0.5rem;
+}
+
+.toc-list li a {
+  color: var(--text);
+  text-decoration: none;
+  display: flex;
+  align-items: baseline;
+  gap: 0.8rem;
+  padding: 0.5rem 0.8rem;
+  border-radius: 4px;
+  transition: background 0.15s;
+}
+
+.toc-list li a:hover {
+  background: var(--code-bg);
+  color: var(--accent);
+}
+
+.toc-list li a::before {
+  content: "第" counter(chapter, cjk-ideographic) "章";
+  font-size: 0.85rem;
+  opacity: 0.5;
+  flex-shrink: 0;
+}
+
+/* Chapter page */
+.chapter-header {
+  text-align: center;
+  padding: 2rem 0;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 2rem;
+}
+
+.chapter-header .book-title {
+  font-size: 0.9rem;
+  opacity: 0.5;
+}
+
+.chapter-header h1 {
+  font-size: 1.8rem;
+  margin-top: 0.5rem;
+}
+
+.chapter-header .chapter-num {
+  font-size: 0.85rem;
+  color: var(--accent);
+  margin-top: 0.3rem;
+}
+
+.chapter-body {
+  font-size: 1.05rem;
+  text-align: justify;
+}
+
+.chapter-body p {
+  margin-bottom: 1.2rem;
+  text-indent: 2em;
+}
+
+.chapter-body p:first-child {
+  text-indent: 0;
+}
+
+.chapter-nav {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 3rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--border);
+}
+
+.chapter-nav a {
+  color: var(--accent);
+  text-decoration: none;
+  font-size: 0.95rem;
+}
+
+.chapter-nav a:hover {
+  text-decoration: underline;
+}
+
+.back-link {
+  display: inline-block;
+  margin-bottom: 1.5rem;
+  color: var(--accent);
+  text-decoration: none;
+  font-size: 0.9rem;
+}
+
+.back-link:hover {
+  text-decoration: underline;
+}
+
+.author-section {
+  background: var(--code-bg);
+  border-radius: 8px;
+  padding: 1.5rem;
+}
+
+.author-section h1, .author-section h2, .author-section h3 {
+  font-size: 1.1rem;
+  margin-bottom: 0.8rem;
+}
+
+.author-section ul {
+  list-style: none;
+  padding-left: 0;
+}
+
+.author-section li {
+  margin-bottom: 0.4rem;
+  padding-left: 0;
+}
+
+footer {
+  text-align: center;
+  padding: 2rem 0;
+  font-size: 0.8rem;
+  opacity: 0.4;
+  border-top: 1px solid var(--border);
+  margin-top: 3rem;
+}
+</style>
+
+</head>
+<body>
+<div class="container">
+
+    <a href="./" class="back-link">&larr; 返回目錄</a>
+    <div class="chapter-header">
+      <div class="book-title">午夜列車</div>
+      <h1>第九月臺</h1>
+      <div class="chapter-num">第1章</div>
+    </div>
+    <div class="chapter-body">
+      <p>臺北車站有八個月臺。這是任何一個鐵道迷都知道的事實，寫在維基百科上，標註在建築藍圖裡，刻在每一根月臺柱子上的編號牌上。</p>
+<p>但陳維安知道有第九個。</p>
+<p>他在臺鐵工作了三十二年。從最基層的車站實習生做起，在區間車上剪過票，在調車場連結過車廂，在颱風天搶修過被土石流掩埋的軌道。五十七歲的時候他成為資深列車長，負責末班車的路線——那條從臺北到花蓮的最後一班自強號，凌晨十二點十五分發車，沿著北迴線穿越無數隧道，在太陽升起之前抵達花蓮站。</p>
+<p>三十二年。他對這座車站的了解比對自己的身體還熟悉。哪一塊地磚在雨天會積水，哪一個售票機在冬天會當機，哪一段走廊在半夜會有穿堂風——他全都知道。</p>
+<p>但第九月臺是他在第二十七年的時候才發現的。</p>
+<p>那是一個一月的深夜。他剛跑完最後一趟花蓮的班次回來，在車站裡做最後的巡視。走到第四月臺和第五月臺之間的連通道時，他看見牆上有一扇門。</p>
+<p>一扇灰色的鐵門，門上沒有編號，沒有標示，沒有門把。只有一個老式的鑰匙孔，形狀像一個倒過來的淚滴。</p>
+<p>他在那個走廊走了二十七年，那扇門從來不在那裡。</p>
+<p>他站在門前看了很久，最後決定不碰它。回到值班室，他查了車站的建築圖。連通道的那面牆後面應該是一段廢棄的維修通道，在民國七十年代就被封死了。</p>
+<p>第二天他又去看了一次。門不見了。牆面完整無缺，漆成與周圍一模一樣的米白色。</p>
+<p>此後五年裡，他斷斷續續地看見那扇門出現。沒有規律——有時連續三個月都在，有時半年才出現一次。每次都是深夜，每次都只有他一個人的時候。他從來沒有試圖打開它。</p>
+<p>直到他收到退休通知。</p>
+<p>距離退休還有三十天的那個晚上，他結束最後一趟班次，獨自走進連通道。門在那裡。這次門上多了一行小字，刻在灰色的鐵面上：</p>
+<p>「第九月臺。限持票者進入。」</p>
+<p>陳維安低頭看了看自己手裡的東西。他的員工識別證。磁條已經磨損得幾乎看不見了，照片裡的他還是二十五歲的樣子。</p>
+<p>他不知道這算不算一張票。</p>
+<p>但門開了。不是他推開的——門自己往內開了，露出後面一段往下的階梯。階梯兩側的牆壁上有微弱的螢光，那種工業用的夜光漆，把整個通道染成一種幽綠的色調。</p>
+<p>他走了下去。</p>
+<p>階梯比他預期的長得多。他數著階梯——一百二十三階之後不再數了，因為他的膝蓋開始抗議。空氣漸漸變冷，帶著一種地底特有的潮濕氣味，混合著鐵鏽和老舊潤滑油的味道。</p>
+<p>然後階梯結束了，他站在一個月臺上。</p>
+<p>月臺的結構和臺北車站的其他月臺幾乎一樣——同樣的磨石子地板，同樣的黃色警戒線，同樣的不鏽鋼候車椅。但一切都更舊，像是被時間遺忘了幾十年。天花板上的日光燈管有一半是壞的，剩下的發出一種不穩定的冷白色光，以大約三秒鐘一次的頻率明滅。</p>
+<p>月臺上有一個電子顯示板。上面只有一行字：</p>
+<p>「01:17　■■■■　即將到站」</p>
+<p>目的地的位置被方塊遮住了，像是資訊被刻意隱藏。</p>
+<p>陳維安看了看手錶。凌晨一點十五分。</p>
+<p>他在候車椅上坐了下來，等待那班不在任何時刻表上的列車。</p>
+<p>兩分鐘後，他聽見了鐵軌的震動聲。</p>
+    </div>
+    <div class="chapter-nav">
+      <a href="./">&larr; 目錄</a>
+      <a href="ch002.html">下一章 &rarr;</a>
+    </div>
+</div>
+<footer><p>小說閱讀站</p></footer>
+</body>
+</html>

@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>幽靈書店</title>
+<style>
+:root {
+  --bg: #faf8f5;
+  --text: #2c2c2c;
+  --accent: #8b6914;
+  --card-bg: #fff;
+  --border: #e8e0d4;
+  --shadow: rgba(0,0,0,0.06);
+  --code-bg: #f5f0e8;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #1a1a1a;
+    --text: #e0dcd6;
+    --accent: #d4a530;
+    --card-bg: #252525;
+    --border: #3a3a3a;
+    --shadow: rgba(0,0,0,0.3);
+    --code-bg: #2a2520;
+  }
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: "Noto Serif TC", "Source Han Serif TC", "PMingLiU", serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.9;
+  min-height: 100vh;
+}
+
+.container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 2rem 1.5rem;
+}
+
+header {
+  text-align: center;
+  padding: 3rem 0 2rem;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 2rem;
+}
+
+header h1 {
+  font-size: 2.2rem;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  color: var(--accent);
+}
+
+header p {
+  margin-top: 0.5rem;
+  font-size: 0.95rem;
+  opacity: 0.7;
+}
+
+.book-card {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 1.8rem;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 2px 8px var(--shadow);
+  transition: transform 0.2s;
+}
+
+.book-card:hover {
+  transform: translateY(-2px);
+}
+
+.book-card h2 {
+  font-size: 1.5rem;
+  margin-bottom: 0.3rem;
+}
+
+.book-card h2 a {
+  color: var(--text);
+  text-decoration: none;
+}
+
+.book-card h2 a:hover {
+  color: var(--accent);
+}
+
+.book-card .meta {
+  font-size: 0.85rem;
+  opacity: 0.6;
+  margin-bottom: 1rem;
+}
+
+.book-card .abstract-preview {
+  font-size: 0.95rem;
+  line-height: 1.8;
+}
+
+/* Book page */
+.book-header {
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.book-header h1 {
+  font-size: 2rem;
+  color: var(--accent);
+}
+
+.book-header .author-name {
+  font-size: 1rem;
+  opacity: 0.7;
+  margin-top: 0.3rem;
+}
+
+.section {
+  margin-bottom: 2.5rem;
+}
+
+.section h2 {
+  font-size: 1.3rem;
+  color: var(--accent);
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.toc-list {
+  list-style: none;
+  counter-reset: chapter;
+}
+
+.toc-list li {
+  counter-increment: chapter;
+  margin-bottom: 0.5rem;
+}
+
+.toc-list li a {
+  color: var(--text);
+  text-decoration: none;
+  display: flex;
+  align-items: baseline;
+  gap: 0.8rem;
+  padding: 0.5rem 0.8rem;
+  border-radius: 4px;
+  transition: background 0.15s;
+}
+
+.toc-list li a:hover {
+  background: var(--code-bg);
+  color: var(--accent);
+}
+
+.toc-list li a::before {
+  content: "第" counter(chapter, cjk-ideographic) "章";
+  font-size: 0.85rem;
+  opacity: 0.5;
+  flex-shrink: 0;
+}
+
+/* Chapter page */
+.chapter-header {
+  text-align: center;
+  padding: 2rem 0;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 2rem;
+}
+
+.chapter-header .book-title {
+  font-size: 0.9rem;
+  opacity: 0.5;
+}
+
+.chapter-header h1 {
+  font-size: 1.8rem;
+  margin-top: 0.5rem;
+}
+
+.chapter-header .chapter-num {
+  font-size: 0.85rem;
+  color: var(--accent);
+  margin-top: 0.3rem;
+}
+
+.chapter-body {
+  font-size: 1.05rem;
+  text-align: justify;
+}
+
+.chapter-body p {
+  margin-bottom: 1.2rem;
+  text-indent: 2em;
+}
+
+.chapter-body p:first-child {
+  text-indent: 0;
+}
+
+.chapter-nav {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 3rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--border);
+}
+
+.chapter-nav a {
+  color: var(--accent);
+  text-decoration: none;
+  font-size: 0.95rem;
+}
+
+.chapter-nav a:hover {
+  text-decoration: underline;
+}
+
+.back-link {
+  display: inline-block;
+  margin-bottom: 1.5rem;
+  color: var(--accent);
+  text-decoration: none;
+  font-size: 0.9rem;
+}
+
+.back-link:hover {
+  text-decoration: underline;
+}
+
+.author-section {
+  background: var(--code-bg);
+  border-radius: 8px;
+  padding: 1.5rem;
+}
+
+.author-section h1, .author-section h2, .author-section h3 {
+  font-size: 1.1rem;
+  margin-bottom: 0.8rem;
+}
+
+.author-section ul {
+  list-style: none;
+  padding-left: 0;
+}
+
+.author-section li {
+  margin-bottom: 0.4rem;
+  padding-left: 0;
+}
+
+footer {
+  text-align: center;
+  padding: 2rem 0;
+  font-size: 0.8rem;
+  opacity: 0.4;
+  border-top: 1px solid var(--border);
+  margin-top: 3rem;
+}
+</style>
+
+</head>
+<body>
+<div class="container">
+
+  <a href="../" class="back-link">&larr; 返回書單</a>
+  <div class="book-header">
+    <h1>幽靈書店</h1>
+    <div class="author-name">作者：葉霜降</div>
+  </div>
+
+  <div class="section">
+    <h2>大綱</h2>
+    <h2>大綱</h2><p>在臺北一條即將被都更拆除的老巷弄裡，有一間沒有招牌的二手書店。店主是一位沉默寡言的老人，他聲稱每一本書裡都住著前任讀者的靈魂碎片。</p><p>大學畢業後找不到方向的林若晴，某天深夜誤入這間書店，翻開一本泛黃的日記體小說後，開始在夢中經歷書中角色的人生。她逐漸分不清自己的記憶與書中人物的記憶，而書店老人似乎對這一切早有預料。</p><p>隨著若晴讀完一本又一本的書，她發現這些書的前任讀者全都在現實中消失了。她必須在自己也被書吞噬之前，找到脫離的方法——或者接受成為下一本書的一部分。</p><h2>類型</h2><ul><li>都市奇幻</li><br><li>心理驚悚</li><br><li>文學小說</li><br></ul><br><h2>主題</h2><ul><li>閱讀與自我認同的邊界</li><br><li>記憶的可靠性</li><br><li>消失與存在的意義</li><br></ul>
+  </div>
+
+  <div class="section">
+    <h2>章節目錄</h2>
+    <ol class="toc-list">
+      <li><a href="ch001.html">沒有招牌的店</a></li>
+<li><a href="ch002.html">第一本書</a></li>
+<li><a href="ch003.html">夢中的陌生人</a></li>
+<li><a href="ch004.html">消失的讀者</a></li>
+<li><a href="ch005.html">老人的警告</a></li>
+
+    </ol>
+  </div>
+
+  <div class="section">
+    <h2>關於作者</h2>
+    <div class="author-section">
+      <h1>作者資料</h1><ul><li><strong>筆名</strong>：葉霜降</li><br><li><strong>性別</strong>：女</li><br><li><strong>年齡</strong>：三十四歲</li><br><li><strong>背景</strong>：曾於京都舊書店工作七年，後移居臺北，專職寫作</li><br><li><strong>風格</strong>：擅長以日常生活中的細微物件帶出超自然氛圍，文字淡雅而帶有寒意</li><br><li><strong>影響</strong>：深受乙一、恩田陸、朱天心的影響</li><br><li><strong>興趣</strong>：蒐集絕版書籍、深夜散步、手沖咖啡</li><br><li><strong>創作理念</strong>：「故事是活的，它選擇在某個時刻降臨到某個人身上。我只是負責記錄。」</li><br></ul>
+    </div>
+  </div>
+</div>
+<footer><p>小說閱讀站</p></footer>
+</body>
+</html>

@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>沒有招牌的店 - 幽靈書店</title>
+<style>
+:root {
+  --bg: #faf8f5;
+  --text: #2c2c2c;
+  --accent: #8b6914;
+  --card-bg: #fff;
+  --border: #e8e0d4;
+  --shadow: rgba(0,0,0,0.06);
+  --code-bg: #f5f0e8;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #1a1a1a;
+    --text: #e0dcd6;
+    --accent: #d4a530;
+    --card-bg: #252525;
+    --border: #3a3a3a;
+    --shadow: rgba(0,0,0,0.3);
+    --code-bg: #2a2520;
+  }
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: "Noto Serif TC", "Source Han Serif TC", "PMingLiU", serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.9;
+  min-height: 100vh;
+}
+
+.container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 2rem 1.5rem;
+}
+
+header {
+  text-align: center;
+  padding: 3rem 0 2rem;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 2rem;
+}
+
+header h1 {
+  font-size: 2.2rem;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  color: var(--accent);
+}
+
+header p {
+  margin-top: 0.5rem;
+  font-size: 0.95rem;
+  opacity: 0.7;
+}
+
+.book-card {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 1.8rem;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 2px 8px var(--shadow);
+  transition: transform 0.2s;
+}
+
+.book-card:hover {
+  transform: translateY(-2px);
+}
+
+.book-card h2 {
+  font-size: 1.5rem;
+  margin-bottom: 0.3rem;
+}
+
+.book-card h2 a {
+  color: var(--text);
+  text-decoration: none;
+}
+
+.book-card h2 a:hover {
+  color: var(--accent);
+}
+
+.book-card .meta {
+  font-size: 0.85rem;
+  opacity: 0.6;
+  margin-bottom: 1rem;
+}
+
+.book-card .abstract-preview {
+  font-size: 0.95rem;
+  line-height: 1.8;
+}
+
+/* Book page */
+.book-header {
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.book-header h1 {
+  font-size: 2rem;
+  color: var(--accent);
+}
+
+.book-header .author-name {
+  font-size: 1rem;
+  opacity: 0.7;
+  margin-top: 0.3rem;
+}
+
+.section {
+  margin-bottom: 2.5rem;
+}
+
+.section h2 {
+  font-size: 1.3rem;
+  color: var(--accent);
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.toc-list {
+  list-style: none;
+  counter-reset: chapter;
+}
+
+.toc-list li {
+  counter-increment: chapter;
+  margin-bottom: 0.5rem;
+}
+
+.toc-list li a {
+  color: var(--text);
+  text-decoration: none;
+  display: flex;
+  align-items: baseline;
+  gap: 0.8rem;
+  padding: 0.5rem 0.8rem;
+  border-radius: 4px;
+  transition: background 0.15s;
+}
+
+.toc-list li a:hover {
+  background: var(--code-bg);
+  color: var(--accent);
+}
+
+.toc-list li a::before {
+  content: "第" counter(chapter, cjk-ideographic) "章";
+  font-size: 0.85rem;
+  opacity: 0.5;
+  flex-shrink: 0;
+}
+
+/* Chapter page */
+.chapter-header {
+  text-align: center;
+  padding: 2rem 0;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 2rem;
+}
+
+.chapter-header .book-title {
+  font-size: 0.9rem;
+  opacity: 0.5;
+}
+
+.chapter-header h1 {
+  font-size: 1.8rem;
+  margin-top: 0.5rem;
+}
+
+.chapter-header .chapter-num {
+  font-size: 0.85rem;
+  color: var(--accent);
+  margin-top: 0.3rem;
+}
+
+.chapter-body {
+  font-size: 1.05rem;
+  text-align: justify;
+}
+
+.chapter-body p {
+  margin-bottom: 1.2rem;
+  text-indent: 2em;
+}
+
+.chapter-body p:first-child {
+  text-indent: 0;
+}
+
+.chapter-nav {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 3rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--border);
+}
+
+.chapter-nav a {
+  color: var(--accent);
+  text-decoration: none;
+  font-size: 0.95rem;
+}
+
+.chapter-nav a:hover {
+  text-decoration: underline;
+}
+
+.back-link {
+  display: inline-block;
+  margin-bottom: 1.5rem;
+  color: var(--accent);
+  text-decoration: none;
+  font-size: 0.9rem;
+}
+
+.back-link:hover {
+  text-decoration: underline;
+}
+
+.author-section {
+  background: var(--code-bg);
+  border-radius: 8px;
+  padding: 1.5rem;
+}
+
+.author-section h1, .author-section h2, .author-section h3 {
+  font-size: 1.1rem;
+  margin-bottom: 0.8rem;
+}
+
+.author-section ul {
+  list-style: none;
+  padding-left: 0;
+}
+
+.author-section li {
+  margin-bottom: 0.4rem;
+  padding-left: 0;
+}
+
+footer {
+  text-align: center;
+  padding: 2rem 0;
+  font-size: 0.8rem;
+  opacity: 0.4;
+  border-top: 1px solid var(--border);
+  margin-top: 3rem;
+}
+</style>
+
+</head>
+<body>
+<div class="container">
+
+    <a href="./" class="back-link">&larr; 返回目錄</a>
+    <div class="chapter-header">
+      <div class="book-title">幽靈書店</div>
+      <h1>沒有招牌的店</h1>
+      <div class="chapter-num">第1章</div>
+    </div>
+    <div class="chapter-body">
+      <p>那條巷子在Google地圖上顯示為灰色——沒有街景，沒有店家標記，彷彿被數位世界遺忘了。</p>
+<p>林若晴是在一個失眠的週四凌晨發現它的。那時她剛從大學畢業三個月，履歷投了四十幾封，面試了八間公司，全部沒有下文。她的房租再過十二天就到期，而她連下個月要睡在哪裡都不確定。</p>
+<p>她沒有特別的目的地。只是穿著拖鞋走出租屋處，沿著羅斯福路走，轉進一條她從未注意過的窄巷。巷口有一棵老榕樹，氣根垂得很低，像是門簾。</p>
+<p>巷子裡沒有路燈，但不知為何並不完全黑暗。一種微弱的、帶著琥珀色調的光從巷子深處透出來，像是有人在盡頭點了一盞油燈。</p>
+<p>她走了大約兩分鐘——或者二十分鐘，她後來怎麼也想不起來——然後看見了那間書店。</p>
+<p>沒有招牌。沒有營業時間的告示。只有一扇半開的木門，門框上的油漆已經剝落大半，露出底下灰白色的木頭。門口放著一張矮凳，凳上有一個掉了蓋子的陶瓷杯，裡面的茶早已涼透。</p>
+<p>若晴站在門口猶豫了幾秒，然後推門走了進去。</p>
+<p>裡面比外面看起來的要大得多。書架從地板延伸到天花板，排列得毫無規律，有些橫著放，有些斜靠在牆上，像是這些書架自己選擇了各自的姿態。空氣中有舊紙頁的味道——帶著一點點霉味，但更多的是一種溫暖的、類似於香草的氣息。</p>
+<p>「找書？還是被書找到？」</p>
+<p>聲音從書架之間的某個角落傳來。若晴轉頭，看見一個瘦小的老人坐在一張搖椅上，手裡拿著一本攤開的書，但他的眼睛並沒有看著書頁，而是看著她。</p>
+<p>「我……我只是路過。」若晴說。</p>
+<p>老人把書合上，封面朝下放在膝蓋上。「沒有人路過這裡，」他說，語氣平淡得像在陳述天氣。「到這裡來的人，都是書選中的。」</p>
+<p>若晴想笑，但老人的表情讓她笑不出來。他的眼睛很黑，黑得像墨水，裡面沒有她習慣在別人眼中看到的那種光。</p>
+<p>「你可以隨便看看，」老人站起來，搖椅在他身後輕輕晃動。「但有一個規矩——翻開的書，必須讀完第一頁。讀完之後，你可以選擇放下，也可以選擇繼續。但是——」他頓了頓，「大多數人都會選擇繼續。」</p>
+<p>「為什麼？」</p>
+<p>「因為第一頁會讓你想起一些事。一些你以為自己忘記的事。」</p>
+<p>老人說完就走進了書架之間的暗處，腳步聲很快就消失了，彷彿他是被書架本身吸收的。</p>
+<p>若晴獨自站在書店裡。她環顧四周，目光被一本放在矮桌上的書吸引。那本書沒有書名，封面是一片深藍色，像是午夜的天空。</p>
+<p>她拿起來，翻開第一頁。</p>
+<p>第一行字寫著：「你終於來了。」</p>
+    </div>
+    <div class="chapter-nav">
+      <a href="./">&larr; 目錄</a>
+      <a href="ch002.html">下一章 &rarr;</a>
+    </div>
+</div>
+<footer><p>小說閱讀站</p></footer>
+</body>
+</html>

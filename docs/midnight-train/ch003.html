@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>第一位乘客 - 午夜列車</title>
+<style>
+:root {
+  --bg: #faf8f5;
+  --text: #2c2c2c;
+  --accent: #8b6914;
+  --card-bg: #fff;
+  --border: #e8e0d4;
+  --shadow: rgba(0,0,0,0.06);
+  --code-bg: #f5f0e8;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #1a1a1a;
+    --text: #e0dcd6;
+    --accent: #d4a530;
+    --card-bg: #252525;
+    --border: #3a3a3a;
+    --shadow: rgba(0,0,0,0.3);
+    --code-bg: #2a2520;
+  }
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: "Noto Serif TC", "Source Han Serif TC", "PMingLiU", serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.9;
+  min-height: 100vh;
+}
+
+.container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 2rem 1.5rem;
+}
+
+header {
+  text-align: center;
+  padding: 3rem 0 2rem;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 2rem;
+}
+
+header h1 {
+  font-size: 2.2rem;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  color: var(--accent);
+}
+
+header p {
+  margin-top: 0.5rem;
+  font-size: 0.95rem;
+  opacity: 0.7;
+}
+
+.book-card {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 1.8rem;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 2px 8px var(--shadow);
+  transition: transform 0.2s;
+}
+
+.book-card:hover {
+  transform: translateY(-2px);
+}
+
+.book-card h2 {
+  font-size: 1.5rem;
+  margin-bottom: 0.3rem;
+}
+
+.book-card h2 a {
+  color: var(--text);
+  text-decoration: none;
+}
+
+.book-card h2 a:hover {
+  color: var(--accent);
+}
+
+.book-card .meta {
+  font-size: 0.85rem;
+  opacity: 0.6;
+  margin-bottom: 1rem;
+}
+
+.book-card .abstract-preview {
+  font-size: 0.95rem;
+  line-height: 1.8;
+}
+
+/* Book page */
+.book-header {
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.book-header h1 {
+  font-size: 2rem;
+  color: var(--accent);
+}
+
+.book-header .author-name {
+  font-size: 1rem;
+  opacity: 0.7;
+  margin-top: 0.3rem;
+}
+
+.section {
+  margin-bottom: 2.5rem;
+}
+
+.section h2 {
+  font-size: 1.3rem;
+  color: var(--accent);
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.toc-list {
+  list-style: none;
+  counter-reset: chapter;
+}
+
+.toc-list li {
+  counter-increment: chapter;
+  margin-bottom: 0.5rem;
+}
+
+.toc-list li a {
+  color: var(--text);
+  text-decoration: none;
+  display: flex;
+  align-items: baseline;
+  gap: 0.8rem;
+  padding: 0.5rem 0.8rem;
+  border-radius: 4px;
+  transition: background 0.15s;
+}
+
+.toc-list li a:hover {
+  background: var(--code-bg);
+  color: var(--accent);
+}
+
+.toc-list li a::before {
+  content: "第" counter(chapter, cjk-ideographic) "章";
+  font-size: 0.85rem;
+  opacity: 0.5;
+  flex-shrink: 0;
+}
+
+/* Chapter page */
+.chapter-header {
+  text-align: center;
+  padding: 2rem 0;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 2rem;
+}
+
+.chapter-header .book-title {
+  font-size: 0.9rem;
+  opacity: 0.5;
+}
+
+.chapter-header h1 {
+  font-size: 1.8rem;
+  margin-top: 0.5rem;
+}
+
+.chapter-header .chapter-num {
+  font-size: 0.85rem;
+  color: var(--accent);
+  margin-top: 0.3rem;
+}
+
+.chapter-body {
+  font-size: 1.05rem;
+  text-align: justify;
+}
+
+.chapter-body p {
+  margin-bottom: 1.2rem;
+  text-indent: 2em;
+}
+
+.chapter-body p:first-child {
+  text-indent: 0;
+}
+
+.chapter-nav {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 3rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--border);
+}
+
+.chapter-nav a {
+  color: var(--accent);
+  text-decoration: none;
+  font-size: 0.95rem;
+}
+
+.chapter-nav a:hover {
+  text-decoration: underline;
+}
+
+.back-link {
+  display: inline-block;
+  margin-bottom: 1.5rem;
+  color: var(--accent);
+  text-decoration: none;
+  font-size: 0.9rem;
+}
+
+.back-link:hover {
+  text-decoration: underline;
+}
+
+.author-section {
+  background: var(--code-bg);
+  border-radius: 8px;
+  padding: 1.5rem;
+}
+
+.author-section h1, .author-section h2, .author-section h3 {
+  font-size: 1.1rem;
+  margin-bottom: 0.8rem;
+}
+
+.author-section ul {
+  list-style: none;
+  padding-left: 0;
+}
+
+.author-section li {
+  margin-bottom: 0.4rem;
+  padding-left: 0;
+}
+
+footer {
+  text-align: center;
+  padding: 2rem 0;
+  font-size: 0.8rem;
+  opacity: 0.4;
+  border-top: 1px solid var(--border);
+  margin-top: 3rem;
+}
+</style>
+
+</head>
+<body>
+<div class="container">
+
+    <a href="./" class="back-link">&larr; 返回目錄</a>
+    <div class="chapter-header">
+      <div class="book-title">午夜列車</div>
+      <h1>第一位乘客</h1>
+      <div class="chapter-num">第3章</div>
+    </div>
+    <div class="chapter-body">
+      <p>坐在他旁邊的是一個年輕女人，大約二十五六歲，穿著一件過大的米色風衣，手裡抱著一個紙袋。紙袋上印著一家他認得的麵包店的商標——「老陳烘焙」，在中和的一條巷子裡，他小時候常去買蔥花麵包的那家。</p>
+<p>但那家店在十五年前就關了。</p>
+<p>「你是列車長嗎？」女人問。她的聲音很輕，像是怕打擾到什麼。</p>
+<p>陳維安低頭看了看自己。他還穿著制服——深藍色的外套，胸前別著員工識別證，肩膀上有列車長的臂章。「是。但這不是我的列車。」</p>
+<p>「這班車沒有列車長，」女人說。「從來沒有。你是第一個穿制服上車的人。」</p>
+<p>「你搭過很多次？」</p>
+<p>女人沒有直接回答。她把紙袋打開，裡面是一個菠蘿麵包，表面的酥皮完美得像是模型。她沒有吃，只是看著它。</p>
+<p>「這是我媽做的，」她說。「她在那家麵包店工作了二十年。每天早上四點起來揉麵團，手指關節都變形了。我高中的時候覺得很丟臉，從來不告訴同學我媽是做麵包的。大學畢業後去了臺北工作，一年回去不到三次。」</p>
+<p>她頓了一下。</p>
+<p>「她過世那天打了電話給我，說做了一批新口味的菠蘿麵包，問我週末要不要回去試試。我說在忙，下次吧。」</p>
+<p>「沒有下次了？」陳維安問。</p>
+<p>女人搖頭。「心肌梗塞。在店裡倒下的。手上還沾著麵粉。」</p>
+<p>車廂裡的冷白色燈光在這個瞬間似乎變得更冷了。陳維安看著女人手裡的麵包，那個完美的、像是剛出爐的菠蘿麵包。</p>
+<p>「這是那天她做的那一批？」</p>
+<p>「我不知道。每次上車它就在我手裡。還是溫的。」她用手指輕輕碰了碰酥皮表面。「聞起來和她身上的味道一樣。麵粉和奶油和汗水混在一起的味道。」</p>
+<p>陳維安沉默了很久。窗外的黑暗持續流過，偶爾有一道模糊的光紋閃過，像是水面上的波紋。</p>
+<p>「所以你是因為這件事在這列車上的。」他說。</p>
+<p>「我們都是因為某件事在這裡的，」女人說。「你呢？」</p>
+<p>陳維安沒有回答。他看向車廂的其他乘客。最前面坐著一個穿西裝的中年男人，一直盯著自己的雙手。中間幾排有一對老夫妻，各自望向不同方向的窗戶。靠門的位置有一個穿校服的少年，校服胸口的名牌上寫著一個他看不清的名字。</p>
+<p>每個人都帶著什麼。不是行李——他們都沒有行李箱或背包。而是一個東西。西裝男人手裡反覆翻轉著一枚戒指。老太太膝蓋上放著一條疊得整整齊齊的圍巾。少年的座位旁邊立著一把已經很舊的吉他。</p>
+<p>每個人的遺憾都濃縮成了一個物件。</p>
+<p>「這班列車開往哪裡？」陳維安問。</p>
+<p>「開往你需要去的地方。」女人把菠蘿麵包重新放進紙袋裡。「但大多數人到不了。因為到站之前，你必須先打開你帶上車的那個東西。真正地打開它。面對它。然後列車才會到站。」</p>
+<p>「我沒有帶任何東西上車。」</p>
+<p>女人看著他，露出一個很淡的微笑。</p>
+<p>「你有的，」她說。「只是你還沒看見。」</p>
+<p>陳維安不自覺地把手伸進制服口袋裡。他的手指碰到了一個東西——硬的、方形的、冰涼的。</p>
+<p>他掏出來。</p>
+<p>是一支手機。一支很舊的Nokia手機，螢幕是單色的那種。他認得這支手機。這是他三十年前用的那支。他在收到母親那通電話之後就再也沒有用過的那支。</p>
+<p>螢幕亮了。上面顯示一通未接來電。</p>
+<p>來電者：爸。</p>
+<p>日期是三十年前。</p>
+<p>陳維安握著那支手機，坐在列車的沉默裡，手指發著抖。</p>
+    </div>
+    <div class="chapter-nav">
+      <a href="ch002.html">&larr; 上一章</a>
+      <a href="ch004.html">下一章 &rarr;</a>
+    </div>
+</div>
+<footer><p>小說閱讀站</p></footer>
+</body>
+</html>

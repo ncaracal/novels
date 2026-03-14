@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>第一本書 - 幽靈書店</title>
+<style>
+:root {
+  --bg: #faf8f5;
+  --text: #2c2c2c;
+  --accent: #8b6914;
+  --card-bg: #fff;
+  --border: #e8e0d4;
+  --shadow: rgba(0,0,0,0.06);
+  --code-bg: #f5f0e8;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #1a1a1a;
+    --text: #e0dcd6;
+    --accent: #d4a530;
+    --card-bg: #252525;
+    --border: #3a3a3a;
+    --shadow: rgba(0,0,0,0.3);
+    --code-bg: #2a2520;
+  }
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: "Noto Serif TC", "Source Han Serif TC", "PMingLiU", serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.9;
+  min-height: 100vh;
+}
+
+.container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 2rem 1.5rem;
+}
+
+header {
+  text-align: center;
+  padding: 3rem 0 2rem;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 2rem;
+}
+
+header h1 {
+  font-size: 2.2rem;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  color: var(--accent);
+}
+
+header p {
+  margin-top: 0.5rem;
+  font-size: 0.95rem;
+  opacity: 0.7;
+}
+
+.book-card {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 1.8rem;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 2px 8px var(--shadow);
+  transition: transform 0.2s;
+}
+
+.book-card:hover {
+  transform: translateY(-2px);
+}
+
+.book-card h2 {
+  font-size: 1.5rem;
+  margin-bottom: 0.3rem;
+}
+
+.book-card h2 a {
+  color: var(--text);
+  text-decoration: none;
+}
+
+.book-card h2 a:hover {
+  color: var(--accent);
+}
+
+.book-card .meta {
+  font-size: 0.85rem;
+  opacity: 0.6;
+  margin-bottom: 1rem;
+}
+
+.book-card .abstract-preview {
+  font-size: 0.95rem;
+  line-height: 1.8;
+}
+
+/* Book page */
+.book-header {
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.book-header h1 {
+  font-size: 2rem;
+  color: var(--accent);
+}
+
+.book-header .author-name {
+  font-size: 1rem;
+  opacity: 0.7;
+  margin-top: 0.3rem;
+}
+
+.section {
+  margin-bottom: 2.5rem;
+}
+
+.section h2 {
+  font-size: 1.3rem;
+  color: var(--accent);
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.toc-list {
+  list-style: none;
+  counter-reset: chapter;
+}
+
+.toc-list li {
+  counter-increment: chapter;
+  margin-bottom: 0.5rem;
+}
+
+.toc-list li a {
+  color: var(--text);
+  text-decoration: none;
+  display: flex;
+  align-items: baseline;
+  gap: 0.8rem;
+  padding: 0.5rem 0.8rem;
+  border-radius: 4px;
+  transition: background 0.15s;
+}
+
+.toc-list li a:hover {
+  background: var(--code-bg);
+  color: var(--accent);
+}
+
+.toc-list li a::before {
+  content: "第" counter(chapter, cjk-ideographic) "章";
+  font-size: 0.85rem;
+  opacity: 0.5;
+  flex-shrink: 0;
+}
+
+/* Chapter page */
+.chapter-header {
+  text-align: center;
+  padding: 2rem 0;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 2rem;
+}
+
+.chapter-header .book-title {
+  font-size: 0.9rem;
+  opacity: 0.5;
+}
+
+.chapter-header h1 {
+  font-size: 1.8rem;
+  margin-top: 0.5rem;
+}
+
+.chapter-header .chapter-num {
+  font-size: 0.85rem;
+  color: var(--accent);
+  margin-top: 0.3rem;
+}
+
+.chapter-body {
+  font-size: 1.05rem;
+  text-align: justify;
+}
+
+.chapter-body p {
+  margin-bottom: 1.2rem;
+  text-indent: 2em;
+}
+
+.chapter-body p:first-child {
+  text-indent: 0;
+}
+
+.chapter-nav {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 3rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--border);
+}
+
+.chapter-nav a {
+  color: var(--accent);
+  text-decoration: none;
+  font-size: 0.95rem;
+}
+
+.chapter-nav a:hover {
+  text-decoration: underline;
+}
+
+.back-link {
+  display: inline-block;
+  margin-bottom: 1.5rem;
+  color: var(--accent);
+  text-decoration: none;
+  font-size: 0.9rem;
+}
+
+.back-link:hover {
+  text-decoration: underline;
+}
+
+.author-section {
+  background: var(--code-bg);
+  border-radius: 8px;
+  padding: 1.5rem;
+}
+
+.author-section h1, .author-section h2, .author-section h3 {
+  font-size: 1.1rem;
+  margin-bottom: 0.8rem;
+}
+
+.author-section ul {
+  list-style: none;
+  padding-left: 0;
+}
+
+.author-section li {
+  margin-bottom: 0.4rem;
+  padding-left: 0;
+}
+
+footer {
+  text-align: center;
+  padding: 2rem 0;
+  font-size: 0.8rem;
+  opacity: 0.4;
+  border-top: 1px solid var(--border);
+  margin-top: 3rem;
+}
+</style>
+
+</head>
+<body>
+<div class="container">
+
+    <a href="./" class="back-link">&larr; 返回目錄</a>
+    <div class="chapter-header">
+      <div class="book-title">幽靈書店</div>
+      <h1>第一本書</h1>
+      <div class="chapter-num">第2章</div>
+    </div>
+    <div class="chapter-body">
+      <p>若晴盯著那行字看了很久。</p>
+<p>「你終於來了。」</p>
+<p>這不像是小說的開頭。更像是某個人對著她說的話。她告訴自己這只是巧合，一種文學手法，很多作者喜歡用第二人稱來製造親密感。但她的手指在發抖，不是因為冷。</p>
+<p>她繼續讀下去。</p>
+<p>「你叫什麼名字並不重要。重要的是你現在坐在那張椅子上，而這本書在你手裡。你覺得是你選了這本書，但其實是這本書等了你很久。」</p>
+<p>若晴下意識地回頭看了一眼——書店裡確實有一張椅子在她身後。一張老舊的藤椅，上面鋪著一塊褪色的靛藍布墊。她不記得自己是什麼時候看見它的，但它就在那裡，彷彿一直在等她坐下。</p>
+<p>她坐下了。</p>
+<p>書的第二頁開始用日記的形式書寫。日期是民國八十三年，九月十七日。</p>
+<p>「今天搬進了新的公寓。三樓，朝北，窗戶打開可以看見對面屋頂上曬的棉被。房東是一個戴助聽器的老太太，她說這個房間之前住的是一個年輕女生，念研究所的，去年突然退租了，東西都沒搬走。」</p>
+<p>若晴讀著這些文字，漸漸感覺到一種奇怪的熟悉感。不是因為內容本身——她從來沒有住過朝北的三樓公寓——而是那種語氣，那種在日記裡對自己說話的方式，和她自己寫日記的口吻幾乎一模一樣。</p>
+<p>她翻了幾頁。日記的主人叫做「小凌」，或者至少她在日記裡這樣稱呼自己。小凌是中文系的研究生，正在寫一篇關於廢墟文學的論文。她喜歡在深夜去便利商店買咖啡，坐在店門口的階梯上看來往的計程車。</p>
+<p>若晴讀了大約三十頁，然後注意到一件事。</p>
+<p>小凌的日記開始出現空白。不是整頁空白，而是某些段落中間突然斷裂，像是有人用橡皮擦擦掉了幾個句子，留下凹凸不平的紙面。而在這些空白的周圍，文字的語氣開始改變。</p>
+<p>「我今天在圖書館待了六個小時，但是　　　　　完全想不起來自己讀了什麼。回家的路上經過那條巷子，又聞到了那股　　　　　味道。」</p>
+<p>空白處不是被塗掉的，而是真的空著，像是那些記憶從來就不存在。</p>
+<p>若晴把書合上，深吸了一口氣。書店裡很安靜，安靜得她可以聽見自己的心跳。她看了一眼手機——凌晨三點四十七分。她已經在這裡待了將近兩個小時。</p>
+<p>她決定先回去。</p>
+<p>把書放回矮桌上的時候，她的手指碰到了封底。封底的右下角有一行很小的字，小到她必須湊近才能看見：</p>
+<p>「前任讀者：陳品萱。狀態：已收錄。」</p>
+<p>若晴不知道這是什麼意思。她把書放下，向門口走去。經過搖椅的時候，她注意到椅子上放著一張紙條，上面用鋼筆寫著：</p>
+<p>「第二本書在等你。明天同一個時間。」</p>
+<p>她把紙條塞進口袋，推開木門走進巷子裡。外面的空氣潮濕而溫暖，像是剛下過雨。她沿著巷子走回羅斯福路，路燈把她的影子拉得很長。</p>
+<p>回到租屋處，她躺在床上，閉上眼睛。</p>
+<p>然後她做了一個夢。</p>
+<p>夢裡她坐在一個朝北的房間裡，窗戶打開著，可以看見對面屋頂上曬的棉被。桌上攤著一本筆記本，她的手正在寫字：</p>
+<p>「今天是我搬進來的第一天——」</p>
+<p>她用的是一枝藍色的鋼筆，而她這輩子從來沒有用過鋼筆。</p>
+    </div>
+    <div class="chapter-nav">
+      <a href="ch001.html">&larr; 上一章</a>
+      <a href="ch003.html">下一章 &rarr;</a>
+    </div>
+</div>
+<footer><p>小說閱讀站</p></footer>
+</body>
+</html>

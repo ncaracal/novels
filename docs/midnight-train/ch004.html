@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>穿越不存在的隧道 - 午夜列車</title>
+<style>
+:root {
+  --bg: #faf8f5;
+  --text: #2c2c2c;
+  --accent: #8b6914;
+  --card-bg: #fff;
+  --border: #e8e0d4;
+  --shadow: rgba(0,0,0,0.06);
+  --code-bg: #f5f0e8;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #1a1a1a;
+    --text: #e0dcd6;
+    --accent: #d4a530;
+    --card-bg: #252525;
+    --border: #3a3a3a;
+    --shadow: rgba(0,0,0,0.3);
+    --code-bg: #2a2520;
+  }
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: "Noto Serif TC", "Source Han Serif TC", "PMingLiU", serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.9;
+  min-height: 100vh;
+}
+
+.container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 2rem 1.5rem;
+}
+
+header {
+  text-align: center;
+  padding: 3rem 0 2rem;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 2rem;
+}
+
+header h1 {
+  font-size: 2.2rem;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  color: var(--accent);
+}
+
+header p {
+  margin-top: 0.5rem;
+  font-size: 0.95rem;
+  opacity: 0.7;
+}
+
+.book-card {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 1.8rem;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 2px 8px var(--shadow);
+  transition: transform 0.2s;
+}
+
+.book-card:hover {
+  transform: translateY(-2px);
+}
+
+.book-card h2 {
+  font-size: 1.5rem;
+  margin-bottom: 0.3rem;
+}
+
+.book-card h2 a {
+  color: var(--text);
+  text-decoration: none;
+}
+
+.book-card h2 a:hover {
+  color: var(--accent);
+}
+
+.book-card .meta {
+  font-size: 0.85rem;
+  opacity: 0.6;
+  margin-bottom: 1rem;
+}
+
+.book-card .abstract-preview {
+  font-size: 0.95rem;
+  line-height: 1.8;
+}
+
+/* Book page */
+.book-header {
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.book-header h1 {
+  font-size: 2rem;
+  color: var(--accent);
+}
+
+.book-header .author-name {
+  font-size: 1rem;
+  opacity: 0.7;
+  margin-top: 0.3rem;
+}
+
+.section {
+  margin-bottom: 2.5rem;
+}
+
+.section h2 {
+  font-size: 1.3rem;
+  color: var(--accent);
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.toc-list {
+  list-style: none;
+  counter-reset: chapter;
+}
+
+.toc-list li {
+  counter-increment: chapter;
+  margin-bottom: 0.5rem;
+}
+
+.toc-list li a {
+  color: var(--text);
+  text-decoration: none;
+  display: flex;
+  align-items: baseline;
+  gap: 0.8rem;
+  padding: 0.5rem 0.8rem;
+  border-radius: 4px;
+  transition: background 0.15s;
+}
+
+.toc-list li a:hover {
+  background: var(--code-bg);
+  color: var(--accent);
+}
+
+.toc-list li a::before {
+  content: "第" counter(chapter, cjk-ideographic) "章";
+  font-size: 0.85rem;
+  opacity: 0.5;
+  flex-shrink: 0;
+}
+
+/* Chapter page */
+.chapter-header {
+  text-align: center;
+  padding: 2rem 0;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 2rem;
+}
+
+.chapter-header .book-title {
+  font-size: 0.9rem;
+  opacity: 0.5;
+}
+
+.chapter-header h1 {
+  font-size: 1.8rem;
+  margin-top: 0.5rem;
+}
+
+.chapter-header .chapter-num {
+  font-size: 0.85rem;
+  color: var(--accent);
+  margin-top: 0.3rem;
+}
+
+.chapter-body {
+  font-size: 1.05rem;
+  text-align: justify;
+}
+
+.chapter-body p {
+  margin-bottom: 1.2rem;
+  text-indent: 2em;
+}
+
+.chapter-body p:first-child {
+  text-indent: 0;
+}
+
+.chapter-nav {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 3rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--border);
+}
+
+.chapter-nav a {
+  color: var(--accent);
+  text-decoration: none;
+  font-size: 0.95rem;
+}
+
+.chapter-nav a:hover {
+  text-decoration: underline;
+}
+
+.back-link {
+  display: inline-block;
+  margin-bottom: 1.5rem;
+  color: var(--accent);
+  text-decoration: none;
+  font-size: 0.9rem;
+}
+
+.back-link:hover {
+  text-decoration: underline;
+}
+
+.author-section {
+  background: var(--code-bg);
+  border-radius: 8px;
+  padding: 1.5rem;
+}
+
+.author-section h1, .author-section h2, .author-section h3 {
+  font-size: 1.1rem;
+  margin-bottom: 0.8rem;
+}
+
+.author-section ul {
+  list-style: none;
+  padding-left: 0;
+}
+
+.author-section li {
+  margin-bottom: 0.4rem;
+  padding-left: 0;
+}
+
+footer {
+  text-align: center;
+  padding: 2rem 0;
+  font-size: 0.8rem;
+  opacity: 0.4;
+  border-top: 1px solid var(--border);
+  margin-top: 3rem;
+}
+</style>
+
+</head>
+<body>
+<div class="container">
+
+    <a href="./" class="back-link">&larr; 返回目錄</a>
+    <div class="chapter-header">
+      <div class="book-title">午夜列車</div>
+      <h1>穿越不存在的隧道</h1>
+      <div class="chapter-num">第4章</div>
+    </div>
+    <div class="chapter-body">
+      <p>列車在某個時刻開始加速。</p>
+<p>陳維安不確定確切的時間點——在這列車上，時間像是被拉長了的太妃糖，柔軟而模糊。但他注意到窗外的光紋閃過的頻率變快了，車廂內部那種微弱的、接近聽覺閾值的低頻嗡鳴聲也變得稍微明顯。</p>
+<p>他把那支Nokia手機放在小桌板上。螢幕上的未接來電顯示依然亮著，像是一顆不會熄滅的星。</p>
+<p>旁邊的年輕女人已經不在了。她的座位上只剩下淡淡的麵粉味和一個壓出的凹痕。陳維安不記得她是什麼時候離開的——也許是在他低頭看手機的那幾秒鐘裡，也許是更早。</p>
+<p>他站起來，決定走一走。</p>
+<p>列車有八節車廂，他之前看過前兩節。他推開車廂連接處的門——門上的逆時針時鐘指向一個他無法換算的時間——走進第三節車廂。</p>
+<p>空的。完全空的。但座位上有痕跡。有些座位的椅背被調低了，有些小桌板是打開的，上面有水漬或指紋。這些座位曾經有人坐過，而那些人已經不在了。</p>
+<p>第四節車廂也是空的。但這裡的窗戶有一扇被打開了——真正打開了，冷風灌進來。陳維安走過去，把頭探向窗外。</p>
+<p>他看見了隧道壁。</p>
+<p>不是一般隧道的混凝土牆面。隧道壁像是某種岩層的剖面，裡面有一層又一層的紋路——但不是地質紋路。他看了好幾秒才意識到那些紋路是什麼。</p>
+<p>是文字。</p>
+<p>密密麻麻的文字被壓進岩層裡，像是化石。有些是中文，有些是日文，有些是他不認識的語言。文字大小不一，有的像是正常的印刷字體，有的大得像路標。他在飛速閃過的牆面上辨認出幾個片段：</p>
+<p>「——來不及說的——」<br>「——如果那天我沒有——」<br>「——對不起我——」</p>
+<p>全部都是未完成的句子。</p>
+<p>陳維安把頭縮回來，關上窗戶。他突然理解了什麼。這條隧道不是挖出來的。這條隧道是由所有乘客帶上車的、未曾說出口的話凝結而成的。每一個遺憾、每一句吞回去的話，都沉積在這裡，一層又一層，形成了列車行駛的路徑。</p>
+<p>他繼續往後走。</p>
+<p>第五節車廂是餐車，但沒有工作人員。吧臺上放著幾個杯子，裡面有已經涼了的茶。茶的顏色深得近乎黑色。陳維安聞了聞——是凍頂烏龍。他父親生前最愛喝的茶。</p>
+<p>他倒了一杯。茶入口是溫的，和視覺告訴他的涼茶溫度矛盾。味道很重，回甘很長，帶著一種他在任何茶行都沒有喝過的尾韻——像是木質傢俱和舊書的氣味。</p>
+<p>他坐在餐車的高腳凳上喝完那杯茶。喝完的時候，窗外的景色改變了。</p>
+<p>隧道不見了。</p>
+<p>窗外是夜晚的田野。月光把稻田照得發亮，遠處有一排矮房子，屋頂上的電視天線像是插在天空裡的魚骨。一條兩線道的公路和鐵軌平行延伸，路上沒有車。</p>
+<p>陳維安認得這個地方。</p>
+<p>這是花蓮吉安鄉。他父親老家的位置。那排矮房子裡的第三間——屋頂上有一個生鏽的水塔的那間——是他從小長大的地方。</p>
+<p>但這裡不應該在這條路線上。不應該在任何路線上。從臺北車站的地下月臺出發，不可能在二十分鐘內到達花蓮。而且窗外的景色有些不對——那些房子的樣子是三十年前的樣子。路邊的電線桿是木頭的，不是水泥的。遠處的山坡上沒有那些後來蓋的鐵皮工廠。</p>
+<p>列車正在穿越時間。</p>
+<p>他知道那支手機為什麼在這裡了。他知道那通未接來電意味著什麼。</p>
+<p>三十年前，他在花蓮值班的那個晚上，他的父親在被送往醫院的路上，用護理人員的手機撥了他的號碼。那時他正在處理一節脫鉤的車廂，手機放在值班室的抽屜裡。</p>
+<p>等他看到未接來電的時候，一切都已經結束了。</p>
+<p>他一直不敢回撥。不是因為號碼已經停用——而是因為他害怕聽見答錄機裡父親的聲音。後來他換了手機，舊的那支被他鎖進抽屜深處，再也沒有打開過。</p>
+<p>現在那支手機就在第二節車廂的小桌板上，螢幕亮著，等著他做一個三十年前沒有做的動作。</p>
+<p>列車在田野上繼續行駛，速度慢了下來。</p>
+    </div>
+    <div class="chapter-nav">
+      <a href="ch003.html">&larr; 上一章</a>
+      <a href="ch005.html">下一章 &rarr;</a>
+    </div>
+</div>
+<footer><p>小說閱讀站</p></footer>
+</body>
+</html>

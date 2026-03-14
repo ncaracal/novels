@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>終點站 - 午夜列車</title>
+<style>
+:root {
+  --bg: #faf8f5;
+  --text: #2c2c2c;
+  --accent: #8b6914;
+  --card-bg: #fff;
+  --border: #e8e0d4;
+  --shadow: rgba(0,0,0,0.06);
+  --code-bg: #f5f0e8;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #1a1a1a;
+    --text: #e0dcd6;
+    --accent: #d4a530;
+    --card-bg: #252525;
+    --border: #3a3a3a;
+    --shadow: rgba(0,0,0,0.3);
+    --code-bg: #2a2520;
+  }
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: "Noto Serif TC", "Source Han Serif TC", "PMingLiU", serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.9;
+  min-height: 100vh;
+}
+
+.container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 2rem 1.5rem;
+}
+
+header {
+  text-align: center;
+  padding: 3rem 0 2rem;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 2rem;
+}
+
+header h1 {
+  font-size: 2.2rem;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  color: var(--accent);
+}
+
+header p {
+  margin-top: 0.5rem;
+  font-size: 0.95rem;
+  opacity: 0.7;
+}
+
+.book-card {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 1.8rem;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 2px 8px var(--shadow);
+  transition: transform 0.2s;
+}
+
+.book-card:hover {
+  transform: translateY(-2px);
+}
+
+.book-card h2 {
+  font-size: 1.5rem;
+  margin-bottom: 0.3rem;
+}
+
+.book-card h2 a {
+  color: var(--text);
+  text-decoration: none;
+}
+
+.book-card h2 a:hover {
+  color: var(--accent);
+}
+
+.book-card .meta {
+  font-size: 0.85rem;
+  opacity: 0.6;
+  margin-bottom: 1rem;
+}
+
+.book-card .abstract-preview {
+  font-size: 0.95rem;
+  line-height: 1.8;
+}
+
+/* Book page */
+.book-header {
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.book-header h1 {
+  font-size: 2rem;
+  color: var(--accent);
+}
+
+.book-header .author-name {
+  font-size: 1rem;
+  opacity: 0.7;
+  margin-top: 0.3rem;
+}
+
+.section {
+  margin-bottom: 2.5rem;
+}
+
+.section h2 {
+  font-size: 1.3rem;
+  color: var(--accent);
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.toc-list {
+  list-style: none;
+  counter-reset: chapter;
+}
+
+.toc-list li {
+  counter-increment: chapter;
+  margin-bottom: 0.5rem;
+}
+
+.toc-list li a {
+  color: var(--text);
+  text-decoration: none;
+  display: flex;
+  align-items: baseline;
+  gap: 0.8rem;
+  padding: 0.5rem 0.8rem;
+  border-radius: 4px;
+  transition: background 0.15s;
+}
+
+.toc-list li a:hover {
+  background: var(--code-bg);
+  color: var(--accent);
+}
+
+.toc-list li a::before {
+  content: "第" counter(chapter, cjk-ideographic) "章";
+  font-size: 0.85rem;
+  opacity: 0.5;
+  flex-shrink: 0;
+}
+
+/* Chapter page */
+.chapter-header {
+  text-align: center;
+  padding: 2rem 0;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 2rem;
+}
+
+.chapter-header .book-title {
+  font-size: 0.9rem;
+  opacity: 0.5;
+}
+
+.chapter-header h1 {
+  font-size: 1.8rem;
+  margin-top: 0.5rem;
+}
+
+.chapter-header .chapter-num {
+  font-size: 0.85rem;
+  color: var(--accent);
+  margin-top: 0.3rem;
+}
+
+.chapter-body {
+  font-size: 1.05rem;
+  text-align: justify;
+}
+
+.chapter-body p {
+  margin-bottom: 1.2rem;
+  text-indent: 2em;
+}
+
+.chapter-body p:first-child {
+  text-indent: 0;
+}
+
+.chapter-nav {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 3rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--border);
+}
+
+.chapter-nav a {
+  color: var(--accent);
+  text-decoration: none;
+  font-size: 0.95rem;
+}
+
+.chapter-nav a:hover {
+  text-decoration: underline;
+}
+
+.back-link {
+  display: inline-block;
+  margin-bottom: 1.5rem;
+  color: var(--accent);
+  text-decoration: none;
+  font-size: 0.9rem;
+}
+
+.back-link:hover {
+  text-decoration: underline;
+}
+
+.author-section {
+  background: var(--code-bg);
+  border-radius: 8px;
+  padding: 1.5rem;
+}
+
+.author-section h1, .author-section h2, .author-section h3 {
+  font-size: 1.1rem;
+  margin-bottom: 0.8rem;
+}
+
+.author-section ul {
+  list-style: none;
+  padding-left: 0;
+}
+
+.author-section li {
+  margin-bottom: 0.4rem;
+  padding-left: 0;
+}
+
+footer {
+  text-align: center;
+  padding: 2rem 0;
+  font-size: 0.8rem;
+  opacity: 0.4;
+  border-top: 1px solid var(--border);
+  margin-top: 3rem;
+}
+</style>
+
+</head>
+<body>
+<div class="container">
+
+    <a href="./" class="back-link">&larr; 返回目錄</a>
+    <div class="chapter-header">
+      <div class="book-title">午夜列車</div>
+      <h1>終點站</h1>
+      <div class="chapter-num">第5章</div>
+    </div>
+    <div class="chapter-body">
+      <p>陳維安走回了第二節車廂。</p>
+<p>車廂裡現在只剩他一個人。其他的乘客——西裝男人、老夫妻、穿校服的少年——全都不在了。他們的座位上留著各自的痕跡：一枚戒指嵌進了椅背的縫隙裡，一條圍巾搭在扶手上，一把吉他靠在窗邊。他們帶上車的東西還在，但人已經不在了。</p>
+<p>也許他們打開了各自的東西。也許他們到站了。</p>
+<p>Nokia手機還在小桌板上。螢幕依然亮著。</p>
+<p>陳維安在手機旁邊坐下。窗外的景色已經變了——不再是吉安鄉的田野，而是一條他認得的路。中華路，舊市區那一段，兩側是四層樓的老公寓。路燈是那種橘黃色的舊式水銀燈。路邊停著幾輛他記憶中的車型——裕隆速利303、福特乘龍。</p>
+<p>這是三十年前的臺北。</p>
+<p>列車的速度越來越慢。慢到他可以看清路邊店面的招牌——「金美芳洗衣店」、「源記五金行」、「大眾豆漿店」。這些店全都不存在了，早在二十年前就被改建成大樓或停車場。但此刻它們都在，亮著燈，像是時間在這裡凝固了。</p>
+<p>列車停了。</p>
+<p>不是靠站的那種停法。它就是停在路上了，停在中華路和一條巷口的交叉處。車門打開了。</p>
+<p>陳維安看著車門外面的巷口。巷子裡有一棵木棉樹，樹下停著一輛藍色的偉士牌機車。那是他父親的機車。後座綁著一個保冷袋——他父親每天下班都會繞去市場買魚，用那個保冷袋裝著帶回家。</p>
+<p>他拿起手機，走向車門。</p>
+<p>站在門口的時候，他把手機翻過來看了看背面。塑膠外殼上有一道裂痕，是他有一次不小心摔在車站月臺上磕的。裂痕旁邊貼了一塊透明膠帶——那是他父親幫他貼的，說「堪用就好，不要浪費錢換新的。」</p>
+<p>他按下了回撥鍵。</p>
+<p>手機響了。不是現代手機的那種電子鈴聲，而是真正的、物理的鈴聲——從巷子深處傳來的。</p>
+<p>陳維安走下列車，踏上了中華路的柏油路面。路面在他腳下的觸感太真實了——被太陽曬了一天後殘留的溫度，瀝青裡混合的碎石子的粗糙感。</p>
+<p>鈴聲從巷子裡的一間房子傳來。一樓，鐵門半拉著，裡面透出日光燈的白光。他走進去。</p>
+<p>客廳很小。電視開著，播的是一個他不記得名字的綜藝節目。茶几上有一壺泡了太久的凍頂烏龍和兩個杯子。沙發上攤著一份報紙。</p>
+<p>電話在響。一個放在電視櫃上的米色轉盤電話，正在響著。</p>
+<p>但沒有人來接。</p>
+<p>陳維安穿過客廳，走進廚房。流理臺上有處理到一半的魚——鱸魚，已經刮好鱗，肚子剖開了但內臟還沒清完。菜刀放在砧板旁邊，刀面上沾著魚鱗，在日光燈下閃閃發亮。</p>
+<p>旁邊的椅子上掛著一件外套。灰色的，有點舊了，左邊口袋比右邊口袋鼓——因為他父親習慣把零錢都放在左邊口袋裡。</p>
+<p>陳維安站在廚房裡，一隻手扶著流理臺的邊緣。他的眼睛很澀，但沒有流淚。五十七歲的男人，站在一個不應該存在的三十年前的廚房裡，看著一條處理到一半的魚。</p>
+<p>他知道這是那天晚上。父親在處理晚餐的魚，然後感覺胸口不舒服，放下菜刀，準備去客廳坐一下。然後就沒有然後了。</p>
+<p>電話還在響。</p>
+<p>陳維安走回客廳，站在電話前面。他看著那個米色的轉盤電話震動著，聽筒在底座上微微跳動。</p>
+<p>他拿起了聽筒。</p>
+<p>「爸。」他說。</p>
+<p>電話那頭安靜了一秒。然後是一個他三十年沒有聽過的聲音。蒼老的、帶著花蓮口音的、每一個字尾都微微上揚的聲音：</p>
+<p>「維安啊。吃飯了沒？」</p>
+<p>就像每一通電話的開頭一樣。不問你在哪裡，不問你過得怎麼樣。先問吃飯了沒。</p>
+<p>「吃了。」陳維安說。</p>
+<p>「今天的魚很新鮮。本來要煮給你吃的。你什麼時候回來？」</p>
+<p>「我……」陳維安的聲音卡住了。他深吸了一口氣。「我現在回來了。」</p>
+<p>「喔。那好。」電話那頭停頓了一下。「我先把魚處理好。你先坐著喝茶。茶有點涼了，但還能喝。」</p>
+<p>「好。」</p>
+<p>「維安。」</p>
+<p>「嗯？」</p>
+<p>「你都好嗎？」</p>
+<p>五十七歲的陳維安拿著三十年前的電話聽筒，站在一個不存在的客廳裡，用了所有的力氣才把接下來的話說出來：</p>
+<p>「都好。爸，都好。對不起。那天的電話，我沒有接到。我一直——」</p>
+<p>「我知道，」電話那頭的聲音很平靜。「我知道你在忙。沒關係的。」</p>
+<p>「不是——」</p>
+<p>「沒關係的，」父親又說了一次。語氣和三十年前一模一樣。那種不帶任何責備的、無條件的、讓人無處躲藏的溫柔。「你是好孩子。一直都是。」</p>
+<p>陳維安閉上了眼睛。</p>
+<p>當他再睜開眼睛的時候，他坐在臺北車站第四月臺的候車椅上。凌晨四點二十三分。清潔工正在遠處拖地，拖把在磨石子地板上發出有節奏的沙沙聲。</p>
+<p>他的手裡沒有Nokia手機。但他的左邊口袋裡有什麼東西——硬的、冰涼的。他掏出來。</p>
+<p>是一枚十元硬幣。很舊的，民國六十幾年的。他父親口袋裡那種硬幣。</p>
+<p>陳維安把硬幣握在手心裡，坐在空蕩蕩的月臺上。第一班區間車的到站廣播從天花板的喇叭裡傳來。月臺開始有旅客陸續走入。</p>
+<p>他還有二十九天就退休了。但此刻他覺得，好像有一段很長很長的旅程，終於到站了。</p>
+    </div>
+    <div class="chapter-nav">
+      <a href="ch004.html">&larr; 上一章</a>
+      <a href="./">回到目錄 &rarr;</a>
+    </div>
+</div>
+<footer><p>小說閱讀站</p></footer>
+</body>
+</html>

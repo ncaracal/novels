@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>不在時刻表上的車次 - 午夜列車</title>
+<style>
+:root {
+  --bg: #faf8f5;
+  --text: #2c2c2c;
+  --accent: #8b6914;
+  --card-bg: #fff;
+  --border: #e8e0d4;
+  --shadow: rgba(0,0,0,0.06);
+  --code-bg: #f5f0e8;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #1a1a1a;
+    --text: #e0dcd6;
+    --accent: #d4a530;
+    --card-bg: #252525;
+    --border: #3a3a3a;
+    --shadow: rgba(0,0,0,0.3);
+    --code-bg: #2a2520;
+  }
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: "Noto Serif TC", "Source Han Serif TC", "PMingLiU", serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.9;
+  min-height: 100vh;
+}
+
+.container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 2rem 1.5rem;
+}
+
+header {
+  text-align: center;
+  padding: 3rem 0 2rem;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 2rem;
+}
+
+header h1 {
+  font-size: 2.2rem;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  color: var(--accent);
+}
+
+header p {
+  margin-top: 0.5rem;
+  font-size: 0.95rem;
+  opacity: 0.7;
+}
+
+.book-card {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 1.8rem;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 2px 8px var(--shadow);
+  transition: transform 0.2s;
+}
+
+.book-card:hover {
+  transform: translateY(-2px);
+}
+
+.book-card h2 {
+  font-size: 1.5rem;
+  margin-bottom: 0.3rem;
+}
+
+.book-card h2 a {
+  color: var(--text);
+  text-decoration: none;
+}
+
+.book-card h2 a:hover {
+  color: var(--accent);
+}
+
+.book-card .meta {
+  font-size: 0.85rem;
+  opacity: 0.6;
+  margin-bottom: 1rem;
+}
+
+.book-card .abstract-preview {
+  font-size: 0.95rem;
+  line-height: 1.8;
+}
+
+/* Book page */
+.book-header {
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.book-header h1 {
+  font-size: 2rem;
+  color: var(--accent);
+}
+
+.book-header .author-name {
+  font-size: 1rem;
+  opacity: 0.7;
+  margin-top: 0.3rem;
+}
+
+.section {
+  margin-bottom: 2.5rem;
+}
+
+.section h2 {
+  font-size: 1.3rem;
+  color: var(--accent);
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.toc-list {
+  list-style: none;
+  counter-reset: chapter;
+}
+
+.toc-list li {
+  counter-increment: chapter;
+  margin-bottom: 0.5rem;
+}
+
+.toc-list li a {
+  color: var(--text);
+  text-decoration: none;
+  display: flex;
+  align-items: baseline;
+  gap: 0.8rem;
+  padding: 0.5rem 0.8rem;
+  border-radius: 4px;
+  transition: background 0.15s;
+}
+
+.toc-list li a:hover {
+  background: var(--code-bg);
+  color: var(--accent);
+}
+
+.toc-list li a::before {
+  content: "第" counter(chapter, cjk-ideographic) "章";
+  font-size: 0.85rem;
+  opacity: 0.5;
+  flex-shrink: 0;
+}
+
+/* Chapter page */
+.chapter-header {
+  text-align: center;
+  padding: 2rem 0;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 2rem;
+}
+
+.chapter-header .book-title {
+  font-size: 0.9rem;
+  opacity: 0.5;
+}
+
+.chapter-header h1 {
+  font-size: 1.8rem;
+  margin-top: 0.5rem;
+}
+
+.chapter-header .chapter-num {
+  font-size: 0.85rem;
+  color: var(--accent);
+  margin-top: 0.3rem;
+}
+
+.chapter-body {
+  font-size: 1.05rem;
+  text-align: justify;
+}
+
+.chapter-body p {
+  margin-bottom: 1.2rem;
+  text-indent: 2em;
+}
+
+.chapter-body p:first-child {
+  text-indent: 0;
+}
+
+.chapter-nav {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 3rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--border);
+}
+
+.chapter-nav a {
+  color: var(--accent);
+  text-decoration: none;
+  font-size: 0.95rem;
+}
+
+.chapter-nav a:hover {
+  text-decoration: underline;
+}
+
+.back-link {
+  display: inline-block;
+  margin-bottom: 1.5rem;
+  color: var(--accent);
+  text-decoration: none;
+  font-size: 0.9rem;
+}
+
+.back-link:hover {
+  text-decoration: underline;
+}
+
+.author-section {
+  background: var(--code-bg);
+  border-radius: 8px;
+  padding: 1.5rem;
+}
+
+.author-section h1, .author-section h2, .author-section h3 {
+  font-size: 1.1rem;
+  margin-bottom: 0.8rem;
+}
+
+.author-section ul {
+  list-style: none;
+  padding-left: 0;
+}
+
+.author-section li {
+  margin-bottom: 0.4rem;
+  padding-left: 0;
+}
+
+footer {
+  text-align: center;
+  padding: 2rem 0;
+  font-size: 0.8rem;
+  opacity: 0.4;
+  border-top: 1px solid var(--border);
+  margin-top: 3rem;
+}
+</style>
+
+</head>
+<body>
+<div class="container">
+
+    <a href="./" class="back-link">&larr; 返回目錄</a>
+    <div class="chapter-header">
+      <div class="book-title">午夜列車</div>
+      <h1>不在時刻表上的車次</h1>
+      <div class="chapter-num">第2章</div>
+    </div>
+    <div class="chapter-body">
+      <p>列車從隧道口滑出來的時候沒有聲音。</p>
+<p>不是聲音很小——而是完全沒有。一列長度約八節車廂的列車，以大約四十公里的時速進站，卻像是一段被按了靜音的影片。輪子和鐵軌之間應該有的金屬摩擦聲、煞車系統的氣壓釋放聲、車體結構在減速時發出的吱嘎聲——全部都不存在。</p>
+<p>陳維安做了三十二年的列車長。他的耳朵能分辨出十七種不同的煞車聲，能聽出車輪踏面磨損到什麼程度，能在一列行駛中的列車裡準確指出哪一節車廂的避震器需要更換。</p>
+<p>但這列車的沉默讓他的專業經驗完全失效。</p>
+<p>列車停穩了。車廂外觀是他沒見過的型號——不是臺鐵的任何一款，也不是他在日本工作時見過的JR系列。車身是一種沒有光澤的深灰色，像是吸收了所有照射在上面的光線。窗戶的玻璃是暗色的，從外面看不見裡面。</p>
+<p>車門打開了。同樣沒有聲音。</p>
+<p>門開的方式也不對。一般的電動車門是左右滑開的，但這列車的門是像書頁一樣向內翻開的——上半部向上折，下半部向下折，留出一個長方形的入口。入口內部的光線比月臺還要冷，白得近乎發藍。</p>
+<p>陳維安站在門口。他低頭看了看地面。月臺和車廂之間的間隙裡，不是軌道——而是一片漆黑。不是陰影造成的黑暗，而是一種有質感的黑，像是某種液體填滿了鐵軌之間的空間。</p>
+<p>他跨過間隙，走進了車廂。</p>
+<p>車廂內部出乎意料地溫暖。座位的配置是他熟悉的——對號座，藍色絨布椅套，每個座位後面都有小桌板。但細節不對。椅背上的號碼不是阿拉伯數字，而是一種他不認識的符號。窗簾是手動的，材質像是某種紗布。車廂連接處的門上沒有車次編號，只有一個時鐘，指針以正常速度走著，但是是逆時針方向。</p>
+<p>車廂裡有七個乘客。</p>
+<p>第一節車廂三個，第二節四個。他快速走過前兩節車廂，用職業習慣掃視每一個座位。七個人各自坐在不同的位置，彼此之間隔著大量的空座。沒有人看手機，沒有人看書，沒有人睡覺。他們都醒著，都看著窗外——儘管窗外只有隧道壁的黑暗。</p>
+<p>陳維安走到第二節車廂的最後一排，選了一個靠走道的位置坐下。座位比一般的火車座椅軟，陷得很深，像是這張椅子被很多人坐過，已經記住了人體的形狀。</p>
+<p>車門關上了。列車開始移動。</p>
+<p>依然沒有聲音。沒有引擎聲，沒有輪軌聲，沒有加速時車體的震動。如果不是窗外偶爾閃過的隧道壁紋路，他無法確定列車是否真的在移動。</p>
+<p>他坐在那裡，在完全的靜默中，想起了一件事。</p>
+<p>三十年前。他二十七歲。在花蓮站的值班室裡，收到一通電話。電話那頭是他母親的聲音，說他父親在回家的路上出了車禍。等他搭最早的一班車趕回臺北，已經來不及了。</p>
+<p>他趕到醫院的時候，護理師告訴他，他父親在半小時前走了。父親走之前一直在問：「維安到了沒？」</p>
+<p>三十年了，他從來沒有對任何人說過這件事。但此刻，坐在這列沉默的列車上，這個記憶從他以為已經封存的地方浮了上來，清晰得像昨天才發生的。</p>
+<p>他閉上眼睛。</p>
+<p>有人在他旁邊坐了下來。</p>
+    </div>
+    <div class="chapter-nav">
+      <a href="ch001.html">&larr; 上一章</a>
+      <a href="ch003.html">下一章 &rarr;</a>
+    </div>
+</div>
+<footer><p>小說閱讀站</p></footer>
+</body>
+</html>
