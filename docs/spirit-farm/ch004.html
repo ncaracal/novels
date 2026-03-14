@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>市場裡的靈植攤 - 百草靈田記</title>
+<style>
+:root {
+  --bg: #faf8f5;
+  --text: #2c2c2c;
+  --accent: #8b6914;
+  --card-bg: #fff;
+  --border: #e8e0d4;
+  --shadow: rgba(0,0,0,0.06);
+  --code-bg: #f5f0e8;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #1a1a1a;
+    --text: #e0dcd6;
+    --accent: #d4a530;
+    --card-bg: #252525;
+    --border: #3a3a3a;
+    --shadow: rgba(0,0,0,0.3);
+    --code-bg: #2a2520;
+  }
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: "Noto Serif TC", "Source Han Serif TC", "PMingLiU", serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.9;
+  min-height: 100vh;
+}
+
+.container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 2rem 1.5rem;
+}
+
+header {
+  text-align: center;
+  padding: 3rem 0 2rem;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 2rem;
+}
+
+header h1 {
+  font-size: 2.2rem;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  color: var(--accent);
+}
+
+header p {
+  margin-top: 0.5rem;
+  font-size: 0.95rem;
+  opacity: 0.7;
+}
+
+.book-card {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 1.8rem;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 2px 8px var(--shadow);
+  transition: transform 0.2s;
+}
+
+.book-card:hover {
+  transform: translateY(-2px);
+}
+
+.book-card h2 {
+  font-size: 1.5rem;
+  margin-bottom: 0.3rem;
+}
+
+.book-card h2 a {
+  color: var(--text);
+  text-decoration: none;
+}
+
+.book-card h2 a:hover {
+  color: var(--accent);
+}
+
+.book-card .meta {
+  font-size: 0.85rem;
+  opacity: 0.6;
+  margin-bottom: 1rem;
+}
+
+.book-card .abstract-preview {
+  font-size: 0.95rem;
+  line-height: 1.8;
+}
+
+/* Book page */
+.book-header {
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.book-header h1 {
+  font-size: 2rem;
+  color: var(--accent);
+}
+
+.book-header .author-name {
+  font-size: 1rem;
+  opacity: 0.7;
+  margin-top: 0.3rem;
+}
+
+.section {
+  margin-bottom: 2.5rem;
+}
+
+.section h2 {
+  font-size: 1.3rem;
+  color: var(--accent);
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.toc-list {
+  list-style: none;
+  counter-reset: chapter;
+}
+
+.toc-list li {
+  counter-increment: chapter;
+  margin-bottom: 0.5rem;
+}
+
+.toc-list li a {
+  color: var(--text);
+  text-decoration: none;
+  display: flex;
+  align-items: baseline;
+  gap: 0.8rem;
+  padding: 0.5rem 0.8rem;
+  border-radius: 4px;
+  transition: background 0.15s;
+}
+
+.toc-list li a:hover {
+  background: var(--code-bg);
+  color: var(--accent);
+}
+
+.toc-list li a::before {
+  content: "第" counter(chapter, cjk-ideographic) "章";
+  font-size: 0.85rem;
+  opacity: 0.5;
+  flex-shrink: 0;
+}
+
+/* Chapter page */
+.chapter-header {
+  text-align: center;
+  padding: 2rem 0;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 2rem;
+}
+
+.chapter-header .book-title {
+  font-size: 0.9rem;
+  opacity: 0.5;
+}
+
+.chapter-header h1 {
+  font-size: 1.8rem;
+  margin-top: 0.5rem;
+}
+
+.chapter-header .chapter-num {
+  font-size: 0.85rem;
+  color: var(--accent);
+  margin-top: 0.3rem;
+}
+
+.chapter-body {
+  font-size: 1.05rem;
+  text-align: justify;
+}
+
+.chapter-body p {
+  margin-bottom: 1.2rem;
+  text-indent: 2em;
+}
+
+.chapter-body p:first-child {
+  text-indent: 0;
+}
+
+.chapter-nav {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 3rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--border);
+}
+
+.chapter-nav a {
+  color: var(--accent);
+  text-decoration: none;
+  font-size: 0.95rem;
+}
+
+.chapter-nav a:hover {
+  text-decoration: underline;
+}
+
+.back-link {
+  display: inline-block;
+  margin-bottom: 1.5rem;
+  color: var(--accent);
+  text-decoration: none;
+  font-size: 0.9rem;
+}
+
+.back-link:hover {
+  text-decoration: underline;
+}
+
+.author-section {
+  background: var(--code-bg);
+  border-radius: 8px;
+  padding: 1.5rem;
+}
+
+.author-section h1, .author-section h2, .author-section h3 {
+  font-size: 1.1rem;
+  margin-bottom: 0.8rem;
+}
+
+.author-section ul {
+  list-style: none;
+  padding-left: 0;
+}
+
+.author-section li {
+  margin-bottom: 0.4rem;
+  padding-left: 0;
+}
+
+footer {
+  text-align: center;
+  padding: 2rem 0;
+  font-size: 0.8rem;
+  opacity: 0.4;
+  border-top: 1px solid var(--border);
+  margin-top: 3rem;
+}
+</style>
+
+</head>
+<body>
+<div class="container">
+
+    <a href="./" class="back-link">&larr; 返回目錄</a>
+    <div class="chapter-header">
+      <div class="book-title">百草靈田記</div>
+      <h1>市場裡的靈植攤</h1>
+      <div class="chapter-num">第4章</div>
+    </div>
+    <div class="chapter-body">
+      <p>蘇母在南門早市擺攤賣蛋餅已經一年多了，每天凌晨四點起床備料，五點半出攤，賣到上午九點收工。攤位在市場最角落的位置，人流不算多，但勝在攤位費便宜。</p>
+<p>蘇念禾跟了三天攤，把整個早市的情況摸了個透。</p>
+<p>南門早市有一百多個攤位，賣菜的、賣肉的、賣豆腐的、賣小吃的，什麼都有。靠近入口的黃金位置被幾個老攤販佔著，生意最好。中間一排是蔬菜水果攤，生意穩定。最角落的幾個位置，包括蘇母的蛋餅攤，算是冷門區。</p>
+<p>蘇念禾注意到一個空攤位，就在蘇母隔壁。聽說原來是賣涼茶的，攤主搬走後一直空著。</p>
+<p>「媽，隔壁那個攤位一個月多少錢？」</p>
+<p>「那個啊，五百。你問這個做什麼？」</p>
+<p>「我想擺攤。」</p>
+<p>蘇母差點把手裡的蛋餅翻飛出去：「你擺攤？賣什麼？」</p>
+<p>「賣茶，賣草藥。就是陽臺上種的那些。」</p>
+<p>蘇母皺起眉頭，正要反對，旁邊的周阿姨聽見了，立刻幫腔：「蘇妹子，你就讓念禾試試嘛！她那個茶可太好了，我現在完全不吃安眠藥了，這兩個月省了好幾百的藥錢呢！」</p>
+<p>蘇母猶豫了很久，最終還是答應了。</p>
+<p>蘇念禾花了三天準備。</p>
+<p>她新培育了三種靈植：清心菊、明目枸杞和潤喉薄荷。都是低階靈植，對靈氣需求不高，在陽臺的聚靈陣範圍內可以正常生長。</p>
+<p>清心菊泡茶能緩解頭痛、降低焦慮；明目枸杞長期食用能改善視力、緩解眼疲勞；潤喉薄荷對慢性咽炎有奇效。</p>
+<p>加上原本的月寧草，蘇念禾一共有四種產品。她用蘇遠幫忙設計的簡單標籤分別標注了名稱和用法，包裝樸素但乾淨整齊。</p>
+<p>「安神月寧茶——三十元。」<br>「清心菊花茶——二十五元。」<br>「明目枸杞——四十元一罐。」<br>「潤喉薄荷葉——二十元。」</p>
+<p>開張第一天，蘇念禾在攤位上擺好產品，又泡了幾壺試飲茶。清晨六點，早市開始熱鬧起來。</p>
+<p>頭一個小時，幾乎沒有人停下腳步。</p>
+<p>蘇念禾不急。她安靜地坐在攤位後面，面前擺著四壺茶和整齊的小紙杯。晨光透過市場頂棚的縫隙灑下來，照在那些翠綠的草藥上，折射出一種不太尋常的光澤。</p>
+<p>七點左右，一個五十多歲的阿姨買完菜路過，被茶香吸引，停下了腳步。</p>
+<p>「小姑娘，你這是賣什麼的？」</p>
+<p>「阿姨，自己種的草藥茶，純天然的。要不要試喝一杯？」蘇念禾倒了一小杯月寧草茶遞過去。</p>
+<p>阿姨接過來喝了一口，眼睛微微睜大：「這個好香啊！什麼茶？」</p>
+<p>「安神茶，喝了晚上睡覺特別好。」</p>
+<p>阿姨又喝了一口，咂咂嘴：「多少錢一袋？」</p>
+<p>「三十。」</p>
+<p>「有點貴啊。」阿姨猶豫了一下，但又低頭聞了聞杯子裡殘留的香氣，掏出了手機：「行吧，來一袋試試。」</p>
+<p>第一單開張。</p>
+<p>有了第一個客人，後面就慢慢多了起來。蘇念禾的茶香太出眾了——靈植散發的氣息和普通茶葉有本質區別，那種沁人心脾的清香像一隻無形的手，輕輕拉住每一個路過的人。</p>
+<p>到中午收攤的時候，月寧草茶賣完了，清心菊賣了一半，明目枸杞賣了三罐，薄荷葉賣了五袋。</p>
+<p>總收入：六百一十元。</p>
+<p>蘇母在隔壁攤位上看得目瞪口呆。她賣蛋餅一天最多也就賺兩百塊，女兒第一天出攤就賺了她三天的量。</p>
+<p>「念禾，你那個茶……真有那麼好？」</p>
+<p>蘇念禾把錢分成兩份，一份交給蘇母，一份留做進貨成本。「媽，信我。以後會更好。」</p>
+<p>口碑效應比蘇念禾預想的更快。</p>
+<p>第一週結束時，她的攤位前已經開始排隊了。月寧草茶成了最暢銷的產品，每天限量二十袋，早上七點之前就賣光。很多失眠的中老年人專門起大早來搶購。</p>
+<p>明目枸杞意外地在年輕人群體中走紅。一個在隔壁寫字樓上班的程式設計師偶然買了一罐，吃了一週後感覺長期盯螢幕的眼睛乾澀好了很多，在社交媒體上發了一條帖子。帖子下面很快聚集了一堆同病相憐的打工人，紛紛詢問在哪裡買。</p>
+<p>第二週，蘇念禾的日均收入突破了一千。</p>
+<p>第三週，她開始遇到產能瓶頸。</p>
+<p>陽臺的面積有限，她目前只有二十幾盆靈植，月寧草佔了一半，其他品種各幾盆。即使她每天消耗大量靈力用育土術和催生術加速生長，產量也到了極限。</p>
+<p>更麻煩的是，持續輸出靈力讓她的修為恢復變得緩慢。靈力是有限的，用來種田就沒法用來修煉。如果不提升修為，她就凝結不出更高品階的靈種，種不出更好的靈植。</p>
+<p>蘇念禾坐在陽臺上，月寧草的清香環繞著她，她閉上眼思考對策。</p>
+<p>忽然，丹田中的遠古靈種微微震動了一下。</p>
+<p>蘇念禾的神識沉入丹田，注視著那顆拇指大的種子。自從回到現代以來，靈種一直安安靜靜的，這是它第一次有反應。</p>
+<p>震動持續了幾秒就停止了。但蘇念禾敏銳地察覺到，靈種周圍的靈力濃度比之前高了一絲。</p>
+<p>它在緩慢地吸收靈氣。</p>
+<p>吸收，然後……釋放？</p>
+<p>蘇念禾猛地睜開眼。</p>
+<p>她快步走到陽臺邊緣，蹲下來，雙手貼在地面上。</p>
+<p>感覺到了。比一個月前更清晰。大地深處的靈氣脈動像一顆遙遠的心跳，緩慢但穩定。</p>
+<p>而在更淺的地層裡，她感覺到了一個東西——大約在城市東郊三公里外的地下，有一處靈氣異常集中的點。</p>
+<p>蘇念禾的心跳加速了。</p>
+<p>如果那是一處天然的靈脈節點，即使只是最微弱的那種，她也能在那裡建一個真正的靈植田。靈脈附近的土壤天然適合靈植生長，產量和品質都會大幅提升。</p>
+<p>她需要去實地看看。</p>
+<p>蘇念禾站起來，拍了拍手上的泥土，衝屋裡喊：「媽，我明天想去郊外走走，看看有沒有合適的地方租塊地。」</p>
+<p>蘇母從廚房探出頭：「租地？你要種田？」</p>
+<p>蘇念禾笑了：「對，種田。認真的那種。」</p>
+<p>蘇母看著女兒眼裡的光，那種自信而從容的神采，和昏迷前那個迷茫的十八歲女孩判若兩人。</p>
+<p>她不知道女兒在那場漫長的沉睡中經歷了什麼，但她知道，眼前這個孩子比任何時候都清楚自己要做什麼。</p>
+<p>「去吧。」蘇母笑了，「要不要媽陪你？」</p>
+<p>「不用，我自己去。媽你明天好好休息一天，別去出攤了。」</p>
+<p>蘇念禾回到房間，打開手機地圖，目光鎖定了城市東郊的一片區域。</p>
+<p>那裡有幾個村子的農田正在招租，價格不貴。而她感應到的靈脈節點，就在其中一片農田的下方。</p>
+<p>等她把那塊地拿下來，一切都會不一樣。</p>
+<p>不再是陽臺上的幾盆花草，而是真正的——靈植田。</p>
+    </div>
+    <div class="chapter-nav">
+      <a href="ch003.html">&larr; 上一章</a>
+      <a href="ch005.html">下一章 &rarr;</a>
+    </div>
+</div>
+<footer><p>小說閱讀站</p></footer>
+</body>
+</html>

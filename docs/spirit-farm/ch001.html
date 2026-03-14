@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>醒來的植修 - 百草靈田記</title>
+<style>
+:root {
+  --bg: #faf8f5;
+  --text: #2c2c2c;
+  --accent: #8b6914;
+  --card-bg: #fff;
+  --border: #e8e0d4;
+  --shadow: rgba(0,0,0,0.06);
+  --code-bg: #f5f0e8;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #1a1a1a;
+    --text: #e0dcd6;
+    --accent: #d4a530;
+    --card-bg: #252525;
+    --border: #3a3a3a;
+    --shadow: rgba(0,0,0,0.3);
+    --code-bg: #2a2520;
+  }
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: "Noto Serif TC", "Source Han Serif TC", "PMingLiU", serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.9;
+  min-height: 100vh;
+}
+
+.container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 2rem 1.5rem;
+}
+
+header {
+  text-align: center;
+  padding: 3rem 0 2rem;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 2rem;
+}
+
+header h1 {
+  font-size: 2.2rem;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  color: var(--accent);
+}
+
+header p {
+  margin-top: 0.5rem;
+  font-size: 0.95rem;
+  opacity: 0.7;
+}
+
+.book-card {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 1.8rem;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 2px 8px var(--shadow);
+  transition: transform 0.2s;
+}
+
+.book-card:hover {
+  transform: translateY(-2px);
+}
+
+.book-card h2 {
+  font-size: 1.5rem;
+  margin-bottom: 0.3rem;
+}
+
+.book-card h2 a {
+  color: var(--text);
+  text-decoration: none;
+}
+
+.book-card h2 a:hover {
+  color: var(--accent);
+}
+
+.book-card .meta {
+  font-size: 0.85rem;
+  opacity: 0.6;
+  margin-bottom: 1rem;
+}
+
+.book-card .abstract-preview {
+  font-size: 0.95rem;
+  line-height: 1.8;
+}
+
+/* Book page */
+.book-header {
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.book-header h1 {
+  font-size: 2rem;
+  color: var(--accent);
+}
+
+.book-header .author-name {
+  font-size: 1rem;
+  opacity: 0.7;
+  margin-top: 0.3rem;
+}
+
+.section {
+  margin-bottom: 2.5rem;
+}
+
+.section h2 {
+  font-size: 1.3rem;
+  color: var(--accent);
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.toc-list {
+  list-style: none;
+  counter-reset: chapter;
+}
+
+.toc-list li {
+  counter-increment: chapter;
+  margin-bottom: 0.5rem;
+}
+
+.toc-list li a {
+  color: var(--text);
+  text-decoration: none;
+  display: flex;
+  align-items: baseline;
+  gap: 0.8rem;
+  padding: 0.5rem 0.8rem;
+  border-radius: 4px;
+  transition: background 0.15s;
+}
+
+.toc-list li a:hover {
+  background: var(--code-bg);
+  color: var(--accent);
+}
+
+.toc-list li a::before {
+  content: "第" counter(chapter, cjk-ideographic) "章";
+  font-size: 0.85rem;
+  opacity: 0.5;
+  flex-shrink: 0;
+}
+
+/* Chapter page */
+.chapter-header {
+  text-align: center;
+  padding: 2rem 0;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 2rem;
+}
+
+.chapter-header .book-title {
+  font-size: 0.9rem;
+  opacity: 0.5;
+}
+
+.chapter-header h1 {
+  font-size: 1.8rem;
+  margin-top: 0.5rem;
+}
+
+.chapter-header .chapter-num {
+  font-size: 0.85rem;
+  color: var(--accent);
+  margin-top: 0.3rem;
+}
+
+.chapter-body {
+  font-size: 1.05rem;
+  text-align: justify;
+}
+
+.chapter-body p {
+  margin-bottom: 1.2rem;
+  text-indent: 2em;
+}
+
+.chapter-body p:first-child {
+  text-indent: 0;
+}
+
+.chapter-nav {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 3rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--border);
+}
+
+.chapter-nav a {
+  color: var(--accent);
+  text-decoration: none;
+  font-size: 0.95rem;
+}
+
+.chapter-nav a:hover {
+  text-decoration: underline;
+}
+
+.back-link {
+  display: inline-block;
+  margin-bottom: 1.5rem;
+  color: var(--accent);
+  text-decoration: none;
+  font-size: 0.9rem;
+}
+
+.back-link:hover {
+  text-decoration: underline;
+}
+
+.author-section {
+  background: var(--code-bg);
+  border-radius: 8px;
+  padding: 1.5rem;
+}
+
+.author-section h1, .author-section h2, .author-section h3 {
+  font-size: 1.1rem;
+  margin-bottom: 0.8rem;
+}
+
+.author-section ul {
+  list-style: none;
+  padding-left: 0;
+}
+
+.author-section li {
+  margin-bottom: 0.4rem;
+  padding-left: 0;
+}
+
+footer {
+  text-align: center;
+  padding: 2rem 0;
+  font-size: 0.8rem;
+  opacity: 0.4;
+  border-top: 1px solid var(--border);
+  margin-top: 3rem;
+}
+</style>
+
+</head>
+<body>
+<div class="container">
+
+    <a href="./" class="back-link">&larr; 返回目錄</a>
+    <div class="chapter-header">
+      <div class="book-title">百草靈田記</div>
+      <h1>醒來的植修</h1>
+      <div class="chapter-num">第1章</div>
+    </div>
+    <div class="chapter-body">
+      <p>消毒水的氣味像一把鈍刀，緩慢地割開蘇念禾的意識。</p>
+<p>她最後的記憶停留在雲崖絕壁上那株散發著金光的遠古靈種。伸手觸碰的瞬間，天旋地轉，七十年修仙生涯的一切像被巨手捏碎的泡沫，轟然消散。</p>
+<p>「……腦部掃描沒有異常，各項指標都在好轉。說實話，這種程度的恢復，醫學上很難解釋。」</p>
+<p>「只要我女兒能醒，什麼都好。拜託您了，醫生。」</p>
+<p>第二個聲音讓蘇念禾的神魂猛地一震。</p>
+<p>媽媽。</p>
+<p>是媽媽的聲音。比記憶中蒼老了太多，沙啞而疲憊，像一條被反覆搓洗的舊毛巾，卻仍然柔軟。</p>
+<p>在修仙界的七十年裡，蘇念禾無數次午夜夢迴，夢見母親在廚房裡煮粥的背影，夢見父親騎摩托車送她上學時後座的風，夢見哥哥把最後一個滷蛋夾到她碗裡時故意板起的臉。</p>
+<p>她以為自己再也回不來了。</p>
+<p>蘇念禾試著動了動手指。肉體沉重得像灌了鉛，每一條肌肉都在抗議，但體內那一絲殘存的靈力聽話地流向指尖，幫助她完成了這個微小的動作。</p>
+<p>「嗯……」</p>
+<p>守在病床邊的蘇母正在和醫生說話，忽然感覺掌心被輕輕碰了一下。她以為是幻覺——兩年來，她不知道經歷過多少次這樣的幻覺。</p>
+<p>但這一次，是真的。</p>
+<p>蘇念禾的手指確確實實地動了，微弱但明確地扣住了母親的手。</p>
+<p>蘇母渾身一僵，低頭看向女兒。病床上的少女瘦得顴骨突出，嘴唇乾裂，兩年不見陽光的皮膚白得近乎透明。但她的眼皮正在顫動，像一隻蝴蝶試圖展開翅膀。</p>
+<p>「念禾？」蘇母的聲音發抖，「念禾！」</p>
+<p>蘇念禾費了很大的力氣才撐開眼睛。眼前一片模糊的光斑逐漸凝聚，最先看清的是母親的臉。</p>
+<p>她差點認不出來。</p>
+<p>記憶中的蘇母是個愛漂亮的女人，四十出頭看起來像三十五，頭髮總是燙得蓬鬆漂亮，出門前一定要塗口紅。而眼前的蘇母，頭髮花白，眼角布滿皺紋，嘴唇乾裂起皮，整個人像是被時間抽乾了水分。</p>
+<p>兩年。在修仙界是七十年光陰，在這裡卻只過了兩年。可母親老得像過了十年。</p>
+<p>蘇念禾的鼻子猛地一酸。</p>
+<p>「媽……」</p>
+<p>她只發出了這一個字，蘇母就哭了。不是嚎啕大哭，是那種壓抑了太久、突然找到出口的無聲抽泣，眼淚大顆大顆地砸在蘇念禾的手背上。</p>
+<p>「醫生！」蘇母回過神來，聲音陡然拔高，「她醒了！我女兒醒了！」</p>
+<p>走廊裡一陣騷動，護士和醫生快步趕來。病房門被推開的瞬間，蘇念禾看見門外的走廊牆壁斑駁，燈管閃爍，是那種小縣城醫院特有的陳舊。</p>
+<p>「蘇念禾同學，你能聽到我說話嗎？」醫生握著手電筒照她的瞳孔，「知道自己在哪裡嗎？」</p>
+<p>蘇念禾配合地點了點頭，聲音微弱但清晰：「醫院。」</p>
+<p>醫生和護士交換了一個驚訝的眼神。昏迷兩年的病人醒來就能清楚應答，這確實不常見。</p>
+<p>檢查持續了將近半小時。蘇念禾安靜地配合著，同時分出一縷神識內視自身。</p>
+<p>丹田裡的情況不太妙。修煉七十年積累的靈力幾乎散盡，只剩下薄薄一層，像乾涸河床上最後的一窪淺水。但草靈根還在——那個讓她在藥園門與千萬弟子中脫穎而出的天賦，完完整整地跟著神魂回來了。</p>
+<p>更讓她意外的是，丹田深處漂浮著一顆拇指大小的種子，散發著幽幽的青光。</p>
+<p>遠古靈種。</p>
+<p>就是它把她拉回現代的。此刻它安安靜靜地沉在丹田底部，像一顆等待春天的種子，不急不躁。</p>
+<p>蘇念禾暫且按下疑問。靈種的事以後慢慢研究，現在最重要的是搞清楚家裡的狀況。</p>
+<p>醫生離開後，蘇母握著她的手不肯鬆開，一邊打電話一邊抹眼淚：「老蘇！念禾醒了！……對，真的醒了！你快回來！……工地請假就請假，天大的事也沒有女兒醒了重要！」</p>
+<p>掛了電話又打：「小遠，你妹妹醒了！……嗯，別哭了傻孩子，快過來。」</p>
+<p>兩通電話打完，蘇母的眼眶又紅了。她攥著蘇念禾的手，強撐著笑：「念禾不怕啊，爸爸和哥哥馬上就到。你餓不餓？媽去買粥——」</p>
+<p>「媽。」蘇念禾輕輕握緊她的手，「別走。」</p>
+<p>蘇母的眼淚又掉了下來。</p>
+<p>蘇念禾靠在枕頭上，用修士的觀察力仔細打量母親。蘇母的氣色很差，肝氣鬱結，脾胃虛弱，長期睡眠不足的痕跡刻在每一條紋路裡。她的衣服洗得發白，領口有細小的毛球，腳上的布鞋磨掉了一層底。</p>
+<p>腕上原本總戴著的那只翡翠鐲子不見了。那是外婆留給媽媽的嫁妝，她從來捨不得摘的。</p>
+<p>蘇念禾心裡沉甸甸的。</p>
+<p>四十分鐘後，病房門被推開。</p>
+<p>一個瘦高的男人一瘸一拐地走進來，左腿明顯不太靈活，褲管上還沾著水泥灰。他身後跟著一個穿著工廠制服的年輕人，瘦削的臉上還帶著一道淡淡的機油痕跡。</p>
+<p>蘇念禾看著他們，眼睛一點一點地紅了。</p>
+<p>爸爸的腿怎麼了？哥哥怎麼瘦成這樣？</p>
+<p>蘇父快步走到病床前，張了張嘴，什麼話都沒說出來，只是伸出粗糙的大手，小心翼翼地摸了摸女兒的頭頂。</p>
+<p>「瘦了。」他說，聲音啞得厲害。</p>
+<p>蘇念禾的哥哥蘇遠站在父親身後，嘴唇抿成一條直線，眼眶通紅，拼命忍著不讓眼淚掉下來。</p>
+<p>「哥。」蘇念禾輕聲喊他。</p>
+<p>蘇遠再也忍不住，別過頭去，肩膀一抖一抖的。</p>
+<p>「行了行了，大男人哭什麼。」蘇母嘴上這麼說，自己又開始掉眼淚。</p>
+<p>一家四口在狹窄的病房裡，又哭又笑，亂成一團。</p>
+<p>蘇念禾安靜地看著家人們，心裡做了一個決定。</p>
+<p>在修仙界，她是藥園門的植修長老，培育過成千上萬株靈藥，讓荒蕪的廢礦山重新開滿靈花。如今回到現代，靈力微薄，資源匱乏，但她的知識和經驗還在，草靈根還在。</p>
+<p>她要種田。</p>
+<p>用修仙界七十年所學，從一粒種子開始，把這個家撐起來。</p>
+<p>等家人情緒稍微平復，蘇念禾用虛弱但清楚的聲音問：「媽，家裡……現在怎麼樣？」</p>
+<p>蘇母立刻擺手：「家裡好著呢，你什麼都別操心，養好身體最重要。」</p>
+<p>蘇念禾看向父親。蘇父猶豫了一下，也跟著點頭：「你媽說得對。」</p>
+<p>但蘇念禾注意到，蘇遠的拳頭悄悄握緊了。</p>
+<p>她沒有追問。有些事不用問，用眼睛看就夠了。</p>
+<p>爸爸的腿傷應該是工地上出的事故，走路都一瘸一拐的，多半沒有得到好的治療。媽媽為了照顧她一定辭了工作，兩年的醫藥費加上少了一個人的收入，家裡的經濟肯定捉襟見肘。哥哥本來在讀大學，現在穿著工廠制服出現在這裡，顯然是休學去打工了。</p>
+<p>而這一切，都是因為她。</p>
+<p>蘇念禾深吸一口氣。</p>
+<p>沒關係。她回來了，一切都會好起來的。</p>
+<p>「媽，我想喝粥。」蘇念禾笑了笑，「白粥就好，清淡一點的。」</p>
+<p>蘇母眼睛一亮：「好好好！媽這就去煮！醫院食堂的粥太稀了，媽去找個鍋自己煮！」</p>
+<p>看著母親風風火火地出門，蘇念禾閉上眼睛，開始認真梳理體內殘存的靈力。</p>
+<p>靈力不多，但草靈根讓她對周圍的植物有著敏銳的感知。此刻，她能感覺到窗臺上那盆半死不活的綠蘿在艱難地呼吸，走廊盡頭的一棵發財樹根部開始腐爛，甚至能感應到醫院圍牆外那棵老榕樹體內緩慢流動的汁液。</p>
+<p>而大地深處——</p>
+<p>蘇念禾微微皺眉。</p>
+<p>非常非常微弱，微弱到幾乎可以忽略不計，但她確實感覺到了。大地深處，有什麼東西正在緩慢地甦醒。</p>
+<p>像一條沉睡了億萬年的巨龍，翻了個身。</p>
+<p>丹田中的遠古靈種微微震動了一下，彷彿在回應。</p>
+<p>蘇念禾睜開眼睛，望向窗外灰濛濛的天空。</p>
+<p>「靈氣……嗎？」她喃喃自語。</p>
+<p>如果她沒有感覺錯的話，這個世界的靈氣正在復甦。非常緩慢，可能還需要很長時間，但趨勢已經不可逆轉。</p>
+<p>這意味著她的草靈根不僅僅是帶回來的紀念品。在未來，它可能是她最重要的倚仗。</p>
+<p>但在那之前，她得先把眼前的日子過好。</p>
+<p>蘇念禾重新閉上眼睛，開始規劃。</p>
+<p>第一步：養好身體，儘快出院。住院一天就多花一天的錢。</p>
+<p>第二步：找到適合種植的地方。陽臺、屋頂、哪怕是窗臺上的花盆都行。</p>
+<p>第三步：培育靈植。現代的靈氣稀薄，普通靈藥很難存活，她得從最基礎、最頑強的品種開始，慢慢篩選出能在低靈環境下生長的變種。</p>
+<p>她是藥園門的長老，培育和改良靈植是她的看家本領。在修仙界，她曾經讓一株瀕臨滅絕的九轉還魂草在毒沼中紮根繁衍。區區低靈環境，難不倒她。</p>
+<p>想到這裡，蘇念禾的嘴角不自覺地翹了起來。</p>
+<p>讓她想想，先種什麼好呢？</p>
+<p>能讓媽媽睡個好覺的安神草？能強健爸爸腿骨的續筋藤？還是能補氣養血、讓哥哥不再那麼瘦的靈穀米？</p>
+<p>都種。她全都要種。</p>
+<p>但最先種的，應該是見效最快、最容易成活的品種。蘇念禾在心裡翻閱七十年積累的植修手札，很快鎖定了一個目標。</p>
+<p>月寧草。</p>
+<p>藥園門最基礎的安神靈植，對靈氣需求極低，生長週期短，只需要七天就能從種子長到採收。泡水飲用可以安神助眠，長期服用還能緩解焦慮、改善氣色。</p>
+<p>最重要的是，月寧草的種子她可以用靈力直接凝結。這是植修的基礎功法——以草靈根為媒介，將靈力轉化為特定靈植的種子。靈力越強，能凝結的靈種品階越高。以她目前殘存的靈力，低階靈植的種子應該還凝結得出來。</p>
+<p>就從月寧草開始。</p>
+<p>蘇念禾握了握拳，感受著微弱但確實存在的靈力在經脈中流動。</p>
+<p>等她出院，回到家裡，只需要一只花盆、一捧泥土，她就能種出第一株靈植。</p>
+<p>然後是第二株、第三株……直到整個陽臺開滿靈花，結滿靈果。</p>
+<p>一切，都從這裡開始。</p>
+    </div>
+    <div class="chapter-nav">
+      <a href="./">&larr; 目錄</a>
+      <a href="ch002.html">下一章 &rarr;</a>
+    </div>
+</div>
+<footer><p>小說閱讀站</p></footer>
+</body>
+</html>

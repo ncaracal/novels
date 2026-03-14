@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>靈氣初醒 - 百草靈田記</title>
+<style>
+:root {
+  --bg: #faf8f5;
+  --text: #2c2c2c;
+  --accent: #8b6914;
+  --card-bg: #fff;
+  --border: #e8e0d4;
+  --shadow: rgba(0,0,0,0.06);
+  --code-bg: #f5f0e8;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #1a1a1a;
+    --text: #e0dcd6;
+    --accent: #d4a530;
+    --card-bg: #252525;
+    --border: #3a3a3a;
+    --shadow: rgba(0,0,0,0.3);
+    --code-bg: #2a2520;
+  }
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: "Noto Serif TC", "Source Han Serif TC", "PMingLiU", serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.9;
+  min-height: 100vh;
+}
+
+.container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 2rem 1.5rem;
+}
+
+header {
+  text-align: center;
+  padding: 3rem 0 2rem;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 2rem;
+}
+
+header h1 {
+  font-size: 2.2rem;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  color: var(--accent);
+}
+
+header p {
+  margin-top: 0.5rem;
+  font-size: 0.95rem;
+  opacity: 0.7;
+}
+
+.book-card {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 1.8rem;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 2px 8px var(--shadow);
+  transition: transform 0.2s;
+}
+
+.book-card:hover {
+  transform: translateY(-2px);
+}
+
+.book-card h2 {
+  font-size: 1.5rem;
+  margin-bottom: 0.3rem;
+}
+
+.book-card h2 a {
+  color: var(--text);
+  text-decoration: none;
+}
+
+.book-card h2 a:hover {
+  color: var(--accent);
+}
+
+.book-card .meta {
+  font-size: 0.85rem;
+  opacity: 0.6;
+  margin-bottom: 1rem;
+}
+
+.book-card .abstract-preview {
+  font-size: 0.95rem;
+  line-height: 1.8;
+}
+
+/* Book page */
+.book-header {
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.book-header h1 {
+  font-size: 2rem;
+  color: var(--accent);
+}
+
+.book-header .author-name {
+  font-size: 1rem;
+  opacity: 0.7;
+  margin-top: 0.3rem;
+}
+
+.section {
+  margin-bottom: 2.5rem;
+}
+
+.section h2 {
+  font-size: 1.3rem;
+  color: var(--accent);
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.toc-list {
+  list-style: none;
+  counter-reset: chapter;
+}
+
+.toc-list li {
+  counter-increment: chapter;
+  margin-bottom: 0.5rem;
+}
+
+.toc-list li a {
+  color: var(--text);
+  text-decoration: none;
+  display: flex;
+  align-items: baseline;
+  gap: 0.8rem;
+  padding: 0.5rem 0.8rem;
+  border-radius: 4px;
+  transition: background 0.15s;
+}
+
+.toc-list li a:hover {
+  background: var(--code-bg);
+  color: var(--accent);
+}
+
+.toc-list li a::before {
+  content: "第" counter(chapter, cjk-ideographic) "章";
+  font-size: 0.85rem;
+  opacity: 0.5;
+  flex-shrink: 0;
+}
+
+/* Chapter page */
+.chapter-header {
+  text-align: center;
+  padding: 2rem 0;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 2rem;
+}
+
+.chapter-header .book-title {
+  font-size: 0.9rem;
+  opacity: 0.5;
+}
+
+.chapter-header h1 {
+  font-size: 1.8rem;
+  margin-top: 0.5rem;
+}
+
+.chapter-header .chapter-num {
+  font-size: 0.85rem;
+  color: var(--accent);
+  margin-top: 0.3rem;
+}
+
+.chapter-body {
+  font-size: 1.05rem;
+  text-align: justify;
+}
+
+.chapter-body p {
+  margin-bottom: 1.2rem;
+  text-indent: 2em;
+}
+
+.chapter-body p:first-child {
+  text-indent: 0;
+}
+
+.chapter-nav {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 3rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--border);
+}
+
+.chapter-nav a {
+  color: var(--accent);
+  text-decoration: none;
+  font-size: 0.95rem;
+}
+
+.chapter-nav a:hover {
+  text-decoration: underline;
+}
+
+.back-link {
+  display: inline-block;
+  margin-bottom: 1.5rem;
+  color: var(--accent);
+  text-decoration: none;
+  font-size: 0.9rem;
+}
+
+.back-link:hover {
+  text-decoration: underline;
+}
+
+.author-section {
+  background: var(--code-bg);
+  border-radius: 8px;
+  padding: 1.5rem;
+}
+
+.author-section h1, .author-section h2, .author-section h3 {
+  font-size: 1.1rem;
+  margin-bottom: 0.8rem;
+}
+
+.author-section ul {
+  list-style: none;
+  padding-left: 0;
+}
+
+.author-section li {
+  margin-bottom: 0.4rem;
+  padding-left: 0;
+}
+
+footer {
+  text-align: center;
+  padding: 2rem 0;
+  font-size: 0.8rem;
+  opacity: 0.4;
+  border-top: 1px solid var(--border);
+  margin-top: 3rem;
+}
+</style>
+
+</head>
+<body>
+<div class="container">
+
+    <a href="./" class="back-link">&larr; 返回目錄</a>
+    <div class="chapter-header">
+      <div class="book-title">百草靈田記</div>
+      <h1>靈氣初醒</h1>
+      <div class="chapter-num">第5章</div>
+    </div>
+    <div class="chapter-body">
+      <p>蘇念禾騎著蘇遠的電動車到了東郊。</p>
+<p>三月的風還帶著涼意，田野裡的油菜花開得正盛，金黃色一片一片地鋪向遠方。如果不是她草靈根帶來的感知，這裡和其他任何一片郊區農田沒什麼兩樣。</p>
+<p>但蘇念禾知道不一樣。</p>
+<p>她把電動車停在田埂上，脫掉鞋子，赤腳踩上泥土。</p>
+<p>靈力從腳底緩緩滲出，像樹根一樣向下延伸、探索。</p>
+<p>「找到了。」</p>
+<p>她蹲下來，雙手按在地面上，閉上眼睛。地下大約十五公尺的位置，有一條極細的靈脈，像一根銀色的絲線蜿蜒穿過岩層。靈脈的品質很低，在修仙界大概只能算是「廢脈」，沒有任何門派會看得上。</p>
+<p>但在靈氣近乎為零的現代，這就是一座金礦。</p>
+<p>蘇念禾睜開眼，環顧四周。這片農田大約有三畝，屬於旁邊村子的一戶人家，因為年輕人都出去打工了，已經荒廢了兩年，正在掛牌招租。</p>
+<p>她掏出手機，撥了招租告示上的號碼。</p>
+<p>半小時後，一個皮膚黝黑的中年男人騎著摩托車趕來。</p>
+<p>「你就是打電話的那個小姑娘？」田主劉叔上下打量她，有些懷疑，「你要租地種田？」</p>
+<p>「對，三畝都要。」</p>
+<p>「三畝地，一年租金三千。你一個小姑娘家家的，種得動嗎？」</p>
+<p>蘇念禾笑了笑：「種得動。先租一年，可以嗎？」</p>
+<p>劉叔想了想，反正地荒著也是荒著，能收到租金是好事。兩人很快簽了一份簡單的租約。</p>
+<p>付了租金後，蘇念禾的存款只剩下不到兩千塊。但她一點都不擔心。</p>
+<p>因為有了這三畝地，她能做的事太多了。</p>
+<p>接下來的一個月，蘇念禾幾乎把所有時間都花在了東郊的田地上。</p>
+<p>每天凌晨五點，她騎電動車出發，天黑才回來。蘇母心疼她，但看她每天回來雖然滿身泥土卻精神奕奕，也就不再多說什麼。</p>
+<p>第一步是改良土壤。三畝地的面積，靠她目前的靈力不可能一次性完成育土術，她採用了「分區推進」的策略：先集中改良靈脈節點正上方的半畝地，然後逐步向外擴展。</p>
+<p>靈脈節點處的土壤改良效果出奇地好。地下靈脈緩慢滲出的靈氣和她輸入的靈力形成了共鳴，泥土的轉化速度比陽臺上快了三倍。</p>
+<p>一週後，第一批半畝靈田成形。泥土呈現出深得發黑的褐色，鬆軟透氣，抓一把都能聞到濃郁的泥土香。</p>
+<p>蘇念禾在靈田中種下了五種靈植：月寧草、清心菊、明目枸杞、續筋藤和益氣穀。</p>
+<p>續筋藤是她專門為父親培育的靈植，長期外敷能修復肌腱和韌帶損傷。益氣穀則是一種靈化的小米，煮粥食用可以補氣養血，非常適合體質虛弱的人。</p>
+<p>靈脈上方的靈植生長速度遠超陽臺。月寧草從播種到採收只需要八天，幾乎和修仙界持平。蘇念禾第一次採收的時候，忍不住蹲在田邊笑了好久。</p>
+<p>這才是種田該有的樣子啊。</p>
+<p>產量的提升直接帶來了收入的飛躍。蘇念禾把早市攤位的供貨量翻了一倍，同時新增了續筋膏和益氣小米粥兩個產品線。</p>
+<p>續筋膏的定價是一百二十元一罐，但效果好得驚人。周伯伯的老寒腿用了一週就好轉了大半，消息傳到了附近一個工地上，工人們排著隊來買。蘇父的腿傷也在續筋膏的調理下開始改善，走路不再一瘸一拐。</p>
+<p>益氣小米粥則成了蘇母早餐攤的新招牌。蘇念禾每天給蘇母供應兩斤益氣穀，蘇母煮成粥，配上蛋餅一起賣。喝過的客人都說這粥喝了之後整天精神好、不容易累，回頭客越來越多，蘇母的攤位生意一下子翻了好幾倍。</p>
+<p>一個月後，蘇念禾算了一筆帳：月收入突破了八千。</p>
+<p>蘇母看著帳本上的數字，半天說不出話來。</p>
+<p>「念禾，你到底是怎麼做到的？」</p>
+<p>蘇念禾把一杯新泡的清心菊花茶推到母親面前：「說了嘛，種田。」</p>
+<p>蘇遠也辭了工廠的工作，全職來幫蘇念禾打理靈植田。他雖然不懂修仙，但蘇念禾教他的澆水、施肥、除草方法他學得很快，而且比蘇念禾有力氣，翻地挖渠這種體力活都包了。</p>
+<p>蘇父的腿傷好轉之後，也加入了種田的行列。一家人齊心協力，靈植田的面積從半畝擴展到了兩畝。</p>
+<p>生活，一天比一天好起來。</p>
+<p>然而，在蘇念禾忙著種田賣貨的這段時間裡，她一直留意著一件事。</p>
+<p>大地深處的靈氣脈動，在加速。</p>
+<p>最初是每隔幾天感受一次的微弱震顫，現在變成了每天都能感受到的穩定搏動。靈脈中的靈氣流量也在增加，她甚至注意到靈田裡的靈植生長速度在自然加快，已經不完全依賴她的靈力催生了。</p>
+<p>丹田中的遠古靈種震動得越來越頻繁，每次震動，它周圍的靈力濃度就會提升一點點。蘇念禾甚至感覺到，靈種在試圖與地下的靈脈產生某種共鳴。</p>
+<p>改變在一個尋常的週二清晨發生。</p>
+<p>蘇念禾正在田裡給月寧草除側芽，忽然，腳下的泥土震了一下。</p>
+<p>不是地震。</p>
+<p>震動極其輕微，普通人根本感覺不到。但蘇念禾的草靈根清清楚楚地告訴她——地下深處有什麼東西破開了一層封印。</p>
+<p>一股靈氣從大地深處湧出，像一口被開封的古井，沿著靈脈向四面八方擴散。靈氣的濃度在瞬間提升了十倍。</p>
+<p>蘇念禾猛地站起來。</p>
+<p>田地裡的靈植同時做出了反應。月寧草的葉片開始發出肉眼可見的銀色微光，清心菊的花朵在沒有風的情況下搖晃起來，枸杞樹的枝條以肉眼可見的速度伸長了幾寸。</p>
+<p>丹田中的遠古靈種劇烈震動，然後——裂開了一道縫。</p>
+<p>一縷金色的光從裂縫中透出，沿著經脈擴散到全身。蘇念禾感到自己的修為在這一瞬間提升了一個層次，從殘存的煉氣期一口氣恢復到了築基初期。</p>
+<p>她低頭看向自己的手。掌心隱約浮現出一片金色的紋路，像一片葉子的脈絡。</p>
+<p>遠古靈種在她的丹田裡發芽了。</p>
+<p>蘇念禾還沒來得及消化這個變化，就聽到遠處傳來一聲尖叫。</p>
+<p>是隔壁田地的一個農民。</p>
+<p>蘇念禾循聲望去，然後她也愣住了。</p>
+<p>田地邊緣的一條灌溉渠裡，水面正在劇烈翻滾。不是魚，不是水流——是一隻通體翠綠的蛇形生物，有兩尺來長，頭頂長著一對鹿角般的小角，正在水渠裡歡快地游動。</p>
+<p>蘇念禾認出了它。</p>
+<p>「……肥遺？」</p>
+<p>《山海經》中記載：「有蛇一首兩身，名曰肥遺，見則其國大旱。」</p>
+<p>眼前這隻和古籍描述不完全一致——它只有一個身體，角也很小，更像是幼年體。但那通體翠綠的鱗片和眼睛裡靈動的光芒，絕不是普通的蛇。</p>
+<p>它是靈獸。</p>
+<p>或者更準確地說，是靈氣復甦後，第一批從沉睡中醒來的遠古生物。</p>
+<p>蘇念禾深吸一口氣。</p>
+<p>靈氣復甦真的開始了。而且速度比她預想的要快得多。地下封印的破裂不僅釋放了靈氣，還喚醒了沉睡的靈獸。</p>
+<p>隔壁田地的農民已經嚇得跑遠了。蘇念禾看著水渠裡那隻小肥遺在水裡轉圈圈，忍不住笑了。</p>
+<p>雖然古籍說肥遺出現會帶來大旱，但那是成年肥遺的本能。眼前這隻明顯是剛出生的幼崽，不僅沒有危害，反而——</p>
+<p>蘇念禾蹲到水渠邊，伸出手。掌心的金色紋路微微發光。</p>
+<p>小肥遺停止了游動，抬起頭，好奇地看著她伸過來的手。那對小鹿角微微顫動，像是在感知什麼。</p>
+<p>然後，它輕輕地蹭了蹭蘇念禾的指尖。</p>
+<p>蘇念禾笑得更開心了。</p>
+<p>肥遺是水屬靈獸，天性親近木靈根修士。在修仙界，藥園門的前輩們就飼養過肥遺，利用它們的靈力為靈田灌溉——肥遺游過的水會被靈氣浸潤，用來澆灌靈植效果極佳。</p>
+<p>「你跟我來。」蘇念禾輕聲說，靈力化作一縷細流引導著小肥遺。</p>
+<p>小肥遺乖巧地跟著靈力的牽引，從水渠游進了蘇念禾的靈植田旁邊的蓄水池裡，在裡面歡快地轉了兩圈，然後像找到新家一樣盤在池底，舒舒服服地閉上了眼。</p>
+<p>蘇念禾站起來，望向遠方。</p>
+<p>城市的天際線在晨光中閃閃發亮，一切看起來和往常一樣。但她知道，從今天開始，這個世界正在悄悄地改變。</p>
+<p>靈氣在復甦，靈獸在甦醒，而她手中的遠古靈種才剛剛發芽。</p>
+<p>未來會怎樣，蘇念禾不知道。但她知道自己要做什麼。</p>
+<p>她會繼續種田。</p>
+<p>種出更多、更好的靈植。守護她的家人，守護這片土地。如果靈氣復甦帶來的不只有機遇還有危險，那她這個植修，也會站在最前面。</p>
+<p>蘇念禾彎腰拔掉一根雜草，挽起袖子，回到了她的靈植田裡。</p>
+<p>身後，小肥遺在水池裡吐了一串氣泡，像是在打招呼。</p>
+<p>陽光照在三畝翠綠的田地上，靈光點點，微風送來草木的清香。</p>
+<p>蘇念禾哼著歌，繼續種田。</p>
+<p>這是靈氣復甦的第一天。</p>
+<p>而她的故事，才剛剛開始。</p>
+    </div>
+    <div class="chapter-nav">
+      <a href="ch004.html">&larr; 上一章</a>
+      <a href="./">回到目錄 &rarr;</a>
+    </div>
+</div>
+<footer><p>小說閱讀站</p></footer>
+</body>
+</html>

@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>陽臺上的第一株靈草 - 百草靈田記</title>
+<style>
+:root {
+  --bg: #faf8f5;
+  --text: #2c2c2c;
+  --accent: #8b6914;
+  --card-bg: #fff;
+  --border: #e8e0d4;
+  --shadow: rgba(0,0,0,0.06);
+  --code-bg: #f5f0e8;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #1a1a1a;
+    --text: #e0dcd6;
+    --accent: #d4a530;
+    --card-bg: #252525;
+    --border: #3a3a3a;
+    --shadow: rgba(0,0,0,0.3);
+    --code-bg: #2a2520;
+  }
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: "Noto Serif TC", "Source Han Serif TC", "PMingLiU", serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.9;
+  min-height: 100vh;
+}
+
+.container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 2rem 1.5rem;
+}
+
+header {
+  text-align: center;
+  padding: 3rem 0 2rem;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 2rem;
+}
+
+header h1 {
+  font-size: 2.2rem;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  color: var(--accent);
+}
+
+header p {
+  margin-top: 0.5rem;
+  font-size: 0.95rem;
+  opacity: 0.7;
+}
+
+.book-card {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 1.8rem;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 2px 8px var(--shadow);
+  transition: transform 0.2s;
+}
+
+.book-card:hover {
+  transform: translateY(-2px);
+}
+
+.book-card h2 {
+  font-size: 1.5rem;
+  margin-bottom: 0.3rem;
+}
+
+.book-card h2 a {
+  color: var(--text);
+  text-decoration: none;
+}
+
+.book-card h2 a:hover {
+  color: var(--accent);
+}
+
+.book-card .meta {
+  font-size: 0.85rem;
+  opacity: 0.6;
+  margin-bottom: 1rem;
+}
+
+.book-card .abstract-preview {
+  font-size: 0.95rem;
+  line-height: 1.8;
+}
+
+/* Book page */
+.book-header {
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.book-header h1 {
+  font-size: 2rem;
+  color: var(--accent);
+}
+
+.book-header .author-name {
+  font-size: 1rem;
+  opacity: 0.7;
+  margin-top: 0.3rem;
+}
+
+.section {
+  margin-bottom: 2.5rem;
+}
+
+.section h2 {
+  font-size: 1.3rem;
+  color: var(--accent);
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.toc-list {
+  list-style: none;
+  counter-reset: chapter;
+}
+
+.toc-list li {
+  counter-increment: chapter;
+  margin-bottom: 0.5rem;
+}
+
+.toc-list li a {
+  color: var(--text);
+  text-decoration: none;
+  display: flex;
+  align-items: baseline;
+  gap: 0.8rem;
+  padding: 0.5rem 0.8rem;
+  border-radius: 4px;
+  transition: background 0.15s;
+}
+
+.toc-list li a:hover {
+  background: var(--code-bg);
+  color: var(--accent);
+}
+
+.toc-list li a::before {
+  content: "第" counter(chapter, cjk-ideographic) "章";
+  font-size: 0.85rem;
+  opacity: 0.5;
+  flex-shrink: 0;
+}
+
+/* Chapter page */
+.chapter-header {
+  text-align: center;
+  padding: 2rem 0;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 2rem;
+}
+
+.chapter-header .book-title {
+  font-size: 0.9rem;
+  opacity: 0.5;
+}
+
+.chapter-header h1 {
+  font-size: 1.8rem;
+  margin-top: 0.5rem;
+}
+
+.chapter-header .chapter-num {
+  font-size: 0.85rem;
+  color: var(--accent);
+  margin-top: 0.3rem;
+}
+
+.chapter-body {
+  font-size: 1.05rem;
+  text-align: justify;
+}
+
+.chapter-body p {
+  margin-bottom: 1.2rem;
+  text-indent: 2em;
+}
+
+.chapter-body p:first-child {
+  text-indent: 0;
+}
+
+.chapter-nav {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 3rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--border);
+}
+
+.chapter-nav a {
+  color: var(--accent);
+  text-decoration: none;
+  font-size: 0.95rem;
+}
+
+.chapter-nav a:hover {
+  text-decoration: underline;
+}
+
+.back-link {
+  display: inline-block;
+  margin-bottom: 1.5rem;
+  color: var(--accent);
+  text-decoration: none;
+  font-size: 0.9rem;
+}
+
+.back-link:hover {
+  text-decoration: underline;
+}
+
+.author-section {
+  background: var(--code-bg);
+  border-radius: 8px;
+  padding: 1.5rem;
+}
+
+.author-section h1, .author-section h2, .author-section h3 {
+  font-size: 1.1rem;
+  margin-bottom: 0.8rem;
+}
+
+.author-section ul {
+  list-style: none;
+  padding-left: 0;
+}
+
+.author-section li {
+  margin-bottom: 0.4rem;
+  padding-left: 0;
+}
+
+footer {
+  text-align: center;
+  padding: 2rem 0;
+  font-size: 0.8rem;
+  opacity: 0.4;
+  border-top: 1px solid var(--border);
+  margin-top: 3rem;
+}
+</style>
+
+</head>
+<body>
+<div class="container">
+
+    <a href="./" class="back-link">&larr; 返回目錄</a>
+    <div class="chapter-header">
+      <div class="book-title">百草靈田記</div>
+      <h1>陽臺上的第一株靈草</h1>
+      <div class="chapter-num">第2章</div>
+    </div>
+    <div class="chapter-body">
+      <p>出院比蘇念禾預想的更快。</p>
+<p>她利用靈力加速身體修復，僅用了五天，各項指標就恢復到正常水準。主治醫生反覆看了三遍檢查報告，用「醫學奇蹟」來形容她的康復速度，最終在蘇母的再三懇求下同意出院——畢竟，每多住一天就多一天的費用。</p>
+<p>出院那天，蘇遠騎著一輛電動車來接。</p>
+<p>「家裡搬了。」蘇母坐在後座抱著蘇念禾，語氣輕描淡寫，「原來那個房子太大了，住著浪費，就換了個小的。」</p>
+<p>蘇念禾沒說話，把臉埋在母親肩頭。</p>
+<p>她知道不是「太大了」，是付不起房租了。</p>
+<p>新家在老城區的一棟六層步梯房，五樓。樓道狹窄昏暗，牆壁上的石灰有些剝落。蘇念禾扶著樓梯一層一層往上爬，到五樓時已經氣喘吁吁——兩年的昏迷讓她的體能降到了谷底。</p>
+<p>打開門，蘇念禾一眼就看完了整個家。</p>
+<p>兩室一廳，客廳小得放不下沙發，擺了一張折疊桌和幾把塑膠椅。廚房更小，一個人轉身都困難。蘇念禾和蘇遠各一間臥室，蘇父蘇母睡客廳的折疊床。</p>
+<p>但家裡收拾得很乾淨，窗臺上還擺著一盆塑膠花。</p>
+<p>「先坐下歇歇，媽去煮麵。」蘇母推著她坐下，轉身鑽進廚房。</p>
+<p>蘇念禾坐在塑膠椅上，目光掃過這個小小的家，最後停在陽臺上。</p>
+<p>陽臺不大，大概兩平方公尺，堆著些雜物和晾衣架。但陽光充足，朝南。</p>
+<p>夠了。</p>
+<p>蘇念禾看向陽臺角落裡一個被棄置的破花盆，心中已經有了計畫。</p>
+<p>當天晚上，等家人都睡了，蘇念禾盤腿坐在床上，開始凝結靈種。</p>
+<p>這是植修的基本功。她閉上眼，將丹田中僅存的靈力緩緩引導至掌心，以草靈根為媒介，在腦海中勾勒出月寧草的每一個細胞結構。</p>
+<p>靈力微薄，凝結的過程艱難而緩慢。如果在修仙界，這不過是彈指間的事；而在靈氣幾乎為零的現代，她足足花了兩個時辰。</p>
+<p>掌心終於浮現出一顆綠豆大小的種子，散發著淡得幾乎看不見的青光。</p>
+<p>月寧草的種子。</p>
+<p>品質只有最低階的一品，但在這個環境下能凝結出來已經很不容易了。蘇念禾小心翼翼地收好種子，又花了半個時辰恢復靈力，才疲憊地躺下。</p>
+<p>第二天一早，蘇母出門去市場擺攤賣早餐，蘇父去了工地，蘇遠上了早班。蘇念禾獨自在家，開始了她的第一次「種田」。</p>
+<p>她把陽臺角落的破花盆清理乾淨，又從樓下花圃邊挖了些泥土回來。泥土品質不好，偏酸性，有機質含量低。換作普通植物可能勉強能活，但靈植需要更好的生長介質。</p>
+<p>蘇念禾蹲在陽臺上，雙手插入泥土中，靈力從指尖緩緩滲出。</p>
+<p>這是植修的「育土術」——用靈力改良土壤結構，分解有害物質，活化微生物。在修仙界，她能一掌翻新百畝靈田；如今靈力有限，改良這一小盆土就讓她額頭冒汗。</p>
+<p>但效果立竿見影。泥土的顏色從灰黃變成深褐，質地從板結變得鬆軟，甚至散發出一股淡淡的泥土清香。</p>
+<p>蘇念禾滿意地點點頭，將月寧草的種子埋入土中，灌上靈力催生的活水，最後用一縷靈力在花盆周圍布下了一個極其微小的聚靈陣。</p>
+<p>聚靈陣能吸引周圍的微薄靈氣向花盆匯聚，提高靈植的生長速度。在修仙界這是最基礎的陣法，但在現代，靈氣稀薄到這個陣法幾乎形同虛設。</p>
+<p>幾乎。</p>
+<p>蘇念禾盯著花盆裡的泥土看了好一會，忽然微微挑眉。</p>
+<p>她感覺到了。非常微弱，但確實有零星的靈氣被聚靈陣吸引，向花盆匯聚。速度極慢，大概只有修仙界的千分之一，但——它在運作。</p>
+<p>她是對的。這個世界的靈氣正在甦醒。即便目前微弱到普通人完全感知不到，但對於她這個草靈根植修來說，這一絲一縷的靈氣就是希望。</p>
+<p>三天後，泥土中鑽出了一根嫩芽。</p>
+<p>蘇念禾蹲在花盆前，看著那抹淺綠色從褐色泥土中探出頭來，露出了回到現代以來最開心的笑容。</p>
+<p>成了。</p>
+<p>七天。在修仙界月寧草七天就能採收，但在現代低靈環境下，可能需要十到十五天。不過沒關係，再等等就好。</p>
+<p>每天清晨，蘇念禾都會在家人醒來之前，蹲在陽臺的花盆前，用靈力為月寧草灌溉。她像照顧嬰兒一樣照顧這株靈草，觀察它的每一片葉子、每一條根須，根據生長情況微調靈力的輸入。</p>
+<p>蘇母注意到女兒每天都蹲在陽臺上看那盆「草」，有些擔心：「念禾，你種的這是什麼？別是野草吧？」</p>
+<p>「是一種安神的草藥，媽。」蘇念禾笑著說，「等它長好了，泡水喝能幫助睡眠。」</p>
+<p>蘇母將信將疑：「你什麼時候懂這些了？」</p>
+<p>「昏迷的時候做了好多夢，夢裡學的。」</p>
+<p>蘇母摸了摸她的頭，沒有追問。在她看來，女兒昏迷兩年能醒過來就已經是天大的幸運，別說種草了，就算她說要去種田當農民，蘇母都舉雙手贊成。</p>
+<p>第十二天的清晨，蘇念禾打開陽臺門，頓住了。</p>
+<p>月寧草長成了。</p>
+<p>那株植物有二十公分高，葉片修長如柳葉，呈現一種透亮的翠綠色，在晨光中隱約泛著銀光。最頂端開出了一朵小小的白花，花瓣薄如蟬翼，正隨著微風輕輕搖晃。</p>
+<p>整個陽臺都瀰漫著一股清淡的草木香氣，聞一口就讓人覺得腦子清明，肩膀不自覺地放鬆下來。</p>
+<p>蘇念禾深吸了一口氣。</p>
+<p>成功了。</p>
+<p>這是她在現代種出的第一株靈植。品階雖低，但確確實實是一株活的靈草。</p>
+<p>她小心地摘下幾片葉子——月寧草採摘後會繼續生長新葉，一株可以持續採收三到四個月。</p>
+<p>當天晚上，蘇念禾煮了一壺月寧草茶。</p>
+<p>茶水呈淡青色，幾近透明，但散發出的香氣讓整個客廳都安靜了下來。蘇父放下手機，蘇遠停止了敲鍵盤，蘇母從廚房探出頭來。</p>
+<p>「什麼味道？好香。」蘇母吸了吸鼻子。</p>
+<p>「陽臺上那株草，長好了。我泡了茶，大家都喝一杯。」蘇念禾把四個杯子端到折疊桌上。</p>
+<p>蘇父端起杯子喝了一口，眉頭微微鬆開：「味道不錯，甘甘的。」</p>
+<p>蘇母也喝了幾口，不置可否。</p>
+<p>蘇遠倒是一口氣喝完了，又給自己倒了一杯：「挺好喝的，比外面賣的花茶好。」</p>
+<p>那天晚上，蘇母睡了一個兩年來最踏實的覺。</p>
+<p>她是被鳥叫聲吵醒的——這對一個長期淺眠、夜裡要醒三四次的人來說，簡直不可思議。蘇母睜開眼看了一眼手機，早上六點半，她竟然一覺睡到了天亮。</p>
+<p>「老蘇。」她推了推身邊的丈夫。</p>
+<p>「嗯……」蘇父翻了個身，含糊地應了一聲。</p>
+<p>蘇母愣了一下。蘇父的腿傷一到晚上就痠痛，經常半夜被痛醒，現在他居然還在酣睡？</p>
+<p>蘇母坐起來，活動了一下肩頸。</p>
+<p>奇怪。肩膀好像不那麼僵了，腦子也清爽了許多，就連看東西好像都比平時清楚一些。</p>
+<p>蘇母想起昨晚那杯茶，半信半疑地走到陽臺，看了一眼那株嫩綠的小草。</p>
+<p>「真有用？」她小聲嘀咕了一句，又覺得不可能。一杯茶哪有這麼神，多半是心理作用。</p>
+<p>但當天晚上，蘇母主動問蘇念禾：「念禾，那個茶還有嗎？再泡一壺唄。」</p>
+<p>蘇念禾笑了。</p>
+<p>她知道，一切才剛剛開始。</p>
+    </div>
+    <div class="chapter-nav">
+      <a href="ch001.html">&larr; 上一章</a>
+      <a href="ch003.html">下一章 &rarr;</a>
+    </div>
+</div>
+<footer><p>小說閱讀站</p></footer>
+</body>
+</html>

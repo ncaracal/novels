@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>安神茶的奇蹟 - 百草靈田記</title>
+<style>
+:root {
+  --bg: #faf8f5;
+  --text: #2c2c2c;
+  --accent: #8b6914;
+  --card-bg: #fff;
+  --border: #e8e0d4;
+  --shadow: rgba(0,0,0,0.06);
+  --code-bg: #f5f0e8;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #1a1a1a;
+    --text: #e0dcd6;
+    --accent: #d4a530;
+    --card-bg: #252525;
+    --border: #3a3a3a;
+    --shadow: rgba(0,0,0,0.3);
+    --code-bg: #2a2520;
+  }
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: "Noto Serif TC", "Source Han Serif TC", "PMingLiU", serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.9;
+  min-height: 100vh;
+}
+
+.container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 2rem 1.5rem;
+}
+
+header {
+  text-align: center;
+  padding: 3rem 0 2rem;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 2rem;
+}
+
+header h1 {
+  font-size: 2.2rem;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  color: var(--accent);
+}
+
+header p {
+  margin-top: 0.5rem;
+  font-size: 0.95rem;
+  opacity: 0.7;
+}
+
+.book-card {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 1.8rem;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 2px 8px var(--shadow);
+  transition: transform 0.2s;
+}
+
+.book-card:hover {
+  transform: translateY(-2px);
+}
+
+.book-card h2 {
+  font-size: 1.5rem;
+  margin-bottom: 0.3rem;
+}
+
+.book-card h2 a {
+  color: var(--text);
+  text-decoration: none;
+}
+
+.book-card h2 a:hover {
+  color: var(--accent);
+}
+
+.book-card .meta {
+  font-size: 0.85rem;
+  opacity: 0.6;
+  margin-bottom: 1rem;
+}
+
+.book-card .abstract-preview {
+  font-size: 0.95rem;
+  line-height: 1.8;
+}
+
+/* Book page */
+.book-header {
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 1.5rem;
+  margin-bottom: 2rem;
+}
+
+.book-header h1 {
+  font-size: 2rem;
+  color: var(--accent);
+}
+
+.book-header .author-name {
+  font-size: 1rem;
+  opacity: 0.7;
+  margin-top: 0.3rem;
+}
+
+.section {
+  margin-bottom: 2.5rem;
+}
+
+.section h2 {
+  font-size: 1.3rem;
+  color: var(--accent);
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.toc-list {
+  list-style: none;
+  counter-reset: chapter;
+}
+
+.toc-list li {
+  counter-increment: chapter;
+  margin-bottom: 0.5rem;
+}
+
+.toc-list li a {
+  color: var(--text);
+  text-decoration: none;
+  display: flex;
+  align-items: baseline;
+  gap: 0.8rem;
+  padding: 0.5rem 0.8rem;
+  border-radius: 4px;
+  transition: background 0.15s;
+}
+
+.toc-list li a:hover {
+  background: var(--code-bg);
+  color: var(--accent);
+}
+
+.toc-list li a::before {
+  content: "第" counter(chapter, cjk-ideographic) "章";
+  font-size: 0.85rem;
+  opacity: 0.5;
+  flex-shrink: 0;
+}
+
+/* Chapter page */
+.chapter-header {
+  text-align: center;
+  padding: 2rem 0;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 2rem;
+}
+
+.chapter-header .book-title {
+  font-size: 0.9rem;
+  opacity: 0.5;
+}
+
+.chapter-header h1 {
+  font-size: 1.8rem;
+  margin-top: 0.5rem;
+}
+
+.chapter-header .chapter-num {
+  font-size: 0.85rem;
+  color: var(--accent);
+  margin-top: 0.3rem;
+}
+
+.chapter-body {
+  font-size: 1.05rem;
+  text-align: justify;
+}
+
+.chapter-body p {
+  margin-bottom: 1.2rem;
+  text-indent: 2em;
+}
+
+.chapter-body p:first-child {
+  text-indent: 0;
+}
+
+.chapter-nav {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 3rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--border);
+}
+
+.chapter-nav a {
+  color: var(--accent);
+  text-decoration: none;
+  font-size: 0.95rem;
+}
+
+.chapter-nav a:hover {
+  text-decoration: underline;
+}
+
+.back-link {
+  display: inline-block;
+  margin-bottom: 1.5rem;
+  color: var(--accent);
+  text-decoration: none;
+  font-size: 0.9rem;
+}
+
+.back-link:hover {
+  text-decoration: underline;
+}
+
+.author-section {
+  background: var(--code-bg);
+  border-radius: 8px;
+  padding: 1.5rem;
+}
+
+.author-section h1, .author-section h2, .author-section h3 {
+  font-size: 1.1rem;
+  margin-bottom: 0.8rem;
+}
+
+.author-section ul {
+  list-style: none;
+  padding-left: 0;
+}
+
+.author-section li {
+  margin-bottom: 0.4rem;
+  padding-left: 0;
+}
+
+footer {
+  text-align: center;
+  padding: 2rem 0;
+  font-size: 0.8rem;
+  opacity: 0.4;
+  border-top: 1px solid var(--border);
+  margin-top: 3rem;
+}
+</style>
+
+</head>
+<body>
+<div class="container">
+
+    <a href="./" class="back-link">&larr; 返回目錄</a>
+    <div class="chapter-header">
+      <div class="book-title">百草靈田記</div>
+      <h1>安神茶的奇蹟</h1>
+      <div class="chapter-num">第3章</div>
+    </div>
+    <div class="chapter-body">
+      <p>月寧草茶的效果在蘇家人身上得到了驗證。</p>
+<p>連續喝了一週之後，蘇母的黑眼圈明顯消退，臉色從蠟黃變成了正常的暖色調，連皺紋都淡了幾分。蘇父夜裡不再被腿痛折騰醒，雖然腿傷沒有痊癒，但睡眠品質的提升讓他白天精神好了很多。蘇遠最明顯，這個二十三歲的年輕人臉上的疲態一掃而空，工廠主管還以為他偷偷去打了美容針。</p>
+<p>蘇念禾觀察著家人的變化，在心裡默默記錄數據。</p>
+<p>月寧草在低靈環境下的藥效大約是修仙界的十分之一，但對於完全沒有修為的普通人來說，這個效果已經相當驚人了。</p>
+<p>唯一的問題是產量。一株月寧草每三天才能採收一次，每次只夠泡兩壺茶。一家四口喝，勉強夠用，但如果想擴大規模，就需要更多的花盆和泥土。</p>
+<p>更重要的是，她需要錢。</p>
+<p>家裡的經濟狀況比她想像的更糟糕。蘇念禾在家人不注意的時候翻了一下抽屜裡的帳本——蘇母記帳的習慣幾十年沒變。兩年的醫藥費加上生活開支，家裡已經欠了十幾萬的債。蘇父在工地做零工，一天一百五；蘇母在早市賣蛋餅，一個月三四千；蘇遠在電子廠上班，扣掉社保到手四千多。三個人的收入減去房租和生活費，每個月能還的債不到兩千。</p>
+<p>按這個速度，還完債要六七年。</p>
+<p>蘇念禾合上帳本，表情平靜，但指節因為用力而發白。</p>
+<p>她不能讓家人繼續這樣辛苦下去。</p>
+<p>一個念頭在她腦中成型：賣月寧草茶。</p>
+<p>但不是以「靈植」的名義賣——那太荒唐了，沒人會信。她需要一個合理的包裝。</p>
+<p>蘇念禾花了三天時間做功課。她用蘇遠的舊手機查閱了大量資料，研究現代草藥市場、助眠產品的定價、以及相關的法規。</p>
+<p>然後她找到了突破口。</p>
+<p>隔壁住著一對老夫妻，姓周。周伯伯退休前是中學老師，周阿姨是家庭主婦。兩位老人家最大的困擾就是失眠——周阿姨嚴重到要靠安眠藥才能入睡，而且越吃效果越差，劑量越來越大。</p>
+<p>蘇念禾選了一個週末的下午，端著一壺月寧草茶和兩個杯子，敲開了隔壁的門。</p>
+<p>「周阿姨，我種了一種草藥，泡茶喝了睡覺特別好，帶來給您和周伯伯試試。」</p>
+<p>周阿姨有些意外，但看著鄰居小姑娘大病初癒還惦記著自己，心裡很感動，熱情地把她請進屋裡。</p>
+<p>「就是普通的安神草，書上說對睡眠有幫助的。」蘇念禾給兩位老人各倒了一杯，「您先喝喝看，要是覺得好，我再給您送。」</p>
+<p>周阿姨喝了一口，眼睛微微亮了：「這茶好清香啊，喝下去人就鬆快了。小蘇，這是你自己種的？」</p>
+<p>「嗯，陽臺上種的。」</p>
+<p>周伯伯也喝了一口，點點頭：「不錯，比我之前買的那些花茶好多了。」</p>
+<p>蘇念禾笑著又聊了幾句就告辭了。</p>
+<p>第二天早上，周阿姨在樓道裡攔住了蘇母。</p>
+<p>「蘇妹子！你家念禾昨天送來的那個茶，太神了！」周阿姨拉著蘇母的手，激動得聲音都在抖，「我昨晚沒吃安眠藥，就喝了一杯那個茶，躺下不到十分鐘就睡著了！而且一覺到天亮！一覺到天亮啊！我多少年沒有這樣睡過了！」</p>
+<p>蘇母愣住了。</p>
+<p>「老周也是，鼾聲響得跟打雷一樣，以前他半夜總是腿抽筋醒，昨晚一次都沒有！」周阿姨抓著蘇母不放，「那個茶還有嗎？我想多買一些，多少錢都行！」</p>
+<p>蘇母回到家，看著陽臺上那株翠綠的小草，又看看正在廚房熱粥的女兒，表情十分微妙。</p>
+<p>「念禾，你那個茶……到底是什麼？」</p>
+<p>蘇念禾端著粥走出來，坦然地說：「一種特殊的安神草，我研究了很久的品種。媽，你有沒有覺得這段時間睡覺比以前好？」</p>
+<p>蘇母沉默了一會，緩緩點頭。</p>
+<p>她不是沒有感覺。這一週以來，她睡得比過去兩年都好，白天的精神也足了很多，連血壓都穩定了。她只是一直不敢相信，一杯茶能有這麼大的效果。</p>
+<p>「念禾。」蘇母坐下來，認真地看著女兒，「你老實告訴媽，你昏迷的那兩年，到底經歷了什麼？」</p>
+<p>蘇念禾放下粥碗，想了想，決定說半分真話。</p>
+<p>「媽，你信不信這個世界上有一些科學暫時還解釋不了的事？」</p>
+<p>蘇母猶豫了一下：「比如呢？」</p>
+<p>「比如，有些植物的品種在特定條件下培育，能產生目前科學還沒發現的活性物質。我昏迷的時候做了很長很長的夢，夢裡學了很多關於植物的知識。醒來之後，我發現那些知識是真的能用的。」</p>
+<p>蘇母看著女兒平靜而認真的眼睛，雖然覺得匪夷所思，但聯想到女兒奇蹟般的康復，和那杯確實有效果的茶，她沒有反駁。</p>
+<p>「我不懂你說的那些。」蘇母最後說，「但我知道你是個聰明孩子，從小就聰明。你想做什麼，媽都支持你。只是別累著自己，身體最重要。」</p>
+<p>蘇念禾的眼眶有些微熱。</p>
+<p>「謝謝媽。」</p>
+<p>接下來的日子，蘇念禾開始小規模擴張她的「靈植田」。</p>
+<p>她用蘇遠給的零花錢在五金店買了十幾個便宜的塑膠花盆，又從郊外挖了幾袋品質較好的泥土回來。用育土術改良之後，依次種下了更多的月寧草種子。</p>
+<p>陽臺很快被翠綠的月寧草佔滿了。每到傍晚，微風吹過，淡淡的草木清香飄散開來，整層樓都聞得到。</p>
+<p>周阿姨來了又帶來了她的好姐妹，好姐妹又帶來了好姐妹的女兒。一傳十，十傳百，短短兩週之內，蘇念禾的月寧草茶在整個老城區的中老年群體裡傳開了。</p>
+<p>蘇念禾把月寧草葉片曬乾，用牛皮紙袋分裝，每袋二十克，售價三十元。不貴，但利潤極高——她的成本幾乎為零，只需要花盆、泥土和靈力。</p>
+<p>第一個月，她賣出了三十多袋。</p>
+<p>收入不算多，但對蘇家來說，這一千多塊錢已經是雪中送炭。蘇念禾把錢塞給蘇母的時候，蘇母推了好幾次才收下，眼眶紅紅的。</p>
+<p>「媽替你存著，等你以後上大學用。」</p>
+<p>蘇念禾笑了笑，沒有說破。她知道，這筆錢最後一定會被用來還債或者補貼家用。</p>
+<p>但這只是開始。月寧草的產量受限於陽臺面積，天花板很明顯。要賺更多的錢，她需要更大的種植空間，以及更多品種的靈植。</p>
+<p>而且，她已經在構思下一步計畫了。</p>
+<p>月寧草打開了局面，但安神助眠只是一個切入點。蘇念禾的植修手札中記載了上千種靈植，其中適合在低靈環境下培育的至少有幾十種。</p>
+<p>養顏的、明目的、強身的、生髮的……每一種都對應著現代人的一個痛點。</p>
+<p>她需要一個更大的舞臺。</p>
+<p>蘇念禾站在陽臺上，看著夕陽把老城區的屋頂染成金色，嘴角微微上揚。</p>
+<p>下一步，去早市。</p>
+    </div>
+    <div class="chapter-nav">
+      <a href="ch002.html">&larr; 上一章</a>
+      <a href="ch004.html">下一章 &rarr;</a>
+    </div>
+</div>
+<footer><p>小說閱讀站</p></footer>
+</body>
+</html>
